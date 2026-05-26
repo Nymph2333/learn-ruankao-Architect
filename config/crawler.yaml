@@ -1,0 +1,12 @@
+version: 1
+
+ruankaodaren:
+  source_url: "https://ruankaodaren.com/exam/#/knowlegde"
+  auth_state_path: ".auth/ruankaodaren.storageState.json"
+  target_exam_texts:
+    - "系统架构设计师"
+    - "架构设计师"
+    - "高级"
+  target_route: "knowlegde"
+  wait_after_navigation_ms: 3000
+  max_context_selection_attempts: 3

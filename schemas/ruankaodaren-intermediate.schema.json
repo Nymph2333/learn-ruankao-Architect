@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-intermediate.schema.json",
+  "title": "RuankaoIntermediateDocument",
+  "description": "Phase 3.0 intermediate JSON schema: raw outerHTML → structured intermediate document. No OCR, no encrypt=1 decryption, no Markdown generation.",
+  "type": "object",
+  "required": ["schema_version", "source", "navigation_context", "content", "classification", "constraints"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for this document format.",
+      "examples": ["1.0.0"]
+    },
+    "source": {
+      "$ref": "#/$defs/RuankaoSourceInfo"
+    },
+    "navigation_context": {
+      "$ref": "#/$defs/RuankaoNavigationContext"
+    },
+    "content": {
+      "$ref": "#/$defs/RuankaoContent"
+    },
+    "classification": {
+      "$ref": "#/$defs/RuankaoContentClassification"
+    },
+    "constraints": {
+      "$ref": "#/$defs/RuankaoConstraints"
+    }
+  },
+  "$defs": {
+    "RuankaoSourceInfo": {
+      "type": "object",
+      "required": ["source_name", "source_url", "captured_at", "timestamp", "raw_paths"],
+      "additionalProperties": false,
+      "properties": {
+        "source_name": { "type": "string", "enum": ["ruankaodaren"] },
+        "source_url": { "type": "string", "format": "uri" },
+        "captured_at": { "type": "string", "format": "date-time" },
+        "timestamp": {
+          "type": "string",
+          "description": "Filename-safe timestamp used in raw artifact paths (hyphens in place of colons).",
+          "examples": ["2026-05-26T09-40-21-903Z"]
+        },
+        "raw_paths": {
+          "type": "object",
+          "required": ["metadata", "outer_html", "screenshot", "dom_text", "containers"],
+          "additionalProperties": false,
+          "properties": {
+            "metadata": { "type": "string" },
+            "outer_html": { "type": "string" },
+            "screenshot": { "type": "string" },
+            "dom_text": { "type": "string" },
+            "containers": { "type": "string" }
+          }
+        }
+      }
+    },
+    "RuankaoNavigationContext": {
+      "type": "object",
+      "required": ["target_node_text", "final_url", "route", "detail_entry_strategy", "detail_entry_route_changed"],
+      "additionalProperties": false,
+      "properties": {
+        "target_node_text": { "type": "string", "description": "knowledge_node_click_text from crawler metadata." },
+        "final_url": { "type": "string", "format": "uri" },
+        "route": { "type": "string", "description": "Hash route extracted from final_url (e.g. 'konwledgeInfo')." },
+        "detail_entry_strategy": { "type": "string", "enum": ["target_scoped", "fallback", "unknown"] },
+        "detail_entry_route_changed": { "type": "boolean" }
+      }
+    },
+    "RuankaoContent": {
+      "type": "object",
+      "required": ["title", "text_blocks", "key_terms", "image_refs", "html_fragments", "source_outer_html_hash"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": ["string", "null"], "description": "Preferred: knowledge_node_click_text from metadata." },
+        "text_blocks": { "type": "array", "items": { "$ref": "#/$defs/RuankaoContentBlock" } },
+        "key_terms": { "type": "array", "items": { "$ref": "#/$defs/RuankaoKeyTerm" } },
+        "image_refs": { "type": "array", "items": { "$ref": "#/$defs/RuankaoImageRef" } },
+        "html_fragments": { "type": "array", "items": { "$ref": "#/$defs/RuankaoHtmlFragment" } },
+        "source_outer_html_hash": { "type": "string", "description": "SHA-256 of the raw outerHTML file." }
+      }
+    },
+    "RuankaoContentBlock": {
+      "type": "object",
+      "required": ["type", "text", "order", "source_selector", "html"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string", "enum": ["paragraph", "heading", "list_item", "inline", "unknown"] },
+        "text": { "type": "string", "minLength": 1 },
+        "order": { "type": "integer", "minimum": 0 },
+        "source_selector": { "type": "string" },
+        "html": { "type": "string" }
+      }
+    },
+    "RuankaoKeyTerm": {
+      "type": "object",
+      "required": ["text", "kind", "order", "source_selector"],
+      "additionalProperties": false,
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "enum": ["underline_placeholder", "strong", "emphasis"] },
+        "order": { "type": "integer", "minimum": 0 },
+        "source_selector": { "type": "string" }
+      }
+    },
+    "RuankaoImageRef": {
+      "type": "object",
+      "required": ["src", "alt", "title", "order", "surrounding_text", "asset_status", "requires_manual_review", "manual_review_reason"],
+      "additionalProperties": false,
+      "properties": {
+        "src": { "type": "string" },
+        "alt": { "type": "string" },
+        "title": { "type": "string" },
+        "order": { "type": "integer", "minimum": 0 },
+        "surrounding_text": { "type": "string" },
+        "asset_status": { "type": "string", "enum": ["referenced_not_downloaded", "downloaded", "unavailable"] },
+        "requires_manual_review": { "type": "boolean" },
+        "manual_review_reason": { "type": "string" }
+      }
+    },
+    "RuankaoHtmlFragment": {
+      "type": "object",
+      "required": ["source_selector", "outer_html", "text_length", "contains_image", "contains_table"],
+      "additionalProperties": false,
+      "properties": {
+        "source_selector": { "type": "string" },
+        "outer_html": { "type": "string" },
+        "text_length": { "type": "integer", "minimum": 0 },
+        "contains_image": { "type": "boolean" },
+        "contains_table": { "type": "boolean" }
+      }
+    },
+    "RuankaoContentClassification": {
+      "type": "object",
+      "required": ["content_source_classification", "parser_confidence", "requires_manual_review", "manual_review_reasons"],
+      "additionalProperties": false,
+      "properties": {
+        "content_source_classification": {
+          "type": "string",
+          "enum": ["TEXT_DOM", "HTML_RICH_TEXT", "IMAGE_EMBEDDED", "MIXED_TEXT_IMAGE", "UNSTABLE_OR_INCOMPLETE"]
+        },
+        "parser_confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+        "requires_manual_review": { "type": "boolean" },
+        "manual_review_reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "RuankaoConstraints": {
+      "type": "object",
+      "description": "Hard constraints. All values must be false. Verified at parse time.",
+      "required": ["ocr_used", "encrypted_xhr_decrypted", "image_table_reconstructed", "markdown_generated"],
+      "additionalProperties": false,
+      "properties": {
+        "ocr_used": { "type": "boolean", "enum": [false] },
+        "encrypted_xhr_decrypted": { "type": "boolean", "enum": [false] },
+        "image_table_reconstructed": { "type": "boolean", "enum": [false] },
+        "markdown_generated": { "type": "boolean", "enum": [false] }
+      }
+    }
+  }
+}

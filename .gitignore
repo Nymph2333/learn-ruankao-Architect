@@ -3,6 +3,7 @@ dist/
 coverage/
 .turbo/
 .cache/
+.auth/
 
 .env
 .env.*
@@ -14,3 +15,19 @@ debug.log*
 
 .DS_Store
 Thumbs.db
+
+sources/ruankaodaren/raw/**/*.html
+sources/ruankaodaren/raw/**/*.png
+sources/ruankaodaren/raw/**/*.json
+sources/ruankaodaren/raw/**/*.txt
+sources/ruankaodaren/raw/containers/**/*.json
+sources/ruankaodaren/raw/accessibility/**/*.json
+sources/ruankaodaren/raw/storage/**/*.json
+sources/ruankaodaren/raw/screenshots/debug/**/*.png
+sources/ruankaodaren/raw/outer-html/**/*.html
+sources/ruankaodaren/raw/network/**/*.json
+sources/ruankaodaren/raw/console/**/*.json
+!sources/ruankaodaren/raw/**/.gitkeep
+
+data/intermediate/**/*.json
+!data/intermediate/**/.gitkeep

@@ -4,11 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "auth:ruankaodaren": "tsx scripts/auth-ruankaodaren.ts",
+    "crawl:ruankaodaren": "tsx scripts/crawl-ruankaodaren.ts",
+    "parse:ruankaodaren": "tsx scripts/parse-ruankaodaren-outer-html.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "cheerio": "^1.0.0",
+    "playwright": "^1.60.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   }
