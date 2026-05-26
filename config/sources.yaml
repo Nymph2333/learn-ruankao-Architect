@@ -1,0 +1,20 @@
+version: 1
+status: phase-1-planning-only
+
+storage_layout:
+  raw: "sources/<source-name>/raw/"
+  parsed: "sources/<source-name>/parsed/"
+  rendered_docs: "docs/"
+
+required_metadata:
+  - source_url
+  - capture_time
+  - content_hash
+  - parser_version
+
+source_quality_rules:
+  require_traceable_origin: true
+  forbid_large_verbatim_copy: true
+  require_manual_review_before_docs: true
+
+registered_sources: []

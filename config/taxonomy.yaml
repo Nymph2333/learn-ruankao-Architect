@@ -1,0 +1,28 @@
+version: 1
+exam:
+  name: "软考高级系统架构设计师"
+  repository_focus: "Markdown-first knowledge base"
+
+document_types:
+  concept_card:
+    template: "templates/concept-card.md"
+    purpose: "知识点 -> 架构解释 -> 约束模型 -> 考试映射"
+  case_analysis_card:
+    template: "templates/case-analysis-card.md"
+    purpose: "案例背景 -> 约束识别 -> 失效分析 -> 答题结构"
+  paper_template:
+    template: "templates/paper-template.md"
+    purpose: "项目背景 -> 架构问题 -> 设计过程 -> 可复用表达"
+
+required_sections:
+  - "Core Concept / 核心概念"
+  - "Architectural Topology & Visualization / 架构拓扑与可视化"
+  - "Deterministic Constraints / 决定论约束"
+  - "Ruankao Alignment / 软考考点映射"
+  - "Case Study Answer Pattern / 案例分析答题模式"
+  - "Paper Usage / 论文可复用方式"
+
+exam_alignment_dimensions:
+  - "综合知识"
+  - "案例分析"
+  - "论文"
