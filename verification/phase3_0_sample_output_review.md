@@ -101,3 +101,6 @@ The parser DID:
 - Record the image as an unresolved external reference
 - Classify the document as `MIXED_TEXT_IMAGE`
 - Flag the document for manual review because of the image
+
+
+Phase 3.1 adds schema validation and invariant checks for intermediate JSON outputs.

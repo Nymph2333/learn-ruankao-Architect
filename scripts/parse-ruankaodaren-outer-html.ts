@@ -39,8 +39,11 @@ const repoRoot = resolve(scriptDir, "..");
 // Argument parsing
 // ---------------------------------------------------------------------------
 
-function parseArgs(): { timestamp?: string } {
+function parseArgs(): { timestamp?: string; latestSuccess?: boolean } {
   const args = process.argv.slice(2);
+  if (args.includes("--latest-success")) {
+    return { latestSuccess: true };
+  }
   const idx = args.indexOf("--timestamp");
   if (idx !== -1 && args[idx + 1]) {
     return { timestamp: args[idx + 1] };
@@ -336,8 +339,9 @@ function classify(
 // Main
 // ---------------------------------------------------------------------------
 
-const { timestamp } = parseArgs();
-const { ts, meta } = findLatestSuccessfulMetadata(timestamp);
+const { timestamp, latestSuccess } = parseArgs();
+// --latest-success uses the same auto-discovery as no-flag (finds latest successful metadata)
+const { ts, meta } = findLatestSuccessfulMetadata(latestSuccess ? undefined : timestamp);
 console.log(`[parser] timestamp: ${ts}`);
 
 const outerHtmlRelPath = findOuterHtmlRelPath(meta);

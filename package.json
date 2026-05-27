@@ -7,12 +7,19 @@
     "auth:ruankaodaren": "tsx scripts/auth-ruankaodaren.ts",
     "crawl:ruankaodaren": "tsx scripts/crawl-ruankaodaren.ts",
     "parse:ruankaodaren": "tsx scripts/parse-ruankaodaren-outer-html.ts",
+    "validate:intermediate": "tsx scripts/validate-ruankaodaren-intermediate.ts",
+    "capture:assets": "tsx scripts/capture-ruankaodaren-assets.ts",
+    "report:sample-coverage": "tsx scripts/report-ruankaodaren-sample-coverage.ts",
+    "validate:assets": "tsx scripts/validate-ruankaodaren-assets.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "ajv": "^8.0.0",
+    "ajv-formats": "^3.0.0",
     "cheerio": "^1.0.0",
+    "image-size": "^1.0.0",
     "playwright": "^1.60.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"

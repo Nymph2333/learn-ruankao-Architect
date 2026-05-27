@@ -1,0 +1,25 @@
+ruankaodaren:
+  sample_targets:
+    - id: sample_cisc_risc
+      title_hint: "1.3 指令系统CISC和RISC"
+      expected_classification: "MIXED_TEXT_IMAGE"
+      status: "existing_success"
+      timestamp: "2026-05-26T09-40-21-903Z"
+    - id: sample_database
+      title_hint: "数据库"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+    - id: sample_network
+      title_hint: "网络"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+    - id: sample_architecture
+      title_hint: "架构"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+
+# Notes:
+# - status = existing_success: already crawled and parsed; intermediate JSON exists
+# - status = pending_capture: not yet crawled; run pnpm crawl:ruankaodaren -- --target "<title_hint>"
+# - expected_classification: UNKNOWN until a sample is captured and parsed
+# - This file is documentation only; scripts currently do not read it automatically

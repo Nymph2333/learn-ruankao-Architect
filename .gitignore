@@ -27,6 +27,8 @@ sources/ruankaodaren/raw/screenshots/debug/**/*.png
 sources/ruankaodaren/raw/outer-html/**/*.html
 sources/ruankaodaren/raw/network/**/*.json
 sources/ruankaodaren/raw/console/**/*.json
+sources/ruankaodaren/raw/assets/images/**
+sources/ruankaodaren/raw/assets/manifests/**/*.json
 !sources/ruankaodaren/raw/**/.gitkeep
 
 data/intermediate/**/*.json

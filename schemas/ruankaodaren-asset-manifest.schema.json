@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-asset-manifest",
+  "title": "RuankaoAssetManifest",
+  "description": "Asset capture manifest produced by capture-ruankaodaren-assets.ts. Records downloaded image assets referenced by intermediate JSON documents.",
+  "type": "object",
+  "required": [
+    "source_name",
+    "source_intermediate_path",
+    "source_title",
+    "source_timestamp",
+    "captured_at",
+    "asset_count",
+    "assets",
+    "constraints"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "source_intermediate_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_title": {
+      "type": "string"
+    },
+    "source_timestamp": {
+      "type": "string",
+      "minLength": 1
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "asset_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/RuankaoCapturedAsset"
+      }
+    },
+    "constraints": {
+      "$ref": "#/$defs/RuankaoAssetConstraints"
+    }
+  },
+  "$defs": {
+    "RuankaoCapturedAsset": {
+      "type": "object",
+      "required": [
+        "order",
+        "original_url",
+        "asset_status",
+        "requires_manual_review",
+        "manual_review_reason",
+        "ocr_used",
+        "image_table_reconstructed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "original_url": {
+          "type": "string"
+        },
+        "saved_path": {
+          "type": ["string", "null"]
+        },
+        "sha256": {
+          "type": ["string", "null"]
+        },
+        "size_bytes": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "content_type": {
+          "type": ["string", "null"]
+        },
+        "width": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "height": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "dimension_error": {
+          "type": ["string", "null"]
+        },
+        "surrounding_text": {
+          "type": ["string", "null"]
+        },
+        "asset_status": {
+          "type": "string",
+          "enum": ["downloaded", "download_failed", "skipped"]
+        },
+        "error_message": {
+          "type": ["string", "null"]
+        },
+        "requires_manual_review": {
+          "type": "boolean",
+          "const": true
+        },
+        "manual_review_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ocr_used": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "image_table_reconstructed": {
+          "type": "boolean",
+          "enum": [false]
+        }
+      }
+    },
+    "RuankaoAssetConstraints": {
+      "type": "object",
+      "required": [
+        "ocr_used",
+        "image_table_reconstructed",
+        "markdown_generated",
+        "encrypted_xhr_decrypted"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ocr_used": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "image_table_reconstructed": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "markdown_generated": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "encrypted_xhr_decrypted": {
+          "type": "boolean",
+          "enum": [false]
+        }
+      }
+    }
+  }
+}

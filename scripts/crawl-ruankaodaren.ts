@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+﻿import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
@@ -56,6 +56,21 @@ const DETAIL_CONTENT_SIGNALS = [
   "数据库",
   "计算机网络"
 ];
+
+// ---------------------------------------------------------------------------
+// CLI args (Phase 3.2)
+// ---------------------------------------------------------------------------
+
+function parseCrawlerArgs(): { requestedTarget: string | null; targetSource: "cli" | "default" } {
+  const args = process.argv.slice(2);
+  const idx = args.indexOf("--target");
+  if (idx !== -1 && args[idx + 1]) {
+    return { requestedTarget: args[idx + 1], targetSource: "cli" };
+  }
+  return { requestedTarget: null, targetSource: "default" };
+}
+
+const CRAWLER_ARGS = parseCrawlerArgs();
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
@@ -1153,8 +1168,26 @@ async function saveStorageKeySnapshot(page: Page, timestamp: string, capturedAt:
   return storageKeysPath;
 }
 
-async function findKnowledgeNodeCandidateText(page: Page): Promise<string | null> {
-  const locator = page.locator(KNOWLEDGE_NODE_TEXT_PATTERN);
+async function findKnowledgeNodeCandidateText(page: Page, requestedTarget?: string): Promise<string | null> {
+  // Phase 3.2: prefer exact match when requestedTarget is provided
+  if (requestedTarget) {
+    const pfx = requestedTarget.substring(0, Math.min(requestedTarget.length, 4));
+    const broad = page.locator('text=/' + pfx + '/');
+    const bc = await broad.count().catch(() => 0);
+    for (let i = 0; i < bc && i < 20; i++) {
+      const el = broad.nth(i);
+      const vis = await el.isVisible({ timeout: 1_000 }).catch(() => false);
+      if (!vis) continue;
+      const t = normalizeVisibleText(await el.innerText({ timeout: 1_000 }).catch(() => ''));
+      const ml = Math.min(requestedTarget.length, 10);
+      if (t && t.includes(requestedTarget.substring(0, ml))) {
+        log('[Phase 3.2] matched: "' + t + '"');
+        return t;
+      }
+    }
+    warn('[Phase 3.2] target not found; using auto-discovery');
+  }
+    const locator = page.locator(KNOWLEDGE_NODE_TEXT_PATTERN);
   const count = await locator.count().catch(() => 0);
 
   for (let index = 0; index < count && index < MAX_KNOWLEDGE_NODE_CLICK_ATTEMPTS; index += 1) {
@@ -1175,7 +1208,7 @@ async function findKnowledgeNodeCandidateText(page: Page): Promise<string | null
   return null;
 }
 
-async function harvestInteractiveContent(page: Page): Promise<InteractionHarvestResult> {
+async function harvestInteractiveContent(page: Page, requestedTarget?: string): Promise<InteractionHarvestResult> {
   log("interaction harvesting started");
 
   const beforeUrl = page.url();
@@ -1206,7 +1239,7 @@ async function harvestInteractiveContent(page: Page): Promise<InteractionHarvest
   // Clicking the row hides its own "去掌握" button via v-if, preventing scoped detail entry.
   // Instead, find the target node text without clicking so harvestDetailEntry can click
   // "去掌握" directly (while the button is still visible).
-  const knowledgeNodeText = await findKnowledgeNodeCandidateText(page);
+  const knowledgeNodeText = await findKnowledgeNodeCandidateText(page, requestedTarget);
 
   if (knowledgeNodeText) {
     log(`knowledge node identified (not clicked): ${knowledgeNodeText}`);
@@ -1486,7 +1519,7 @@ async function main(): Promise<void> {
     await waitForRender(page, SPA_RENDER_WAIT_MS);
 
     const contextSelection = await selectContextIfNeeded(page);
-    const interactionHarvest = await harvestInteractiveContent(page);
+    const interactionHarvest = await harvestInteractiveContent(page, CRAWLER_ARGS.requestedTarget ?? undefined);
     const detailEntry = await harvestDetailEntry(
       page,
       timestamp,
@@ -1605,6 +1638,8 @@ async function main(): Promise<void> {
       before_detail_screenshot_path: toRepoRelativePath(detailEntry.beforeScreenshotPath),
       after_detail_screenshot_path: toRepoRelativePath(detailEntry.afterScreenshotPath),
       post_detail_content_signal: postDetailContentSignal,
+      requested_target_text: CRAWLER_ARGS.requestedTarget,
+      target_source: CRAWLER_ARGS.targetSource,
       phase2_13_target_scoped_detail_entry_enabled: true,
       detail_entry_strategy: detailEntry.strategy,
       detail_entry_target_text: interactionHarvest.knowledgeNodeClickText,
