@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-05-27T06:55:19.706Z",
+  "target": "3.6 关系数据库的规范化",
+  "target_section_number": "3.6",
+  "target_chapter_number": "3",
+  "chapter_found": false,
+  "chapter_text": null,
+  "chapter_expand_success": false,
+  "leaf_exact_match_found": false,
+  "leaf_candidates_same_chapter": [],
+  "best_match": null,
+  "best_match_strategy": "failed",
+  "recommendation": "target_not_found",
+  "constraints": {
+    "no_formal_raw_snapshot": true,
+    "no_parse": true,
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "phase4_not_entered": true
+  }
+}

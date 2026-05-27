@@ -1,0 +1,462 @@
+{
+  "generated_at": "2026-05-27T08:15:09.770Z",
+  "sample_count": 7,
+  "samples": [
+    {
+      "identity": {
+        "timestamp": "2026-05-26T09-40-21-903Z",
+        "title": "1.3 指令系统CISC和RISC",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468119990275",
+        "target_node_text": "1.3 指令系统CISC和RISC",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "MIXED_TEXT_IMAGE",
+        "parser_confidence": "medium",
+        "requires_manual_review": true
+      },
+      "content_volume": {
+        "text_blocks_count": 3,
+        "key_terms_count": 7,
+        "image_refs_count": 1,
+        "html_fragments_count": 1,
+        "total_text_length": 92,
+        "longest_text_block_length": 47,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": true,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": false,
+        "risks": []
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
+        "image_refs_count": 1,
+        "manifest_asset_count": 1,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 1,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "ready_with_asset_refs",
+        "reasons": [
+          "leaf knowledge point with text and image_refs"
+        ],
+        "renderer_policy": "Renderer may preserve asset_ref links only; no OCR and no image-table reconstruction."
+      },
+      "quarantine": {
+        "quarantined": false,
+        "quarantine_reason": null,
+        "excluded_from_renderer_baseline": false
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": true
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T01-32-02-914Z",
+        "title": "第3章 数据库系统",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468115795969",
+        "target_node_text": "第3章 数据库系统",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 5,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 106,
+        "longest_text_block_length": 106,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": true,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": true,
+        "high_risk": true,
+        "risks": [
+          "chapter-level title should not be treated as a leaf knowledge point"
+        ]
+      },
+      "content_shape": "chapter_overview",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T01-32-02-914Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: duplicate_actual_content"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "duplicate_actual_content",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T01-32-47-268Z",
+        "title": "第5章 计算机网络",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468115795969",
+        "target_node_text": "第5章 计算机网络",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 5,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 106,
+        "longest_text_block_length": 106,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": true,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": true,
+        "high_risk": true,
+        "risks": [
+          "chapter-level title should not be treated as a leaf knowledge point"
+        ]
+      },
+      "content_shape": "chapter_overview",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T01-32-47-268Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: duplicate_actual_content"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "duplicate_actual_content",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T02-17-40-989Z",
+        "title": "3.1 数据库系统常识",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468124184652",
+        "target_node_text": "3.1 数据库系统常识",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 5,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 12,
+        "longest_text_block_length": 12,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": true,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": false,
+        "risks": []
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T02-17-40-989Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: low_text"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T02-34-55-788Z",
+        "title": "1.3 指令系统CISC和RISC",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468119990275",
+        "target_node_text": "1.3 指令系统CISC和RISC",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "MIXED_TEXT_IMAGE",
+        "parser_confidence": "medium",
+        "requires_manual_review": true
+      },
+      "content_volume": {
+        "text_blocks_count": 3,
+        "key_terms_count": 7,
+        "image_refs_count": 1,
+        "html_fragments_count": 1,
+        "total_text_length": 92,
+        "longest_text_block_length": 47,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": true,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": false,
+        "risks": []
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T02-34-55-788Z.json",
+        "image_refs_count": 1,
+        "manifest_asset_count": 1,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 1,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: target_body_mismatch"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "target_body_mismatch",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T02-35-30-393Z",
+        "title": "1.5 存储系统",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468115795969",
+        "target_node_text": "1.5 存储系统",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 5,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 106,
+        "longest_text_block_length": 106,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T02-35-30-393Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: target_body_mismatch"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "target_body_mismatch",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T02-36-04-460Z",
+        "title": "1.4 指令的流水处理",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468115795969",
+        "target_node_text": "1.4 指令的流水处理",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 5,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 106,
+        "longest_text_block_length": 106,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T02-36-04-460Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: target_body_mismatch"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "target_body_mismatch",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    }
+  ],
+  "summary": {
+    "leaf_knowledge_point_count": 5,
+    "chapter_overview_count": 2,
+    "mixed_count": 0,
+    "unknown_count": 0,
+    "ready_count": 0,
+    "ready_with_asset_refs_count": 1,
+    "not_ready_count": 6,
+    "readiness_distribution": {
+      "ready_with_asset_refs": 1,
+      "not_ready_quarantined": 6
+    },
+    "constraint_violations_total": 0,
+    "quarantined_count": 6,
+    "renderer_eligible_leaf_count": 1
+  },
+  "overall_gate": {
+    "phase4_renderer_allowed": false,
+    "reason": "Renderer design gate blocked because controlled samples do not yet provide enough leaf-level renderer baselines.",
+    "required_before_phase4": [
+      "acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)",
+      "validate at least 3 unique renderer-ready leaf titles",
+      "improve target selection for chapter-level hints",
+      "avoid using chapter overview as renderer baseline"
+    ]
+  }
+}

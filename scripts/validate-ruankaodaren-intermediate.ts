@@ -282,3 +282,4 @@ if (anyFailed) {
 }
 
 console.log("[validate] All files passed schema and invariant checks.");
+console.log("[validate] Semantic alignment is not checked here; run pnpm audit:semantic-alignment.");

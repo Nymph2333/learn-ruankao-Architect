@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-05-27T02:41:09.179Z",
+  "source_report_path": "verification/generated/phase3_5_leaf_candidates.json",
+  "existing_sample_titles": [
+    "1.3 指令系统CISC和RISC",
+    "1.4 指令的流水处理",
+    "1.5 存储系统",
+    "3.1 数据库系统常识",
+    "第3章 数据库系统",
+    "第5章 计算机网络"
+  ],
+  "recommended_candidate_count": 5,
+  "selected_candidates": [
+    {
+      "title": "3.6 关系数据库的规范化",
+      "chapter": "第3章 数据库系统",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "reason": "Phase 3.6 content-ready leaf candidate; complete leaf title from Phase 3.5 and likely richer than overview nodes",
+      "suggested_target_command": "pnpm crawl:ruankaodaren -- --target \"3.6 关系数据库的规范化\" --require-leaf"
+    },
+    {
+      "title": "1.2 计算机硬件和指令",
+      "chapter": "第1章 计算机硬件",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "reason": "Phase 3.6 content-ready leaf candidate; complete leaf title from Phase 3.5 and likely richer than overview nodes",
+      "suggested_target_command": "pnpm crawl:ruankaodaren -- --target \"1.2 计算机硬件和指令\" --require-leaf"
+    },
+    {
+      "title": "1.6 输入输出技术",
+      "chapter": "第1章 计算机硬件",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "reason": "Phase 3.6 content-ready leaf candidate; complete leaf title from Phase 3.5 and likely richer than overview nodes",
+      "suggested_target_command": "pnpm crawl:ruankaodaren -- --target \"1.6 输入输出技术\" --require-leaf"
+    },
+    {
+      "title": "3.11 SQL语言",
+      "chapter": "第3章 数据库系统",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "reason": "Phase 3.6 content-ready leaf candidate; complete leaf title from Phase 3.5 and likely richer than overview nodes",
+      "suggested_target_command": "pnpm crawl:ruankaodaren -- --target \"3.11 SQL语言\" --require-leaf"
+    },
+    {
+      "title": "3.2 三级模式—两级映像",
+      "chapter": "第3章 数据库系统",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "reason": "Phase 3.6 content-ready leaf candidate; complete leaf title from Phase 3.5 and likely richer than overview nodes",
+      "suggested_target_command": "pnpm crawl:ruankaodaren -- --target \"3.2 三级模式—两级映像\" --require-leaf"
+    }
+  ],
+  "excluded_candidate_count": 5,
+  "excluded_candidates": [
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "chapter": "第1章 计算机硬件",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "excluded_reason": "already exists in intermediate samples"
+    },
+    {
+      "title": "1.4 指令的流水处理",
+      "chapter": "第1章 计算机硬件",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "excluded_reason": "already exists in intermediate samples"
+    },
+    {
+      "title": "1.5 存储系统",
+      "chapter": "第1章 计算机硬件",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "excluded_reason": "already exists in intermediate samples"
+    },
+    {
+      "title": "1.7 总线",
+      "chapter": "第1章 计算机硬件",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "excluded_reason": "title text is too short"
+    },
+    {
+      "title": "3.1 数据库系统常识",
+      "chapter": "第3章 数据库系统",
+      "shape": "leaf_knowledge_point",
+      "confidence": "high",
+      "source": "dom-text",
+      "excluded_reason": "already exists in intermediate samples"
+    }
+  ],
+  "constraints": {
+    "markdown_generated": false,
+    "ocr_used": false,
+    "encrypted_xhr_decrypted": false,
+    "image_table_reconstructed": false,
+    "full_site_batch_crawl": false,
+    "phase4_entered": false
+  }
+}

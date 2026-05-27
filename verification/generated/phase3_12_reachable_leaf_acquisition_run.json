@@ -1,0 +1,136 @@
+{
+  "generated_at": "2026-05-27T08:15:00.766Z",
+  "phase": "3.12",
+  "target_list": [
+    {
+      "target_id": "phase312_database_design",
+      "title_hint": "3.3 数据库的设计"
+    },
+    {
+      "target_id": "phase312_network_overview_model",
+      "title_hint": "5.1 网络概述和模型"
+    },
+    {
+      "target_id": "phase312_typical_information_system_architecture",
+      "title_hint": "8.8 典型信息系统架构模型"
+    }
+  ],
+  "attempted_target_count": 3,
+  "exact_leaf_target_count": 3,
+  "preflight_pass_count": 0,
+  "preflight_fail_count": 0,
+  "semantic_pass_count": 0,
+  "semantic_fail_count": 0,
+  "renderer_eligible_added_count": 0,
+  "renderer_eligible_added_titles": [],
+  "rejected_targets": [
+    {
+      "target_id": "phase312_database_design",
+      "title_hint": "3.3 数据库的设计",
+      "reason": "leaf_resolution_failed"
+    },
+    {
+      "target_id": "phase312_network_overview_model",
+      "title_hint": "5.1 网络概述和模型",
+      "reason": "leaf_resolution_failed"
+    },
+    {
+      "target_id": "phase312_typical_information_system_architecture",
+      "title_hint": "8.8 典型信息系统架构模型",
+      "reason": "leaf_resolution_failed"
+    }
+  ],
+  "per_target_results": [
+    {
+      "target_id": "phase312_database_design",
+      "title_hint": "3.3 数据库的设计",
+      "commands": [
+        {
+          "name": "crawl",
+          "command": "pnpm crawl:ruankaodaren -- --target \"3.3 数据库的设计\" --require-leaf",
+          "exit_code": 1,
+          "success": false
+        }
+      ],
+      "preflight_result": "not_reached",
+      "parse_result": "not_reached",
+      "semantic_audit_result": "not_reached",
+      "asset_capture_result": "not_reached",
+      "renderer_eligible": false,
+      "produced_timestamp": "2026-05-27T08-14-35-634Z",
+      "produced_intermediate_path": null,
+      "produced_manifest_path": null,
+      "target_resolution_trusted": false,
+      "target_leaf_exact_match": false,
+      "actual_node_matches_requested_target": false,
+      "actual_knowledge_node_click_text": null,
+      "failure_reason": "leaf_resolution_failed"
+    },
+    {
+      "target_id": "phase312_network_overview_model",
+      "title_hint": "5.1 网络概述和模型",
+      "commands": [
+        {
+          "name": "crawl",
+          "command": "pnpm crawl:ruankaodaren -- --target \"5.1 网络概述和模型\" --require-leaf",
+          "exit_code": 1,
+          "success": false
+        }
+      ],
+      "preflight_result": "not_reached",
+      "parse_result": "not_reached",
+      "semantic_audit_result": "not_reached",
+      "asset_capture_result": "not_reached",
+      "renderer_eligible": false,
+      "produced_timestamp": "2026-05-27T08-14-43-990Z",
+      "produced_intermediate_path": null,
+      "produced_manifest_path": null,
+      "target_resolution_trusted": false,
+      "target_leaf_exact_match": false,
+      "actual_node_matches_requested_target": false,
+      "actual_knowledge_node_click_text": null,
+      "failure_reason": "leaf_resolution_failed"
+    },
+    {
+      "target_id": "phase312_typical_information_system_architecture",
+      "title_hint": "8.8 典型信息系统架构模型",
+      "commands": [
+        {
+          "name": "crawl",
+          "command": "pnpm crawl:ruankaodaren -- --target \"8.8 典型信息系统架构模型\" --require-leaf",
+          "exit_code": 1,
+          "success": false
+        }
+      ],
+      "preflight_result": "not_reached",
+      "parse_result": "not_reached",
+      "semantic_audit_result": "not_reached",
+      "asset_capture_result": "not_reached",
+      "renderer_eligible": false,
+      "produced_timestamp": "2026-05-27T08-14-51-787Z",
+      "produced_intermediate_path": null,
+      "produced_manifest_path": null,
+      "target_resolution_trusted": false,
+      "target_leaf_exact_match": false,
+      "actual_node_matches_requested_target": false,
+      "actual_knowledge_node_click_text": null,
+      "failure_reason": "leaf_resolution_failed"
+    }
+  ],
+  "final_renderer_eligible_count": 1,
+  "phase4_renderer_allowed": false,
+  "required_before_phase4": [
+    "acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)",
+    "validate at least 3 unique renderer-ready leaf titles",
+    "improve target selection for chapter-level hints",
+    "avoid using chapter overview as renderer baseline"
+  ],
+  "constraints": {
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_full_site_crawl": true,
+    "phase4_not_entered": true
+  }
+}

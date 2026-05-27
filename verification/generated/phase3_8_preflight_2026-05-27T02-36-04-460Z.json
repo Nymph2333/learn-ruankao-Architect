@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-05-27T05:47:05.817Z",
+  "timestamp": "2026-05-27T02-36-04-460Z",
+  "metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T02-36-04-460Z.json",
+  "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T02-36-04-460Z.json",
+  "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T02-36-04-460Z-knowInfo_ql-editor.html",
+  "quarantine_manifest_path": "data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json",
+  "semantic_audit_path": "verification/generated/phase3_7_semantic_alignment_audit.json",
+  "metadata_gate": "pass",
+  "content_gate": "fail",
+  "duplicate_gate": "pass",
+  "overall": "fail",
+  "failure_reasons": [
+    "body_missing_target_tokens",
+    "already_quarantined:target_body_mismatch"
+  ],
+  "recommended_action": "quarantine",
+  "details": {
+    "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468115795969",
+    "detail_entry_route_changed": true,
+    "detail_entry_strategy": "target_scoped",
+    "knowledge_node_click_text": "1.4 指令的流水处理",
+    "requested_target_text": "1.4 指令的流水处理",
+    "require_leaf": true,
+    "resolved_leaf_text": "1.4 指令的流水处理",
+    "post_detail_content_signal": true,
+    "title": "1.4 指令的流水处理",
+    "total_text_length": 106,
+    "image_refs_count": 0,
+    "expected_tokens": [
+      "1.4",
+      "指令的流水处理",
+      "指令的流水",
+      "指令",
+      "流水处理"
+    ],
+    "matched_tokens": [],
+    "quarantined": true,
+    "duplicate_match": null
+  }
+}

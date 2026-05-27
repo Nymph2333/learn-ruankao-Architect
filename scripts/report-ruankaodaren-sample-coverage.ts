@@ -20,6 +20,13 @@ import type { RuankaoIntermediateDocument } from "../packages/domain-types/ruank
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
+const quarantineManifestPath = resolve(
+  repoRoot,
+  "data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json"
+);
+const semanticAuditPath = resolve(repoRoot, "verification/generated/phase3_7_semantic_alignment_audit.json");
+const generatedDir = resolve(repoRoot, "verification/generated");
+const diagnosticsDir = resolve(repoRoot, "data/intermediate/ruankaodaren/diagnostics");
 
 // ---------------------------------------------------------------------------
 // Types
@@ -42,6 +49,10 @@ interface SampleSummary {
   download_failed_assets: number;
   skipped_assets: number;
   manual_review_assets: number;
+  quarantined: boolean;
+  quarantine_reason: string | null;
+  renderer_eligible: boolean;
+  preflight_passed: boolean;
   constraint_violations: string[];
 }
 
@@ -62,7 +73,23 @@ interface CoverageReport {
   total_download_failed_assets: number;
   total_skipped_assets: number;
   total_manual_review_assets: number;
+  quarantined_samples: number;
+  renderer_eligible_samples: number;
+  preflight_passed_samples: number;
+  diagnostic_samples: number;
+  renderer_baseline_candidates: Array<{
+    file: string;
+    title: string | null;
+  }>;
+  duplicate_actual_content_count: number;
   constraint_violations_total: number;
+  phase4_candidate_status:
+    | "blocked_insufficient_renderer_eligible"
+    | "blocked_quarantined_baseline_candidate"
+    | "blocked_constraints_violation"
+    | "candidate_ready";
+  renderer_eligible_titles: string[];
+  missing_renderer_eligible_count: number;
 }
 
 interface AssetManifestSummary {
@@ -72,6 +99,26 @@ interface AssetManifestSummary {
   download_failed_assets: number;
   skipped_assets: number;
   manual_review_assets: number;
+}
+
+interface QuarantineManifest {
+  items?: Array<{
+    timestamp: string;
+    quarantine_reason?: string;
+  }>;
+}
+
+interface SemanticAuditReport {
+  duplicate_actual_content_count?: number;
+  samples?: Array<{
+    timestamp: string;
+    renderer_eligible?: boolean;
+  }>;
+}
+
+interface PreflightReport {
+  timestamp: string;
+  overall?: "pass" | "fail";
 }
 
 // ---------------------------------------------------------------------------
@@ -104,6 +151,44 @@ function buildManifestMap(): Map<string, AssetManifestSummary> {
   }
 
   return manifests;
+}
+
+function buildQuarantineMap(): Map<string, string> {
+  const quarantined = new Map<string, string>();
+  if (!existsSync(quarantineManifestPath)) return quarantined;
+  const manifest = JSON.parse(readFileSync(quarantineManifestPath, "utf8")) as QuarantineManifest;
+  for (const item of manifest.items ?? []) {
+    quarantined.set(item.timestamp, item.quarantine_reason ?? "unknown");
+  }
+  return quarantined;
+}
+
+function readSemanticAudit(): SemanticAuditReport | null {
+  if (!existsSync(semanticAuditPath)) return null;
+  return JSON.parse(readFileSync(semanticAuditPath, "utf8")) as SemanticAuditReport;
+}
+
+function buildPreflightPassSet(): Set<string> {
+  const passed = new Set<string>();
+  if (!existsSync(generatedDir)) return passed;
+
+  const files = readdirSync(generatedDir).filter(
+    (file) => file.startsWith("phase3_8_preflight_") && file.endsWith(".json")
+  );
+
+  for (const file of files) {
+    const report = JSON.parse(readFileSync(resolve(generatedDir, file), "utf8")) as PreflightReport;
+    if (report.overall === "pass") {
+      passed.add(report.timestamp);
+    }
+  }
+
+  return passed;
+}
+
+function diagnosticSampleCount(): number {
+  if (!existsSync(diagnosticsDir)) return 0;
+  return readdirSync(diagnosticsDir).filter((file) => file.endsWith(".json") && file !== ".gitkeep").length;
 }
 
 // ---------------------------------------------------------------------------
@@ -142,6 +227,14 @@ if (sampleFiles.length === 0) {
 }
 
 const manifestMap = buildManifestMap();
+const quarantineMap = buildQuarantineMap();
+const semanticAudit = readSemanticAudit();
+const semanticRendererEligible = new Set(
+  (semanticAudit?.samples ?? [])
+    .filter((sample) => sample.renderer_eligible === true)
+    .map((sample) => sample.timestamp)
+);
+const preflightPassed = buildPreflightPassSet();
 
 const samples: SampleSummary[] = [];
 
@@ -151,6 +244,10 @@ for (const fname of sampleFiles) {
   const ts = fname.replace(".json", "");
   const violations = checkConstraints(doc);
   const manifest = manifestMap.get(ts);
+  const quarantineReason = quarantineMap.get(ts) ?? null;
+  const rendererEligible = semanticAudit
+    ? semanticRendererEligible.has(ts)
+    : quarantineReason === null;
 
   samples.push({
     file: fname,
@@ -169,6 +266,10 @@ for (const fname of sampleFiles) {
     download_failed_assets: manifest?.download_failed_assets ?? 0,
     skipped_assets: manifest?.skipped_assets ?? 0,
     manual_review_assets: manifest?.manual_review_assets ?? 0,
+    quarantined: quarantineReason !== null,
+    quarantine_reason: quarantineReason,
+    renderer_eligible: rendererEligible,
+    preflight_passed: preflightPassed.has(ts),
     constraint_violations: violations,
   });
 }
@@ -190,6 +291,9 @@ let totalDownloadedAssets = 0;
 let totalDownloadFailedAssets = 0;
 let totalSkippedAssets = 0;
 let totalManualReviewAssets = 0;
+let quarantinedSamples = 0;
+let rendererEligibleSamples = 0;
+let preflightPassedSamples = 0;
 
 for (const s of samples) {
   classificationDist[s.classification] = (classificationDist[s.classification] ?? 0) + 1;
@@ -204,7 +308,33 @@ for (const s of samples) {
   totalDownloadFailedAssets += s.download_failed_assets;
   totalSkippedAssets += s.skipped_assets;
   totalManualReviewAssets += s.manual_review_assets;
+  if (s.quarantined) quarantinedSamples++;
+  if (s.renderer_eligible) rendererEligibleSamples++;
+  if (s.preflight_passed) preflightPassedSamples++;
   constraintViolationsTotal += s.constraint_violations.length;
+}
+
+const rendererBaselineCandidates = samples
+  .filter((sample) => sample.renderer_eligible)
+  .map((sample) => ({
+    file: sample.file,
+    title: sample.title,
+  }));
+
+const rendererEligibleTitles = samples
+  .filter((s) => s.renderer_eligible)
+  .map((s) => s.title)
+  .filter((t): t is string => t !== null);
+
+const missingRendererEligibleCount = Math.max(0, 3 - rendererEligibleSamples);
+
+let phase4CandidateStatus: CoverageReport["phase4_candidate_status"];
+if (rendererEligibleSamples >= 3 && constraintViolationsTotal === 0) {
+  phase4CandidateStatus = "candidate_ready";
+} else if (constraintViolationsTotal > 0) {
+  phase4CandidateStatus = "blocked_constraints_violation";
+} else {
+  phase4CandidateStatus = "blocked_insufficient_renderer_eligible";
 }
 
 const report: CoverageReport = {
@@ -224,7 +354,16 @@ const report: CoverageReport = {
   total_download_failed_assets: totalDownloadFailedAssets,
   total_skipped_assets: totalSkippedAssets,
   total_manual_review_assets: totalManualReviewAssets,
+  quarantined_samples: quarantinedSamples,
+  renderer_eligible_samples: rendererEligibleSamples,
+  preflight_passed_samples: preflightPassedSamples,
+  diagnostic_samples: diagnosticSampleCount(),
+  renderer_baseline_candidates: rendererBaselineCandidates,
+  duplicate_actual_content_count: semanticAudit?.duplicate_actual_content_count ?? 0,
   constraint_violations_total: constraintViolationsTotal,
+  phase4_candidate_status: phase4CandidateStatus,
+  renderer_eligible_titles: rendererEligibleTitles,
+  missing_renderer_eligible_count: missingRendererEligibleCount,
 };
 
 // ---------------------------------------------------------------------------
@@ -241,7 +380,15 @@ console.log(`  downloaded assets:            ${report.total_downloaded_assets}`)
 console.log(`  download_failed assets:       ${report.total_download_failed_assets}`);
 console.log(`  skipped assets:               ${report.total_skipped_assets}`);
 console.log(`  manual review assets:         ${report.total_manual_review_assets}`);
+console.log(`  quarantined samples:          ${report.quarantined_samples}`);
+console.log(`  renderer eligible samples:    ${report.renderer_eligible_samples}`);
+console.log(`  preflight passed samples:     ${report.preflight_passed_samples}`);
+console.log(`  diagnostic samples:           ${report.diagnostic_samples}`);
+console.log(`  duplicate actual content:     ${report.duplicate_actual_content_count}`);
 console.log(`  constraint_violations_total:  ${report.constraint_violations_total}`);
+console.log(`  phase4_candidate_status:      ${report.phase4_candidate_status}`);
+console.log(`  missing_renderer_eligible:    ${report.missing_renderer_eligible_count}`);
+console.log(`  renderer_eligible_titles:     ${report.renderer_eligible_titles.join(", ") || "(none)"}`);
 console.log(`  total text_blocks:            ${report.total_text_blocks}`);
 console.log(`  total key_terms:              ${report.total_key_terms}`);
 console.log(`  total image_refs:             ${report.total_image_refs}`);
@@ -261,6 +408,7 @@ for (const s of samples) {
   console.log(`      title:          ${s.title ?? "(null)"}`);
   console.log(`      classification: ${s.classification}  confidence: ${s.parser_confidence}`);
   console.log(`      text_blocks: ${s.text_blocks}  key_terms: ${s.key_terms}  image_refs: ${s.image_refs}${manifest}${violations}`);
+  console.log(`      semantic: quarantined=${s.quarantined} renderer_eligible=${s.renderer_eligible}${s.quarantine_reason ? ` reason=${s.quarantine_reason}` : ""}`);
   console.log(`      assets: manifest_count=${s.asset_count} downloaded=${s.downloaded_assets} failed=${s.download_failed_assets} skipped=${s.skipped_assets} manual_review=${s.manual_review_assets}`);
 }
 
@@ -268,7 +416,6 @@ for (const s of samples) {
 // Write JSON report
 // ---------------------------------------------------------------------------
 
-const generatedDir = resolve(repoRoot, "verification/generated");
 mkdirSync(generatedDir, { recursive: true });
 
 const jsonPath = resolve(generatedDir, "phase3_2_sample_coverage.json");
@@ -297,10 +444,23 @@ const mdLines: string[] = [
   `| Download failed assets | ${report.total_download_failed_assets} |`,
   `| Skipped assets | ${report.total_skipped_assets} |`,
   `| Manual review assets | ${report.total_manual_review_assets} |`,
+  `| Quarantined samples | ${report.quarantined_samples} |`,
+  `| Renderer eligible samples | ${report.renderer_eligible_samples} |`,
+  `| Preflight passed samples | ${report.preflight_passed_samples} |`,
+  `| Diagnostic samples | ${report.diagnostic_samples} |`,
+  `| Duplicate actual content | ${report.duplicate_actual_content_count} |`,
   `| Constraint violations | ${report.constraint_violations_total} |`,
+  `| Phase 4 candidate status | ${report.phase4_candidate_status} |`,
+  `| Missing renderer eligible | ${report.missing_renderer_eligible_count} |`,
   `| Total text_blocks | ${report.total_text_blocks} |`,
   `| Total key_terms | ${report.total_key_terms} |`,
   `| Total image_refs | ${report.total_image_refs} |`,
+  "",
+  "## Renderer Eligible Titles",
+  "",
+  ...(report.renderer_eligible_titles.length === 0
+    ? ["- None."]
+    : report.renderer_eligible_titles.map((t) => `- ${t}`)),
   "",
   "## Classification Distribution",
   "",
@@ -328,6 +488,9 @@ for (const s of samples) {
   mdLines.push(`- **text_blocks**: ${s.text_blocks}`);
   mdLines.push(`- **key_terms**: ${s.key_terms}`);
   mdLines.push(`- **image_refs**: ${s.image_refs}`);
+  mdLines.push(`- **Quarantined**: ${s.quarantined}${s.quarantine_reason ? ` (${s.quarantine_reason})` : ""}`);
+  mdLines.push(`- **Renderer eligible**: ${s.renderer_eligible}`);
+  mdLines.push(`- **Preflight passed**: ${s.preflight_passed}`);
   mdLines.push(`- **Asset manifest**: ${s.has_asset_manifest ? `present (${s.asset_manifest_path})` : "missing"}`);
   mdLines.push(`- **Assets**: manifest_count=${s.asset_count}, downloaded=${s.downloaded_assets}, failed=${s.download_failed_assets}, skipped=${s.skipped_assets}, manual_review=${s.manual_review_assets}`);
   if (s.constraint_violations.length > 0) {
@@ -335,6 +498,29 @@ for (const s of samples) {
   }
   mdLines.push("");
 }
+
+mdLines.push("## Renderer Baseline Candidates");
+mdLines.push("");
+if (report.renderer_baseline_candidates.length === 0) {
+  mdLines.push("- None.");
+} else {
+  for (const sample of report.renderer_baseline_candidates) {
+    mdLines.push(`- ${sample.file}: ${sample.title ?? "(null)"}`);
+  }
+}
+mdLines.push("");
+
+mdLines.push("## Quarantined Samples");
+mdLines.push("");
+const quarantinedList = samples.filter((sample) => sample.quarantined);
+if (quarantinedList.length === 0) {
+  mdLines.push("- None.");
+} else {
+  for (const sample of quarantinedList) {
+    mdLines.push(`- ${sample.file}: ${sample.title ?? "(null)"} — ${sample.quarantine_reason ?? "unknown"}`);
+  }
+}
+mdLines.push("");
 
 mdLines.push("## Constraints");
 mdLines.push("");

@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-05-27T06:13:16.529Z",
+  "timestamp": "2026-05-27T06-12-45-174Z",
+  "metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T06-12-45-174Z.json",
+  "intermediate_path": null,
+  "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T06-12-45-174Z-knowInfo_ql-editor.html",
+  "quarantine_manifest_path": "data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json",
+  "semantic_audit_path": "verification/generated/phase3_7_semantic_alignment_audit.json",
+  "metadata_gate": "fail",
+  "content_gate": "not_available",
+  "duplicate_gate": "unknown",
+  "overall": "fail",
+  "failure_reasons": [
+    "actual_node_does_not_match_requested_leaf"
+  ],
+  "recommended_action": "retry_target",
+  "details": {
+    "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468119990275",
+    "detail_entry_route_changed": true,
+    "detail_entry_strategy": "target_scoped",
+    "knowledge_node_click_text": "1.3 指令系统CISC和RISC",
+    "requested_target_text": "1.2 计算机性能指标",
+    "require_leaf": true,
+    "resolved_leaf_text": "1.3 指令系统CISC和RISC",
+    "post_detail_content_signal": true,
+    "title": null,
+    "total_text_length": null,
+    "image_refs_count": null,
+    "expected_tokens": [],
+    "matched_tokens": [],
+    "quarantined": false,
+    "duplicate_match": null
+  }
+}

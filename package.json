@@ -12,6 +12,13 @@
     "report:sample-coverage": "tsx scripts/report-ruankaodaren-sample-coverage.ts",
     "validate:assets": "tsx scripts/validate-ruankaodaren-assets.ts",
     "run:sample-acquisition": "tsx scripts/run-ruankaodaren-sample-acquisition.ts",
+    "audit:sample-quality": "tsx scripts/audit-ruankaodaren-sample-quality.ts",
+    "audit:semantic-alignment": "tsx scripts/audit-ruankaodaren-semantic-alignment.ts",
+    "preflight:sample": "tsx scripts/preflight-ruankaodaren-sample.ts",
+    "diagnose:target-reachability": "tsx scripts/diagnose-ruankaodaren-target-reachability.ts",
+    "catalog:reachable-leaves": "tsx scripts/catalog-ruankaodaren-reachable-leaves.ts",
+    "list:leaf-candidates": "tsx scripts/list-ruankaodaren-leaf-candidates.ts",
+    "select:content-ready-candidates": "tsx scripts/select-ruankaodaren-content-ready-candidates.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"
   },

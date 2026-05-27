@@ -61,13 +61,18 @@ const DETAIL_CONTENT_SIGNALS = [
 // CLI args (Phase 3.2)
 // ---------------------------------------------------------------------------
 
-function parseCrawlerArgs(): { requestedTarget: string | null; targetSource: "cli" | "default" } {
+function parseCrawlerArgs(): {
+  requestedTarget: string | null;
+  targetSource: "cli" | "default";
+  requireLeaf: boolean;
+} {
   const args = process.argv.slice(2);
   const idx = args.indexOf("--target");
+  const requireLeaf = args.includes("--require-leaf");
   if (idx !== -1 && args[idx + 1]) {
-    return { requestedTarget: args[idx + 1], targetSource: "cli" };
+    return { requestedTarget: args[idx + 1], targetSource: "cli", requireLeaf };
   }
-  return { requestedTarget: null, targetSource: "default" };
+  return { requestedTarget: null, targetSource: "default", requireLeaf };
 }
 
 const CRAWLER_ARGS = parseCrawlerArgs();
@@ -181,6 +186,41 @@ type InteractionHarvestResult = {
   bodyTextLength: number;
   bodyText: string;
   detailContentSignalFromPage: boolean;
+  requireLeaf: boolean;
+  chapterLevelHit: boolean;
+  chapterLevelText: string | null;
+  leafResolutionAttempted: boolean;
+  leafResolutionSuccess: boolean;
+  resolvedLeafText: string | null;
+  resolvedLeafStrategy: "same_chapter_related_leaf" | "same_chapter_first_leaf" | "not_required" | "failed";
+  targetResolverEnabled: boolean;
+  targetSectionNumber: string | null;
+  targetChapterNumber: string | null;
+  targetLeafNumber: string | null;
+  targetTitleRemainder: string | null;
+  targetChapterExpandAttempted: boolean;
+  targetChapterExpandSuccess: boolean;
+  targetChapterText: string | null;
+  targetLeafResolutionAttempted: boolean;
+  targetLeafResolutionSuccess: boolean;
+  targetLeafResolutionStrategy:
+    | "exact_full_title"
+    | "number_and_keywords"
+    | "number_only"
+    | "same_chapter_fallback"
+    | "failed"
+    | "not_required";
+  targetLeafText: string | null;
+  targetLeafExactMatch: boolean;
+  targetResolutionTrusted: boolean;
+  resolvedTargetText: string | null;
+  actualNodeMatchesRequestedTarget: boolean;
+  targetResolutionFailureReason:
+    | "target_not_found"
+    | "chapter_not_found"
+    | "global_fallback_not_allowed_for_require_leaf"
+    | "leaf_mismatch"
+    | null;
 };
 
 type DetailEntryScopedClickResult = {
@@ -312,6 +352,68 @@ function normalizeVisibleText(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
+function normalizeTargetText(text: string | null | undefined): string {
+  return normalizeVisibleText(text ?? "").replace(/\s+/g, "").toLowerCase();
+}
+
+function parseTargetSection(target: string | null | undefined): {
+  targetSectionNumber: string;
+  targetChapterNumber: string;
+  targetLeafNumber: string;
+  targetTitleRemainder: string;
+} | null {
+  const normalized = normalizeVisibleText(target ?? "");
+  const match = normalized.match(/^(\d+)\.(\d+)\s+(.+)$/);
+  if (!match) return null;
+
+  return {
+    targetSectionNumber: `${match[1]}.${match[2]}`,
+    targetChapterNumber: match[1] ?? "",
+    targetLeafNumber: `${match[1]}.${match[2]}`,
+    targetTitleRemainder: normalizeVisibleText(match[3] ?? "")
+  };
+}
+
+function targetTextsAlign(left: string | null | undefined, right: string | null | undefined): boolean {
+  const a = normalizeTargetText(left);
+  const b = normalizeTargetText(right);
+  if (!a || !b) return false;
+  if (a === b) return true;
+  return (a.length >= 4 && b.includes(a)) || (b.length >= 4 && a.includes(b));
+}
+
+function targetKeywordTokens(remainder: string): string[] {
+  const weakTerms = new Set(["系统", "技术", "处理", "设计", "常识", "基础", "知识"]);
+  const tokens = [
+    remainder,
+    ...remainder.split(/[的和与及、，,：:（）()—\-]/),
+    ...(remainder.match(/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*/g) ?? []),
+    ...(remainder.match(/\p{Script=Han}{2,}/gu) ?? [])
+  ]
+    .map(normalizeTargetText)
+    .filter((token) => token.length >= 2 && !weakTerms.has(token));
+
+  return [...new Set(tokens)];
+}
+
+function isChapterLevelText(text: string | null | undefined): boolean {
+  const normalized = normalizeVisibleText(text ?? "");
+  if (!normalized) return false;
+  return /^第\s*\d+\s*章/.test(normalized) || (normalized.startsWith("第") && normalized.includes("章"));
+}
+
+function isLeafLevelText(text: string | null | undefined): boolean {
+  const normalized = normalizeVisibleText(text ?? "");
+  if (!normalized || isChapterLevelText(normalized)) return false;
+  if (normalized.includes("掌握程度") || /^\d+\s*\/\s*\d+$/.test(normalized)) return false;
+  return /^\d+(?:\.\d+)+\s*\S+/.test(normalized);
+}
+
+function getChapterNumber(text: string | null | undefined): string | null {
+  const match = normalizeVisibleText(text ?? "").match(/^第\s*(\d+)\s*章/);
+  return match?.[1] ?? null;
+}
+
 function isCommonNavigationText(text: string): boolean {
   const blockedTexts = [
     "首页",
@@ -355,7 +457,7 @@ function isBlockedDetailEntryText(text: string): boolean {
 }
 
 function isDirectoryCandidateText(text: string): boolean {
-  return text.length <= 200 && text.includes("第") && text.includes("章") && hasAnySignal(text, DIRECTORY_TEXT_SIGNALS);
+  return text.length <= 200 && isChapterLevelText(text) && hasAnySignal(text, DIRECTORY_TEXT_SIGNALS);
 }
 
 function isKnowledgeNodeCandidateText(text: string): boolean {
@@ -367,11 +469,11 @@ function isKnowledgeNodeCandidateText(text: string): boolean {
     return false;
   }
 
-  if (/第\s*\d+\s*章/.test(text) || text.includes("掌握程度") || /^\d+\s*\/\s*\d+$/.test(text)) {
+  if (isChapterLevelText(text) || text.includes("掌握程度") || /^\d+\s*\/\s*\d+$/.test(text)) {
     return false;
   }
 
-  return hasAnySignal(text, ["架构", "软件", "数据库", "网络", "系统", "质量", "设计"]);
+  return isLeafLevelText(text) || hasAnySignal(text, ["架构", "软件", "数据库", "网络", "系统", "质量", "设计"]);
 }
 
 function isDetailEntryCandidateText(text: string): boolean {
@@ -621,7 +723,8 @@ async function clickDetailEntryGlobalFallback(page: Page): Promise<ClickTextResu
 
 async function clickDetailEntryScopedOrFallback(
   page: Page,
-  knowledgeNodeClickText: string | null
+  knowledgeNodeClickText: string | null,
+  allowGlobalFallback = true
 ): Promise<DetailEntryScopedClickResult> {
   // Pre-step: decoy-select — clicking "去掌握" only navigates when a DIFFERENT row
   // is already in the selected state. If nothing is selected, the click merely selects
@@ -816,6 +919,19 @@ async function clickDetailEntryScopedOrFallback(
     }
   }
 
+  if (!allowGlobalFallback) {
+    warn("detail entry global fallback disabled for require-leaf exact target");
+    return {
+      success: false,
+      text: null,
+      strategy: "failed",
+      scopeFound: false,
+      scopeTextLength: 0,
+      scopeTextPreview: "",
+      clickIndex: -1
+    };
+  }
+
   // Strategy 3: global_fallback
   warn("WARNING: detail entry used global fallback and may click wrong item.");
   const fallbackResult = await clickDetailEntryGlobalFallback(page);
@@ -884,7 +1000,8 @@ async function scrollPageAndContentContainers(page: Page): Promise<void> {
 async function harvestDetailEntry(
   page: Page,
   timestamp: string,
-  knowledgeNodeClickText: string | null
+  knowledgeNodeClickText: string | null,
+  allowGlobalFallback = true
 ): Promise<DetailEntryResult> {
   const urlBefore = page.url();
   const bodyTextBefore = await readBodyText(page);
@@ -899,7 +1016,7 @@ async function harvestDetailEntry(
 
   log(`body text length before detail entry: ${bodyTextLengthBefore}`);
 
-  const clickResult = await clickDetailEntryScopedOrFallback(page, knowledgeNodeClickText);
+  const clickResult = await clickDetailEntryScopedOrFallback(page, knowledgeNodeClickText, allowGlobalFallback);
 
   if (clickResult.success) {
     log(`detail entry click success (strategy: ${clickResult.strategy})`);
@@ -955,6 +1072,39 @@ async function harvestDetailEntry(
     contentDetectedTitle: alignmentResult.detectedTitle,
     contentTextLength: alignmentResult.textLength,
     contentTextPreview: alignmentResult.textPreview
+  };
+}
+
+async function buildSkippedDetailEntry(page: Page, timestamp: string): Promise<DetailEntryResult> {
+  const url = page.url();
+  const bodyText = await readBodyText(page);
+  const beforeScreenshotPath = resolve(debugScreenshotDir, `${timestamp}-before-detail-entry.png`);
+  const afterScreenshotPath = resolve(debugScreenshotDir, `${timestamp}-after-detail-entry.png`);
+
+  await page.screenshot({ path: beforeScreenshotPath, fullPage: true });
+  await page.screenshot({ path: afterScreenshotPath, fullPage: true });
+
+  return {
+    attempted: false,
+    success: false,
+    text: null,
+    urlBefore: url,
+    urlAfter: url,
+    routeChanged: false,
+    bodyTextLengthBefore: bodyText.length,
+    bodyTextLengthAfter: bodyText.length,
+    beforeScreenshotPath,
+    afterScreenshotPath,
+    postDetailContentSignalFromPage: hasDetailContentSignal(bodyText),
+    strategy: "failed",
+    scopeFound: false,
+    scopeTextLength: 0,
+    scopeTextPreview: "",
+    clickIndex: -1,
+    contentTargetAlignment: "unknown",
+    contentDetectedTitle: null,
+    contentTextLength: bodyText.length,
+    contentTextPreview: bodyText.slice(0, 200)
   };
 }
 
@@ -1208,7 +1358,427 @@ async function findKnowledgeNodeCandidateText(page: Page, requestedTarget?: stri
   return null;
 }
 
-async function harvestInteractiveContent(page: Page, requestedTarget?: string): Promise<InteractionHarvestResult> {
+async function resolveLeafFromChapter(
+  page: Page,
+  chapterText: string,
+  requestedTarget?: string
+): Promise<{
+  success: boolean;
+  text: string | null;
+  strategy: "same_chapter_related_leaf" | "same_chapter_first_leaf" | "failed";
+}> {
+  log(`leaf resolution attempted for chapter: ${chapterText}`);
+
+  const chapterClicked = await clickVisibleByText(page, chapterText);
+  if (chapterClicked) {
+    log(`chapter expanded for leaf resolution: ${chapterText}`);
+    await waitForRender(page, WAIT_AFTER_DIRECTORY_CLICK_MS);
+  } else {
+    warn(`chapter expansion click failed for leaf resolution: ${chapterText}`);
+  }
+
+  const result = await page
+    .evaluate(
+      ({ chapterTextArg, requestedTargetArg }) => {
+        const normalizedChapter = chapterTextArg.replace(/\s+/g, " ").trim();
+        const chapterNumber = normalizedChapter.match(/^第\s*(\d+)\s*章/)?.[1] ?? null;
+        const target = (requestedTargetArg ?? "").replace(/\s+/g, " ").trim();
+        const titleSelectors = [
+          ".chapterExercises .chapterExercises-title",
+          ".chapterExercises-title",
+          ".lgchapterExercises .lgchapterExercises-title",
+          ".lgchapterExercises-title"
+        ];
+        const rawCandidates = Array.from(document.querySelectorAll(titleSelectors.join(",")));
+        const leafTexts: string[] = [];
+
+        for (const el of rawCandidates) {
+          const hasLeafIcon = Boolean(el.querySelector(".el-icon-document"));
+          const rawText = (el.textContent ?? "").replace(/\s+/g, " ").trim();
+          const textMatch = rawText.match(/\d+(?:\.\d+)+\s*[^掌握去]+/);
+          const text = (textMatch?.[0] ?? rawText).replace(/\s+/g, " ").trim();
+          const textIsChapter = /^第\s*\d+\s*章/.test(text);
+          const textIsLeaf = /^\d+(?:\.\d+)+\s*\S+/.test(text) && !textIsChapter && !text.includes("掌握程度");
+          if (!hasLeafIcon && !textIsLeaf) continue;
+          if (!textIsLeaf) continue;
+          if (chapterNumber && !text.startsWith(`${chapterNumber}.`)) continue;
+          if (!leafTexts.includes(text)) leafTexts.push(text);
+        }
+
+        if (leafTexts.length === 0) return null;
+
+        const related = target.length > 0
+          ? leafTexts.find((text) => text.includes(target) || target.includes(text))
+          : null;
+
+        if (related) {
+          return { text: related, strategy: "same_chapter_related_leaf" as const, leafTexts };
+        }
+
+        return { text: leafTexts[0], strategy: "same_chapter_first_leaf" as const, leafTexts };
+      },
+      { chapterTextArg: chapterText, requestedTargetArg: requestedTarget ?? "" }
+    )
+    .catch((error) => {
+      warn(`leaf resolution evaluate failed: ${formatError(error)}`);
+      return null;
+    });
+
+  if (!result?.text) {
+    return { success: false, text: null, strategy: "failed" };
+  }
+
+  log(`leaf resolution success: ${result.text} (${result.strategy})`);
+  return {
+    success: true,
+    text: result.text,
+    strategy: result.strategy
+  };
+}
+
+async function findVisibleTargetLeaf(
+  page: Page,
+  parsedTarget: NonNullable<ReturnType<typeof parseTargetSection>>,
+  allowSameChapterFallback: boolean
+): Promise<{
+  success: boolean;
+  text: string | null;
+  strategy: InteractionHarvestResult["targetLeafResolutionStrategy"];
+  exactMatch: boolean;
+  candidates: string[];
+}> {
+  const result = await page
+    .evaluate(
+      ({ target, sectionNumber, chapterNumber, remainder, allowFallback }) => {
+        const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+        const comparable = (value: string) => normalize(value).replace(/\s+/g, "").toLowerCase();
+        const weakTerms = new Set(["系统", "技术", "处理", "设计", "常识", "基础", "知识"]);
+        const keywordTokens = [
+          remainder,
+          ...remainder.split(/[的和与及、，,：:（）()—\-]/),
+          ...(remainder.match(/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*/g) ?? []),
+          ...(remainder.match(/\p{Script=Han}{2,}/gu) ?? [])
+        ]
+          .map(comparable)
+          .filter((token, index, list) => token.length >= 2 && !weakTerms.has(token) && list.indexOf(token) === index);
+
+        const extractLeafText = (raw: string): string => {
+          const text = normalize(raw);
+          const match = text.match(/\d+(?:\.\d+)+\s*.*?(?=掌握程度|去掌握|学习|查看|详情|进入|开始|练习|$)/);
+          return normalize(match?.[0] ?? text);
+        };
+
+        const selectors = [
+          ".chapterExercises .chapterExercises-title",
+          ".chapterExercises-title",
+          ".lgchapterExercises .lgchapterExercises-title",
+          ".lgchapterExercises-title",
+          ".chapterExercises-title3"
+        ];
+        const nodes = Array.from(document.querySelectorAll(selectors.join(",")));
+        const candidates: string[] = [];
+
+        for (const node of nodes) {
+          const rect = node.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0) continue;
+          const hasLeafIcon = Boolean(node.querySelector(".el-icon-document"));
+          const rawText = normalize(node.textContent ?? "");
+          const text = extractLeafText(rawText);
+          const isChapter = /^第\s*\d+\s*章/.test(text);
+          const isLeaf = /^\d+(?:\.\d+)+\s*\S+/.test(text) && !isChapter && !text.includes("掌握程度");
+          if (!hasLeafIcon && !isLeaf) continue;
+          if (!isLeaf) continue;
+          if (!text.startsWith(`${chapterNumber}.`)) continue;
+          if (!candidates.includes(text)) candidates.push(text);
+        }
+
+        const exact = candidates.find((text) => comparable(text) === comparable(target));
+        if (exact) {
+          return {
+            success: true,
+            text: exact,
+            strategy: "exact_full_title" as const,
+            exactMatch: true,
+            candidates
+          };
+        }
+
+        const numberAndKeywords = candidates.find((text) => {
+          const normalized = comparable(text);
+          return text.startsWith(sectionNumber) && keywordTokens.some((token) => normalized.includes(token));
+        });
+        if (numberAndKeywords) {
+          return {
+            success: true,
+            text: numberAndKeywords,
+            strategy: "number_and_keywords" as const,
+            exactMatch: false,
+            candidates
+          };
+        }
+
+        const numberOnly = candidates.find((text) => text.startsWith(sectionNumber));
+        if (numberOnly) {
+          return {
+            success: true,
+            text: numberOnly,
+            strategy: "number_only" as const,
+            exactMatch: false,
+            candidates
+          };
+        }
+
+        if (allowFallback) {
+          const sameChapter = candidates.find((text) => text.startsWith(`${chapterNumber}.`));
+          if (sameChapter) {
+            return {
+              success: true,
+              text: sameChapter,
+              strategy: "same_chapter_fallback" as const,
+              exactMatch: false,
+              candidates
+            };
+          }
+        }
+
+        return {
+          success: false,
+          text: null,
+          strategy: "failed" as const,
+          exactMatch: false,
+          candidates
+        };
+      },
+      {
+        target: `${parsedTarget.targetLeafNumber} ${parsedTarget.targetTitleRemainder}`,
+        sectionNumber: parsedTarget.targetSectionNumber,
+        chapterNumber: parsedTarget.targetChapterNumber,
+        remainder: parsedTarget.targetTitleRemainder,
+        allowFallback: allowSameChapterFallback
+      }
+    )
+    .catch((error) => {
+      warn(`target leaf evaluate failed: ${formatError(error)}`);
+      return {
+        success: false,
+        text: null,
+        strategy: "failed" as const,
+        exactMatch: false,
+        candidates: [] as string[]
+      };
+    });
+
+  return result;
+}
+
+async function findAndMaybeExpandTargetChapter(
+  page: Page,
+  parsedTarget: NonNullable<ReturnType<typeof parseTargetSection>>
+): Promise<{
+  attempted: boolean;
+  success: boolean;
+  text: string | null;
+}> {
+  const beforeLeaf = await findVisibleTargetLeaf(page, parsedTarget, false);
+  if (beforeLeaf.success) {
+    const chapterText = await page
+      .evaluate((chapterNumber) => {
+        const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+        const candidates = Array.from(document.querySelectorAll("*")).filter((node) => {
+          const text = normalize(node.textContent ?? "");
+          if (!text.includes(`第${chapterNumber}章`)) return false;
+          const rect = node.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0 && text.length <= 80;
+        });
+        return normalize(candidates[0]?.textContent ?? `第${chapterNumber}章`);
+      }, parsedTarget.targetChapterNumber)
+      .catch(() => `第${parsedTarget.targetChapterNumber}章`);
+
+    return { attempted: true, success: true, text: chapterText };
+  }
+
+  const chapterResult = await page
+    .evaluate((chapterNumber) => {
+      const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+      const selectors = [
+        ".chapterExercises-title",
+        ".lgchapterExercises-title",
+        ".catalogue-title",
+        ".el-tree-node__content",
+        "div",
+        "span"
+      ];
+      const candidates = Array.from(document.querySelectorAll(selectors.join(","))).filter((node) => {
+        const text = normalize(node.textContent ?? "");
+        if (!text.includes(`第${chapterNumber}章`)) return false;
+        const rect = node.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0 && text.length <= 160;
+      });
+      const node = candidates[0] ?? null;
+      if (!node) return null;
+      node.setAttribute("data-pw-target-chapter", "1");
+      return normalize(node.textContent ?? "");
+    }, parsedTarget.targetChapterNumber)
+    .catch((error) => {
+      warn(`target chapter evaluate failed: ${formatError(error)}`);
+      return null;
+    });
+
+  if (!chapterResult) {
+    return { attempted: true, success: false, text: null };
+  }
+
+  try {
+    const locator = page.locator("[data-pw-target-chapter='1']").first();
+    await locator.scrollIntoViewIfNeeded({ timeout: 3_000 });
+    await locator.click({ timeout: 5_000 });
+    await page.evaluate(() => {
+      document.querySelector("[data-pw-target-chapter='1']")?.removeAttribute("data-pw-target-chapter");
+    }).catch(() => undefined);
+    await waitForRender(page, WAIT_AFTER_DIRECTORY_CLICK_MS);
+  } catch (error) {
+    warn(`target chapter click failed: ${formatError(error)}`);
+    await page.evaluate(() => {
+      document.querySelector("[data-pw-target-chapter='1']")?.removeAttribute("data-pw-target-chapter");
+    }).catch(() => undefined);
+  }
+
+  const afterLeaf = await findVisibleTargetLeaf(page, parsedTarget, false);
+  if (afterLeaf.success || afterLeaf.candidates.some((candidate) => candidate.startsWith(`${parsedTarget.targetChapterNumber}.`))) {
+    return { attempted: true, success: true, text: chapterResult };
+  }
+
+  try {
+    const locator = page.getByText(`第${parsedTarget.targetChapterNumber}章`, { exact: false }).first();
+    await locator.scrollIntoViewIfNeeded({ timeout: 3_000 });
+    await locator.click({ timeout: 5_000 });
+    await waitForRender(page, WAIT_AFTER_DIRECTORY_CLICK_MS);
+  } catch (error) {
+    warn(`target chapter recovery click failed: ${formatError(error)}`);
+  }
+
+  const recoveredLeaf = await findVisibleTargetLeaf(page, parsedTarget, false);
+  return {
+    attempted: true,
+    success: recoveredLeaf.success || recoveredLeaf.candidates.some((candidate) => candidate.startsWith(`${parsedTarget.targetChapterNumber}.`)),
+    text: chapterResult
+  };
+}
+
+async function resolveRequestedTargetDeterministically(
+  page: Page,
+  requestedTarget: string | undefined,
+  requireLeaf: boolean
+): Promise<{
+  enabled: boolean;
+  targetSectionNumber: string | null;
+  targetChapterNumber: string | null;
+  targetLeafNumber: string | null;
+  targetTitleRemainder: string | null;
+  chapterExpandAttempted: boolean;
+  chapterExpandSuccess: boolean;
+  chapterText: string | null;
+  leafResolutionAttempted: boolean;
+  leafResolutionSuccess: boolean;
+  leafResolutionStrategy: InteractionHarvestResult["targetLeafResolutionStrategy"];
+  leafText: string | null;
+  leafExactMatch: boolean;
+  trusted: boolean;
+  resolvedTargetText: string | null;
+  actualNodeMatchesRequestedTarget: boolean;
+  failureReason: InteractionHarvestResult["targetResolutionFailureReason"];
+}> {
+  const parsed = parseTargetSection(requestedTarget);
+  if (!parsed) {
+    return {
+      enabled: false,
+      targetSectionNumber: null,
+      targetChapterNumber: null,
+      targetLeafNumber: null,
+      targetTitleRemainder: null,
+      chapterExpandAttempted: false,
+      chapterExpandSuccess: false,
+      chapterText: null,
+      leafResolutionAttempted: false,
+      leafResolutionSuccess: false,
+      leafResolutionStrategy: "not_required",
+      leafText: null,
+      leafExactMatch: false,
+      trusted: false,
+      resolvedTargetText: null,
+      actualNodeMatchesRequestedTarget: false,
+      failureReason: null
+    };
+  }
+
+  log(`target resolver enabled: ${requestedTarget}`);
+  const chapter = await findAndMaybeExpandTargetChapter(page, parsed);
+  if (!chapter.success) {
+    return {
+      enabled: true,
+      targetSectionNumber: parsed.targetSectionNumber,
+      targetChapterNumber: parsed.targetChapterNumber,
+      targetLeafNumber: parsed.targetLeafNumber,
+      targetTitleRemainder: parsed.targetTitleRemainder,
+      chapterExpandAttempted: chapter.attempted,
+      chapterExpandSuccess: false,
+      chapterText: chapter.text,
+      leafResolutionAttempted: false,
+      leafResolutionSuccess: false,
+      leafResolutionStrategy: "failed",
+      leafText: null,
+      leafExactMatch: false,
+      trusted: false,
+      resolvedTargetText: null,
+      actualNodeMatchesRequestedTarget: false,
+      failureReason: "chapter_not_found"
+    };
+  }
+
+  const leaf = await findVisibleTargetLeaf(page, parsed, requireLeaf);
+  const requestedFullTitle = `${parsed.targetLeafNumber} ${parsed.targetTitleRemainder}`;
+  const exactOrTrusted =
+    leaf.success &&
+    leaf.text !== null &&
+    leaf.exactMatch &&
+    targetTextsAlign(leaf.text, requestedFullTitle);
+  const trusted = exactOrTrusted;
+  const failureReason: InteractionHarvestResult["targetResolutionFailureReason"] = !leaf.success
+    ? "target_not_found"
+    : trusted
+      ? null
+      : "leaf_mismatch";
+
+  log(
+    `target leaf resolution: ${leaf.success ? leaf.text : "failed"} (${leaf.strategy}, exact=${leaf.exactMatch ? "yes" : "no"})`
+  );
+
+  return {
+    enabled: true,
+    targetSectionNumber: parsed.targetSectionNumber,
+    targetChapterNumber: parsed.targetChapterNumber,
+    targetLeafNumber: parsed.targetLeafNumber,
+    targetTitleRemainder: parsed.targetTitleRemainder,
+    chapterExpandAttempted: chapter.attempted,
+    chapterExpandSuccess: chapter.success,
+    chapterText: chapter.text,
+    leafResolutionAttempted: true,
+    leafResolutionSuccess: leaf.success,
+    leafResolutionStrategy: leaf.strategy,
+    leafText: leaf.text,
+    leafExactMatch: leaf.exactMatch,
+    trusted,
+    resolvedTargetText: leaf.text,
+    actualNodeMatchesRequestedTarget: targetTextsAlign(leaf.text, requestedFullTitle),
+    failureReason
+  };
+}
+
+async function harvestInteractiveContent(
+  page: Page,
+  requestedTarget?: string,
+  requireLeaf = false
+): Promise<InteractionHarvestResult> {
   log("interaction harvesting started");
 
   const beforeUrl = page.url();
@@ -1220,14 +1790,22 @@ async function harvestInteractiveContent(page: Page, requestedTarget?: string): 
   log(`interaction start title: ${beforeTitle}`);
   log(`body text length before interaction: ${beforeBodyTextLength}`);
 
-  const directoryExpandResult = await clickVisibleTextCandidate(
-    page,
-    "text=/计算机|软件|架构|数据库|网络|系统/",
-    MAX_DIRECTORY_EXPAND_ATTEMPTS,
-    isDirectoryCandidateText,
-    "trying to expand directory",
-    WAIT_AFTER_DIRECTORY_CLICK_MS
-  );
+  const targetResolver = await resolveRequestedTargetDeterministically(page, requestedTarget, requireLeaf);
+  const shouldUseGenericDiscovery = !targetResolver.enabled;
+
+  const directoryExpandResult = shouldUseGenericDiscovery
+    ? await clickVisibleTextCandidate(
+      page,
+      "text=/计算机|软件|架构|数据库|网络|系统/",
+      MAX_DIRECTORY_EXPAND_ATTEMPTS,
+      isDirectoryCandidateText,
+      "trying to expand directory",
+      WAIT_AFTER_DIRECTORY_CLICK_MS
+    )
+    : {
+      success: targetResolver.chapterExpandSuccess,
+      text: targetResolver.chapterText
+    };
 
   if (directoryExpandResult.success) {
     log("directory expand success");
@@ -1239,7 +1817,44 @@ async function harvestInteractiveContent(page: Page, requestedTarget?: string): 
   // Clicking the row hides its own "去掌握" button via v-if, preventing scoped detail entry.
   // Instead, find the target node text without clicking so harvestDetailEntry can click
   // "去掌握" directly (while the button is still visible).
-  const knowledgeNodeText = await findKnowledgeNodeCandidateText(page, requestedTarget);
+  let knowledgeNodeText = targetResolver.enabled
+    ? targetResolver.leafText
+    : await findKnowledgeNodeCandidateText(page, requestedTarget);
+  let chapterLevelHit = false;
+  let chapterLevelText: string | null = null;
+  let leafResolutionAttempted = false;
+  let leafResolutionSuccess = false;
+  let resolvedLeafText: string | null = null;
+  let resolvedLeafStrategy: InteractionHarvestResult["resolvedLeafStrategy"] = requireLeaf ? "failed" : "not_required";
+
+  if (targetResolver.enabled) {
+    chapterLevelHit = false;
+    chapterLevelText = null;
+    leafResolutionAttempted = targetResolver.leafResolutionAttempted;
+    leafResolutionSuccess = targetResolver.leafResolutionSuccess;
+    resolvedLeafText = targetResolver.resolvedTargetText;
+    resolvedLeafStrategy = targetResolver.trusted ? "not_required" : "failed";
+  } else if (requireLeaf && knowledgeNodeText && isChapterLevelText(knowledgeNodeText)) {
+    chapterLevelHit = true;
+    chapterLevelText = knowledgeNodeText;
+    leafResolutionAttempted = true;
+    log(`require-leaf detected chapter-level hit: ${knowledgeNodeText}`);
+
+    const leafResolution = await resolveLeafFromChapter(page, knowledgeNodeText, requestedTarget);
+    leafResolutionSuccess = leafResolution.success;
+    resolvedLeafText = leafResolution.text;
+    resolvedLeafStrategy = leafResolution.strategy;
+
+    if (leafResolution.success && leafResolution.text) {
+      knowledgeNodeText = leafResolution.text;
+    } else {
+      warn("require-leaf leaf resolution failed");
+    }
+  } else if (requireLeaf && knowledgeNodeText && isLeafLevelText(knowledgeNodeText)) {
+    leafResolutionSuccess = true;
+    resolvedLeafText = knowledgeNodeText;
+    resolvedLeafStrategy = "not_required";
+  }
 
   if (knowledgeNodeText) {
     log(`knowledge node identified (not clicked): ${knowledgeNodeText}`);
@@ -1267,7 +1882,31 @@ async function harvestInteractiveContent(page: Page, requestedTarget?: string): 
     bodyTextLengthBefore: beforeBodyTextLength,
     bodyTextLength: afterBodyTextLength,
     bodyText: afterBodyText,
-    detailContentSignalFromPage: pageDetailContentSignal
+    detailContentSignalFromPage: pageDetailContentSignal,
+    requireLeaf,
+    chapterLevelHit,
+    chapterLevelText,
+    leafResolutionAttempted,
+    leafResolutionSuccess,
+    resolvedLeafText,
+    resolvedLeafStrategy,
+    targetResolverEnabled: targetResolver.enabled,
+    targetSectionNumber: targetResolver.targetSectionNumber,
+    targetChapterNumber: targetResolver.targetChapterNumber,
+    targetLeafNumber: targetResolver.targetLeafNumber,
+    targetTitleRemainder: targetResolver.targetTitleRemainder,
+    targetChapterExpandAttempted: targetResolver.chapterExpandAttempted,
+    targetChapterExpandSuccess: targetResolver.chapterExpandSuccess,
+    targetChapterText: targetResolver.chapterText,
+    targetLeafResolutionAttempted: targetResolver.leafResolutionAttempted,
+    targetLeafResolutionSuccess: targetResolver.leafResolutionSuccess,
+    targetLeafResolutionStrategy: targetResolver.leafResolutionStrategy,
+    targetLeafText: targetResolver.leafText,
+    targetLeafExactMatch: targetResolver.leafExactMatch,
+    targetResolutionTrusted: targetResolver.trusted,
+    resolvedTargetText: targetResolver.resolvedTargetText,
+    actualNodeMatchesRequestedTarget: targetResolver.actualNodeMatchesRequestedTarget,
+    targetResolutionFailureReason: targetResolver.failureReason
   };
 }
 
@@ -1519,12 +2158,34 @@ async function main(): Promise<void> {
     await waitForRender(page, SPA_RENDER_WAIT_MS);
 
     const contextSelection = await selectContextIfNeeded(page);
-    const interactionHarvest = await harvestInteractiveContent(page, CRAWLER_ARGS.requestedTarget ?? undefined);
-    const detailEntry = await harvestDetailEntry(
+    const interactionHarvest = await harvestInteractiveContent(
       page,
-      timestamp,
-      interactionHarvest.knowledgeNodeClickText
+      CRAWLER_ARGS.requestedTarget ?? undefined,
+      CRAWLER_ARGS.requireLeaf
     );
+    const requestedTargetIsFullLeaf = parseTargetSection(CRAWLER_ARGS.requestedTarget) !== null;
+    const leafRequirementFailed =
+      CRAWLER_ARGS.requireLeaf &&
+      (
+        !interactionHarvest.knowledgeNodeClickText ||
+        !isLeafLevelText(interactionHarvest.knowledgeNodeClickText) ||
+        (interactionHarvest.chapterLevelHit && !interactionHarvest.leafResolutionSuccess) ||
+        (requestedTargetIsFullLeaf && !interactionHarvest.targetResolutionTrusted)
+      );
+
+    if (leafRequirementFailed) {
+      warn("require-leaf failed; preserving raw snapshot without detail-entry click");
+    }
+
+    const allowGlobalFallback = !(CRAWLER_ARGS.requireLeaf && requestedTargetIsFullLeaf);
+    const detailEntry = leafRequirementFailed
+      ? await buildSkippedDetailEntry(page, timestamp)
+      : await harvestDetailEntry(
+        page,
+        timestamp,
+        interactionHarvest.knowledgeNodeClickText,
+        allowGlobalFallback
+      );
 
     log("saving html");
     const html = await page.content();
@@ -1640,6 +2301,34 @@ async function main(): Promise<void> {
       post_detail_content_signal: postDetailContentSignal,
       requested_target_text: CRAWLER_ARGS.requestedTarget,
       target_source: CRAWLER_ARGS.targetSource,
+      require_leaf: CRAWLER_ARGS.requireLeaf,
+      target_resolver_enabled: interactionHarvest.targetResolverEnabled,
+      target_section_number: interactionHarvest.targetSectionNumber,
+      target_chapter_number: interactionHarvest.targetChapterNumber,
+      target_leaf_number: interactionHarvest.targetLeafNumber,
+      target_title_remainder: interactionHarvest.targetTitleRemainder,
+      target_chapter_expand_attempted: interactionHarvest.targetChapterExpandAttempted,
+      target_chapter_expand_success: interactionHarvest.targetChapterExpandSuccess,
+      target_chapter_text: interactionHarvest.targetChapterText,
+      target_leaf_resolution_attempted: interactionHarvest.targetLeafResolutionAttempted,
+      target_leaf_resolution_success: interactionHarvest.targetLeafResolutionSuccess,
+      target_leaf_resolution_strategy: interactionHarvest.targetLeafResolutionStrategy,
+      target_leaf_text: interactionHarvest.targetLeafText,
+      target_leaf_exact_match: interactionHarvest.targetLeafExactMatch,
+      target_resolution_trusted: interactionHarvest.targetResolutionTrusted,
+      resolved_target_text: interactionHarvest.resolvedTargetText,
+      actual_node_matches_requested_target: interactionHarvest.actualNodeMatchesRequestedTarget,
+      target_resolution_failure_reason:
+        !allowGlobalFallback && detailEntry.strategy === "global_fallback"
+          ? "global_fallback_not_allowed_for_require_leaf"
+          : interactionHarvest.targetResolutionFailureReason,
+      chapter_level_hit: interactionHarvest.chapterLevelHit,
+      chapter_level_text: interactionHarvest.chapterLevelText,
+      leaf_resolution_attempted: interactionHarvest.leafResolutionAttempted,
+      leaf_resolution_success: interactionHarvest.leafResolutionSuccess,
+      resolved_leaf_text: interactionHarvest.resolvedLeafText,
+      resolved_leaf_strategy: interactionHarvest.resolvedLeafStrategy,
+      leaf_requirement_failed: leafRequirementFailed,
       phase2_13_target_scoped_detail_entry_enabled: true,
       detail_entry_strategy: detailEntry.strategy,
       detail_entry_target_text: interactionHarvest.knowledgeNodeClickText,
@@ -1705,6 +2394,11 @@ async function main(): Promise<void> {
     await writeFile(metadataPath, `${JSON.stringify(metadata, null, 2)}\n`, "utf8");
 
     await context.close();
+
+    if (leafRequirementFailed) {
+      throw new Error("require-leaf failed: chapter-level target was not resolved to a leaf knowledge point");
+    }
+
     log("crawler completed");
   } finally {
     await browser.close();

@@ -84,3 +84,5 @@ If image asset download fails:
 - Record `asset_capture_failed`.
 - Do not OCR.
 - Do not reconstruct image tables.
+
+Phase 3.4 adds sample quality audit and a renderer readiness gate before Phase 4.
