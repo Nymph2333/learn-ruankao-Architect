@@ -61,6 +61,7 @@ const requiredFiles = [
   "verification/phase3_1_intermediate_validation_check.md",
   "verification/phase2_15_asset_capture_check.md",
   "verification/phase3_2_multi_sample_parser_validation_check.md",
+  "verification/phase3_3_controlled_multi_sample_acquisition_check.md",
   "schemas/ruankaodaren-intermediate.schema.json",
   "schemas/ruankaodaren-asset-manifest.schema.json",
   "packages/domain-types/ruankaodaren-intermediate.ts",
@@ -68,6 +69,7 @@ const requiredFiles = [
   "scripts/parse-ruankaodaren-outer-html.ts",
   "scripts/validate-ruankaodaren-intermediate.ts",
   "config/ruankaodaren-sample-targets.yaml",
+  "scripts/run-ruankaodaren-sample-acquisition.ts",
   "scripts/report-ruankaodaren-sample-coverage.ts",
   "scripts/capture-ruankaodaren-assets.ts",
   "scripts/validate-ruankaodaren-assets.ts",
@@ -81,7 +83,7 @@ const requiredFiles = [
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition"],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",
     "## 1. Core Concept / 核心概念",

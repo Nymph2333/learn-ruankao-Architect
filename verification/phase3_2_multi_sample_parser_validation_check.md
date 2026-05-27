@@ -137,3 +137,5 @@ pnpm verify
 | `verification/phase3_2_multi_sample_parser_validation_check.md` | This document |
 | `verification/generated/phase3_2_sample_coverage.json` | Auto-generated JSON report |
 | `verification/generated/phase3_2_sample_coverage.md` | Auto-generated Markdown report |
+
+Phase 3.3 performs controlled empirical multi-sample acquisition; Phase 3.2 only established the infrastructure.

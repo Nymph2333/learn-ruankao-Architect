@@ -11,6 +11,7 @@
     "capture:assets": "tsx scripts/capture-ruankaodaren-assets.ts",
     "report:sample-coverage": "tsx scripts/report-ruankaodaren-sample-coverage.ts",
     "validate:assets": "tsx scripts/validate-ruankaodaren-assets.ts",
+    "run:sample-acquisition": "tsx scripts/run-ruankaodaren-sample-acquisition.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"
   },
