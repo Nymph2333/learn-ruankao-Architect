@@ -1,6 +1,6 @@
 # Phase 3.11 Reachable Leaf Catalog
 
-Captured at: 2026-05-27T07:16:35.861Z
+Captured at: 2026-05-27T14:21:55.384Z
 Source URL: https://ruankaodaren.com/exam/#/knowlegde
 Final URL: https://ruankaodaren.com/exam/#/knowlegde
 Screenshot: verification/generated/phase3_11_reachable_leaf_catalog.png

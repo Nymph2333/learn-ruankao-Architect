@@ -39,6 +39,7 @@ const requiredDirectories = [
   "scripts",
   "verification",
   "verification/generated",
+  "verification/generated/phase3_14_live_replay_debug",
   "config"
 ];
 
@@ -74,6 +75,8 @@ const requiredFiles = [
   "verification/phase3_10_deterministic_target_resolver_check.md",
   "verification/phase3_11_reachable_leaf_catalog_check.md",
   "verification/phase3_12_reachable_leaf_acquisition_check.md",
+  "verification/phase3_13_catalog_backed_resolver_parity_check.md",
+  "verification/phase3_14_live_dom_replay_parity_check.md",
   "schemas/ruankaodaren-intermediate.schema.json",
   "schemas/ruankaodaren-asset-manifest.schema.json",
   "packages/domain-types/ruankaodaren-intermediate.ts",
@@ -85,6 +88,10 @@ const requiredFiles = [
   "scripts/audit-ruankaodaren-sample-quality.ts",
   "scripts/audit-ruankaodaren-semantic-alignment.ts",
   "scripts/preflight-ruankaodaren-sample.ts",
+  "scripts/lib/ruankaodaren-target-resolution.ts",
+  "scripts/lib/ruankaodaren-dom-explorer.ts",
+  "scripts/test-ruankaodaren-catalog-resolver.ts",
+  "scripts/test-ruankaodaren-live-replay.ts",
   "scripts/diagnose-ruankaodaren-target-reachability.ts",
   "scripts/catalog-ruankaodaren-reachable-leaves.ts",
   "scripts/list-ruankaodaren-leaf-candidates.ts",
@@ -104,7 +111,7 @@ const requiredFiles = [
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "preflight:sample", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates"],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",
     "## 1. Core Concept / 核心概念",

@@ -4,6 +4,17 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, type BrowserContextOptions, type Page, type Response } from "playwright";
+import {
+  captureReplayDebugSnapshot,
+  replayCatalogLeaf,
+  type ReplayDebugPaths,
+  type VisibleLeaf,
+} from "./lib/ruankaodaren-dom-explorer.js";
+import {
+  findCatalogLeaf,
+  loadReachableLeafCatalog,
+  type CatalogLeafMatch,
+} from "./lib/ruankaodaren-target-resolution.js";
 
 const SOURCE_URL = "https://ruankaodaren.com/exam/#/knowlegde";
 const SOURCE_NAME = "ruankaodaren";
@@ -215,9 +226,21 @@ type InteractionHarvestResult = {
   targetResolutionTrusted: boolean;
   resolvedTargetText: string | null;
   actualNodeMatchesRequestedTarget: boolean;
+  catalogResolverUsed: boolean;
+  catalogMatchFound: boolean;
+  catalogMatchStrategy: string | null;
+  catalogChapterTitle: string | null;
+  catalogLeafTitle: string | null;
+  catalogLiveReplaySuccess: boolean | null;
+  liveReplayVisibleChapterCount: number | null;
+  liveReplayVisibleLeafCount: number | null;
+  liveReplayTopCandidates: string[];
+  liveReplayDebugPaths: ReplayDebugPaths | null;
   targetResolutionFailureReason:
     | "target_not_found"
     | "chapter_not_found"
+    | "catalog_target_not_found"
+    | "catalog_live_replay_mismatch"
     | "global_fallback_not_allowed_for_require_leaf"
     | "leaf_mismatch"
     | null;
@@ -1665,6 +1688,214 @@ async function findAndMaybeExpandTargetChapter(
   };
 }
 
+async function findVisibleCatalogLeaf(
+  page: Page,
+  leafTitle: string
+): Promise<{
+  success: boolean;
+  text: string | null;
+  exactMatch: boolean;
+  candidates: string[];
+}> {
+  const parsed = parseTargetSection(leafTitle);
+  if (!parsed) return { success: false, text: null, exactMatch: false, candidates: [] };
+  const result = await findVisibleTargetLeaf(page, parsed, false);
+  return {
+    success: result.success && result.exactMatch && targetTextsAlign(result.text, leafTitle),
+    text: result.text,
+    exactMatch: result.exactMatch,
+    candidates: result.candidates,
+  };
+}
+
+async function clickCatalogChapterIfVisible(
+  page: Page,
+  catalogMatch: CatalogLeafMatch
+): Promise<{
+  found: boolean;
+  text: string | null;
+  clicked: boolean;
+}> {
+  const chapterTitle = catalogMatch.chapter_title ?? "";
+  const chapterNumber = catalogMatch.chapter_number ?? "";
+  const chapterText = await page
+    .evaluate(
+      ({ title, number }) => {
+        const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+        const selectors = [
+          ".chapterExercises-title",
+          ".lgchapterExercises-title",
+          ".catalogue-title",
+          ".el-tree-node__content",
+          "div",
+          "span"
+        ];
+        const candidates = Array.from(document.querySelectorAll(selectors.join(","))).filter((node) => {
+          const text = normalize((node as HTMLElement).innerText || node.textContent || "");
+          const rect = node.getBoundingClientRect();
+          if (rect.width <= 0 || rect.height <= 0 || text.length > 180) return false;
+          if (title && (text === title || text.includes(title) || title.includes(text))) return true;
+          return Boolean(number && text.includes(`第${number}章`));
+        });
+        const node = candidates[0] ?? null;
+        if (!node) return null;
+        node.setAttribute("data-pw-catalog-chapter", "1");
+        return normalize((node as HTMLElement).innerText || node.textContent || "");
+      },
+      { title: chapterTitle, number: chapterNumber }
+    )
+    .catch((error) => {
+      warn(`catalog chapter evaluate failed: ${formatError(error)}`);
+      return null;
+    });
+
+  if (!chapterText) return { found: false, text: null, clicked: false };
+
+  try {
+    const locator = page.locator("[data-pw-catalog-chapter='1']").first();
+    await locator.scrollIntoViewIfNeeded({ timeout: 3_000 });
+    await locator.click({ timeout: 5_000 });
+    await page.evaluate(() => {
+      document.querySelector("[data-pw-catalog-chapter='1']")?.removeAttribute("data-pw-catalog-chapter");
+    }).catch(() => undefined);
+    await waitForRender(page, WAIT_AFTER_DIRECTORY_CLICK_MS);
+    if (page.url().includes("konwledgeInfo")) {
+      warn(`catalog chapter click changed to detail route; returning to knowledge route: ${chapterText}`);
+      await page.goto(SOURCE_URL, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
+      await waitForRender(page, WAIT_AFTER_DIRECTORY_CLICK_MS);
+      return { found: true, text: chapterText, clicked: false };
+    }
+    return { found: true, text: chapterText, clicked: true };
+  } catch (error) {
+    warn(`catalog chapter click failed: ${formatError(error)}`);
+    await page.evaluate(() => {
+      document.querySelector("[data-pw-catalog-chapter='1']")?.removeAttribute("data-pw-catalog-chapter");
+    }).catch(() => undefined);
+    return { found: true, text: chapterText, clicked: false };
+  }
+}
+
+async function replayCatalogLeafInLiveDom(
+  page: Page,
+  catalogMatch: CatalogLeafMatch
+): Promise<{
+  success: boolean;
+  chapterFound: boolean;
+  chapterText: string | null;
+  leafText: string | null;
+  candidates: string[];
+}> {
+  const leafTitle = catalogMatch.leaf_title;
+  if (!leafTitle) {
+    return { success: false, chapterFound: false, chapterText: null, leafText: null, candidates: [] };
+  }
+
+  let direct = await findVisibleCatalogLeaf(page, leafTitle);
+  if (direct.success) {
+    return {
+      success: true,
+      chapterFound: true,
+      chapterText: catalogMatch.chapter_title,
+      leafText: direct.text,
+      candidates: direct.candidates,
+    };
+  }
+
+  let chapterResult = await clickCatalogChapterIfVisible(page, catalogMatch);
+  direct = await findVisibleCatalogLeaf(page, leafTitle);
+  if (direct.success) {
+    return {
+      success: true,
+      chapterFound: chapterResult.found,
+      chapterText: chapterResult.text ?? catalogMatch.chapter_title,
+      leafText: direct.text,
+      candidates: direct.candidates,
+    };
+  }
+
+  const scrollSelectors = [
+    "body",
+    ".el-scrollbar__wrap",
+    ".el-main",
+    ".ant-layout-content",
+    ".chapterExercises",
+    ".lgchapterExercises",
+    ".catalogue",
+    ".tree"
+  ];
+
+  for (const selector of scrollSelectors) {
+    const stats = await page
+      .evaluate((targetSelector) => {
+        const node =
+          targetSelector === "body"
+            ? document.scrollingElement
+            : document.querySelector<HTMLElement>(targetSelector);
+        if (!node) return null;
+        return {
+          selector: targetSelector,
+          scrollHeight: node.scrollHeight,
+          clientHeight: node.clientHeight,
+          originalTop: node.scrollTop,
+        };
+      }, selector)
+      .catch(() => null);
+
+    if (!stats || stats.scrollHeight <= stats.clientHeight + 20) continue;
+
+    const steps = Math.min(8, Math.ceil(stats.scrollHeight / Math.max(stats.clientHeight, 300)));
+    for (let step = 0; step <= steps; step += 1) {
+      const top = Math.round((stats.scrollHeight - stats.clientHeight) * (step / Math.max(steps, 1)));
+      await page
+        .evaluate(
+          ({ targetSelector, nextTop }) => {
+            const node =
+              targetSelector === "body"
+                ? document.scrollingElement
+                : document.querySelector<HTMLElement>(targetSelector);
+            if (node) node.scrollTop = nextTop;
+          },
+          { targetSelector: selector, nextTop: top }
+        )
+        .catch(() => undefined);
+      await page.waitForTimeout(350);
+
+      chapterResult = await clickCatalogChapterIfVisible(page, catalogMatch);
+      direct = await findVisibleCatalogLeaf(page, leafTitle);
+      if (direct.success) {
+        return {
+          success: true,
+          chapterFound: chapterResult.found,
+          chapterText: chapterResult.text ?? catalogMatch.chapter_title,
+          leafText: direct.text,
+          candidates: direct.candidates,
+        };
+      }
+    }
+
+    await page
+      .evaluate(
+        ({ targetSelector, originalTop }) => {
+          const node =
+            targetSelector === "body"
+              ? document.scrollingElement
+              : document.querySelector<HTMLElement>(targetSelector);
+          if (node) node.scrollTop = originalTop;
+        },
+        { targetSelector: selector, originalTop: stats.originalTop }
+      )
+      .catch(() => undefined);
+  }
+
+  return {
+    success: false,
+    chapterFound: chapterResult.found,
+    chapterText: chapterResult.text ?? catalogMatch.chapter_title,
+    leafText: direct.text,
+    candidates: direct.candidates,
+  };
+}
+
 async function resolveRequestedTargetDeterministically(
   page: Page,
   requestedTarget: string | undefined,
@@ -1686,9 +1917,25 @@ async function resolveRequestedTargetDeterministically(
   trusted: boolean;
   resolvedTargetText: string | null;
   actualNodeMatchesRequestedTarget: boolean;
+  catalogResolverUsed: boolean;
+  catalogMatchFound: boolean;
+  catalogMatchStrategy: string | null;
+  catalogChapterTitle: string | null;
+  catalogLeafTitle: string | null;
+  catalogLiveReplaySuccess: boolean | null;
+  liveReplayVisibleChapterCount: number | null;
+  liveReplayVisibleLeafCount: number | null;
+  liveReplayTopCandidates: string[];
+  liveReplayDebugPaths: ReplayDebugPaths | null;
   failureReason: InteractionHarvestResult["targetResolutionFailureReason"];
 }> {
   const parsed = parseTargetSection(requestedTarget);
+  const noLiveReplayDiagnostics = {
+    liveReplayVisibleChapterCount: null,
+    liveReplayVisibleLeafCount: null,
+    liveReplayTopCandidates: [] as string[],
+    liveReplayDebugPaths: null as ReplayDebugPaths | null,
+  };
   if (!parsed) {
     return {
       enabled: false,
@@ -1707,11 +1954,110 @@ async function resolveRequestedTargetDeterministically(
       trusted: false,
       resolvedTargetText: null,
       actualNodeMatchesRequestedTarget: false,
+      catalogResolverUsed: false,
+      catalogMatchFound: false,
+      catalogMatchStrategy: null,
+      catalogChapterTitle: null,
+      catalogLeafTitle: null,
+      catalogLiveReplaySuccess: null,
+      ...noLiveReplayDiagnostics,
       failureReason: null
     };
   }
 
   log(`target resolver enabled: ${requestedTarget}`);
+  if (requireLeaf && requestedTarget) {
+    const catalog = loadReachableLeafCatalog();
+    const catalogMatch = findCatalogLeaf(requestedTarget, catalog);
+    log(
+      `catalog resolver: ${catalogMatch.found ? catalogMatch.leaf_title : "not found"} (${catalogMatch.match_strategy})`
+    );
+
+    if (catalogMatch.found && catalogMatch.leaf_title) {
+      const catalogParsed = parseTargetSection(catalogMatch.leaf_title) ?? parsed;
+      const replay = await replayCatalogLeaf(page, catalogMatch);
+      const liveReplayTopCandidates = replay.match.candidates.slice(0, 10).map((candidate: VisibleLeaf) => candidate.title);
+      const chapterFound = replay.visible_chapters.some(
+        (chapter) =>
+          chapter.chapter_number === catalogMatch.chapter_number ||
+          (catalogMatch.chapter_title !== null && chapter.text === catalogMatch.chapter_title)
+      );
+      if (!replay.success) {
+        const debugPaths = await captureReplayDebugSnapshot(page, {
+          target: requestedTarget,
+          visibleChapters: replay.visible_chapters,
+          visibleLeaves: replay.visible_leaves,
+          candidates: replay.match.candidates,
+        });
+        return {
+          enabled: true,
+          targetSectionNumber: catalogParsed.targetSectionNumber,
+          targetChapterNumber: catalogParsed.targetChapterNumber,
+          targetLeafNumber: catalogParsed.targetLeafNumber,
+          targetTitleRemainder: catalogParsed.targetTitleRemainder,
+          chapterExpandAttempted: true,
+          chapterExpandSuccess: chapterFound,
+          chapterText: catalogMatch.chapter_title,
+          leafResolutionAttempted: true,
+          leafResolutionSuccess: false,
+          leafResolutionStrategy: "failed",
+          leafText: null,
+          leafExactMatch: false,
+          trusted: false,
+          resolvedTargetText: null,
+          actualNodeMatchesRequestedTarget: false,
+          catalogResolverUsed: true,
+          catalogMatchFound: true,
+          catalogMatchStrategy: catalogMatch.match_strategy,
+          catalogChapterTitle: catalogMatch.chapter_title,
+          catalogLeafTitle: catalogMatch.leaf_title,
+          catalogLiveReplaySuccess: false,
+          liveReplayVisibleChapterCount: replay.visible_chapters.length,
+          liveReplayVisibleLeafCount: replay.visible_leaves.length,
+          liveReplayTopCandidates,
+          liveReplayDebugPaths: debugPaths,
+          failureReason: "catalog_live_replay_mismatch"
+        };
+      }
+
+      const requestedFullTitle = catalogMatch.leaf_title;
+      const matchedLeafText = replay.match.leaf?.title ?? catalogMatch.leaf_title;
+      return {
+        enabled: true,
+        targetSectionNumber: catalogParsed.targetSectionNumber,
+        targetChapterNumber: catalogParsed.targetChapterNumber,
+        targetLeafNumber: catalogParsed.targetLeafNumber,
+        targetTitleRemainder: catalogParsed.targetTitleRemainder,
+        chapterExpandAttempted: true,
+        chapterExpandSuccess: chapterFound,
+        chapterText: replay.match.leaf?.chapter_title ?? catalogMatch.chapter_title,
+        leafResolutionAttempted: true,
+        leafResolutionSuccess: true,
+        leafResolutionStrategy: "exact_full_title",
+        leafText: matchedLeafText,
+        leafExactMatch: true,
+        trusted: true,
+        resolvedTargetText: catalogMatch.leaf_title,
+        actualNodeMatchesRequestedTarget: targetTextsAlign(matchedLeafText, requestedFullTitle),
+        catalogResolverUsed: true,
+        catalogMatchFound: true,
+        catalogMatchStrategy: catalogMatch.match_strategy,
+        catalogChapterTitle: catalogMatch.chapter_title,
+        catalogLeafTitle: catalogMatch.leaf_title,
+        catalogLiveReplaySuccess: true,
+        liveReplayVisibleChapterCount: replay.visible_chapters.length,
+        liveReplayVisibleLeafCount: replay.visible_leaves.length,
+        liveReplayTopCandidates,
+        liveReplayDebugPaths: null,
+        failureReason: null
+      };
+    }
+
+    if (catalog !== null) {
+      log("catalog resolver did not find target; falling back to live DOM resolver");
+    }
+  }
+
   const chapter = await findAndMaybeExpandTargetChapter(page, parsed);
   if (!chapter.success) {
     return {
@@ -1731,6 +2077,13 @@ async function resolveRequestedTargetDeterministically(
       trusted: false,
       resolvedTargetText: null,
       actualNodeMatchesRequestedTarget: false,
+      catalogResolverUsed: requireLeaf,
+      catalogMatchFound: false,
+      catalogMatchStrategy: "not_found",
+      catalogChapterTitle: null,
+      catalogLeafTitle: null,
+      catalogLiveReplaySuccess: false,
+      ...noLiveReplayDiagnostics,
       failureReason: "chapter_not_found"
     };
   }
@@ -1770,6 +2123,13 @@ async function resolveRequestedTargetDeterministically(
     trusted,
     resolvedTargetText: leaf.text,
     actualNodeMatchesRequestedTarget: targetTextsAlign(leaf.text, requestedFullTitle),
+    catalogResolverUsed: requireLeaf,
+    catalogMatchFound: false,
+    catalogMatchStrategy: "not_found",
+    catalogChapterTitle: null,
+    catalogLeafTitle: null,
+    catalogLiveReplaySuccess: null,
+    ...noLiveReplayDiagnostics,
     failureReason
   };
 }
@@ -1906,6 +2266,16 @@ async function harvestInteractiveContent(
     targetResolutionTrusted: targetResolver.trusted,
     resolvedTargetText: targetResolver.resolvedTargetText,
     actualNodeMatchesRequestedTarget: targetResolver.actualNodeMatchesRequestedTarget,
+    catalogResolverUsed: targetResolver.catalogResolverUsed,
+    catalogMatchFound: targetResolver.catalogMatchFound,
+    catalogMatchStrategy: targetResolver.catalogMatchStrategy,
+    catalogChapterTitle: targetResolver.catalogChapterTitle,
+    catalogLeafTitle: targetResolver.catalogLeafTitle,
+    catalogLiveReplaySuccess: targetResolver.catalogLiveReplaySuccess,
+    liveReplayVisibleChapterCount: targetResolver.liveReplayVisibleChapterCount,
+    liveReplayVisibleLeafCount: targetResolver.liveReplayVisibleLeafCount,
+    liveReplayTopCandidates: targetResolver.liveReplayTopCandidates,
+    liveReplayDebugPaths: targetResolver.liveReplayDebugPaths,
     targetResolutionFailureReason: targetResolver.failureReason
   };
 }
@@ -2019,7 +2389,9 @@ async function main(): Promise<void> {
     }
 
     const context = await browser.newContext(contextOptions);
+    await context.addInitScript("globalThis.__name = (fn) => fn;");
     const page = await context.newPage();
+    await page.evaluate("globalThis.__name = (fn) => fn;").catch(() => undefined);
 
     page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);
     page.setDefaultTimeout(NAVIGATION_TIMEOUT_MS);
@@ -2318,6 +2690,16 @@ async function main(): Promise<void> {
       target_resolution_trusted: interactionHarvest.targetResolutionTrusted,
       resolved_target_text: interactionHarvest.resolvedTargetText,
       actual_node_matches_requested_target: interactionHarvest.actualNodeMatchesRequestedTarget,
+      catalog_resolver_used: interactionHarvest.catalogResolverUsed,
+      catalog_match_found: interactionHarvest.catalogMatchFound,
+      catalog_match_strategy: interactionHarvest.catalogMatchStrategy,
+      catalog_chapter_title: interactionHarvest.catalogChapterTitle,
+      catalog_leaf_title: interactionHarvest.catalogLeafTitle,
+      catalog_live_replay_success: interactionHarvest.catalogLiveReplaySuccess,
+      live_replay_visible_chapter_count: interactionHarvest.liveReplayVisibleChapterCount,
+      live_replay_visible_leaf_count: interactionHarvest.liveReplayVisibleLeafCount,
+      live_replay_top_candidates: interactionHarvest.liveReplayTopCandidates,
+      live_replay_debug_paths: interactionHarvest.liveReplayDebugPaths,
       target_resolution_failure_reason:
         !allowGlobalFallback && detailEntry.strategy === "global_fallback"
           ? "global_fallback_not_allowed_for_require_leaf"

@@ -15,6 +15,8 @@
     "audit:sample-quality": "tsx scripts/audit-ruankaodaren-sample-quality.ts",
     "audit:semantic-alignment": "tsx scripts/audit-ruankaodaren-semantic-alignment.ts",
     "preflight:sample": "tsx scripts/preflight-ruankaodaren-sample.ts",
+    "test:catalog-resolver": "tsx scripts/test-ruankaodaren-catalog-resolver.ts",
+    "test:live-replay": "tsx scripts/test-ruankaodaren-live-replay.ts",
     "diagnose:target-reachability": "tsx scripts/diagnose-ruankaodaren-target-reachability.ts",
     "catalog:reachable-leaves": "tsx scripts/catalog-ruankaodaren-reachable-leaves.ts",
     "list:leaf-candidates": "tsx scripts/list-ruankaodaren-leaf-candidates.ts",

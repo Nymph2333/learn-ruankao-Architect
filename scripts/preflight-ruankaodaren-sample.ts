@@ -42,6 +42,16 @@ interface MetadataShape {
   target_leaf_exact_match?: boolean;
   actual_node_matches_requested_target?: boolean;
   target_resolution_failure_reason?: string | null;
+  catalog_resolver_used?: boolean;
+  catalog_match_found?: boolean;
+  catalog_match_strategy?: string | null;
+  catalog_chapter_title?: string | null;
+  catalog_leaf_title?: string | null;
+  catalog_live_replay_success?: boolean | null;
+  live_replay_visible_chapter_count?: number | null;
+  live_replay_visible_leaf_count?: number | null;
+  live_replay_top_candidates?: string[];
+  live_replay_debug_paths?: Record<string, string> | null;
   leaf_resolution_success?: boolean;
   resolved_leaf_text?: string | null;
   post_detail_content_signal?: boolean;
@@ -96,6 +106,16 @@ interface PreflightReport {
     target_leaf_exact_match: boolean | null;
     actual_node_matches_requested_target: boolean | null;
     target_resolution_failure_reason: string | null;
+    catalog_resolver_used: boolean | null;
+    catalog_match_found: boolean | null;
+    catalog_match_strategy: string | null;
+    catalog_chapter_title: string | null;
+    catalog_leaf_title: string | null;
+    catalog_live_replay_success: boolean | null;
+    live_replay_visible_chapter_count: number | null;
+    live_replay_visible_leaf_count: number | null;
+    live_replay_top_candidates: string[];
+    live_replay_debug_paths: Record<string, string> | null;
     post_detail_content_signal: boolean | null;
     title: string | null;
     total_text_length: number | null;
@@ -330,6 +350,11 @@ function evaluateMetadataGate(
     }
     if (metadata.detail_entry_strategy === "global_fallback") {
       reasons.push("global_fallback_not_allowed");
+    }
+    if (metadata.catalog_resolver_used === true) {
+      if (metadata.catalog_match_found !== true) reasons.push("catalog_match_not_found");
+      if (metadata.catalog_live_replay_success !== true) reasons.push("catalog_live_replay_not_successful");
+      if (!metadata.catalog_leaf_title) reasons.push("catalog_leaf_title_missing");
     }
   }
 
@@ -570,6 +595,16 @@ function main(): void {
       target_leaf_exact_match: metadata?.target_leaf_exact_match ?? null,
       actual_node_matches_requested_target: metadata?.actual_node_matches_requested_target ?? null,
       target_resolution_failure_reason: metadata?.target_resolution_failure_reason ?? null,
+      catalog_resolver_used: metadata?.catalog_resolver_used ?? null,
+      catalog_match_found: metadata?.catalog_match_found ?? null,
+      catalog_match_strategy: metadata?.catalog_match_strategy ?? null,
+      catalog_chapter_title: metadata?.catalog_chapter_title ?? null,
+      catalog_leaf_title: metadata?.catalog_leaf_title ?? null,
+      catalog_live_replay_success: metadata?.catalog_live_replay_success ?? null,
+      live_replay_visible_chapter_count: metadata?.live_replay_visible_chapter_count ?? null,
+      live_replay_visible_leaf_count: metadata?.live_replay_visible_leaf_count ?? null,
+      live_replay_top_candidates: metadata?.live_replay_top_candidates ?? [],
+      live_replay_debug_paths: metadata?.live_replay_debug_paths ?? null,
       post_detail_content_signal: metadata?.post_detail_content_signal ?? null,
       title: intermediate?.content?.title ?? null,
       total_text_length: intermediate ? totalTextLength(intermediate) : null,

@@ -12,6 +12,14 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, type BrowserContextOptions, type Page } from "playwright";
+import {
+  ensureRuankaodarenContext,
+  expandVisibleChapters as exploreVisibleChapters,
+  openKnowledgeRoute,
+  type VisibleChapter,
+  type VisibleLeaf,
+} from "./lib/ruankaodaren-dom-explorer.js";
+import { normalizeTitle } from "./lib/ruankaodaren-target-resolution.js";
 
 const SOURCE_URL = "https://ruankaodaren.com/exam/#/knowlegde";
 const NAVIGATION_TIMEOUT_MS = 30_000;
@@ -50,12 +58,22 @@ type Confidence = "high" | "medium" | "low";
 
 interface LeafEntry {
   title: string;
+  normalized_title: string;
   section_number: string;
   chapter_number: string;
+  chapter_title: string;
   confidence: Confidence;
   visible: boolean;
   has_detail_entry_signal: boolean;
   raw_text_preview: string;
+  dom_order: number;
+  chapter_dom_order: number;
+  bounding_box?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null;
 }
 
 interface ChapterEntry {
@@ -251,6 +269,7 @@ function mergeSnapshots(snapshots: DirectorySnapshot[]): DirectorySnapshot {
 
       leavesByTitle.set(leaf.title, {
         ...current,
+        dom_order: Math.min(current.dom_order, leaf.dom_order),
         confidence: current.confidence === "high" || leaf.confidence === "high" ? "high" : current.confidence,
         has_detail_entry_signal: current.has_detail_entry_signal || leaf.has_detail_entry_signal,
         raw_text_preview:
@@ -364,12 +383,16 @@ async function collectDirectorySnapshot(page: Page): Promise<DirectorySnapshot> 
         seenLeaves.add(leafTitle);
         leaves.push({
           title: leafTitle,
+          normalized_title: leafTitle.replace(/\s+/g, "").toLowerCase(),
           section_number: section,
           chapter_number: chapterNumber,
+          chapter_title: "",
           confidence: node.className.toString().includes("title") ? "high" : "medium",
           visible: true,
           has_detail_entry_signal: detailSignalPattern.test(raw),
           raw_text_preview: raw.slice(0, 220),
+          dom_order: leaves.length,
+          chapter_dom_order: -1,
         });
       }
     }
@@ -400,12 +423,16 @@ async function collectDirectorySnapshot(page: Page): Promise<DirectorySnapshot> 
         seenLeaves.add(leafTitle);
         leaves.push({
           title: leafTitle,
+          normalized_title: leafTitle.replace(/\s+/g, "").toLowerCase(),
           section_number: section,
           chapter_number: chapterNumber,
+          chapter_title: "",
           confidence: "medium",
           visible: true,
           has_detail_entry_signal: detailSignalPattern.test(line),
           raw_text_preview: line.slice(0, 220),
+          dom_order: leaves.length,
+          chapter_dom_order: -1,
         });
       }
     }
@@ -781,13 +808,67 @@ function buildChapters(snapshot: DirectorySnapshot): ChapterEntry[] {
 
   return [...chaptersByNumber.values()]
     .sort((a, b) => Number(a.chapter_number) - Number(b.chapter_number))
-    .map((chapter) => {
+    .map((chapter, chapterIndex) => {
       const leaves = snapshot.leaves.filter((leaf) => leaf.chapter_number === chapter.chapter_number);
       return {
         chapter_title: chapter.title,
         expanded: leaves.length > 0,
         leaf_count: leaves.length,
-        leaves,
+        leaves: leaves.map((leaf, leafIndex) => ({
+          ...leaf,
+          normalized_title: normalizeTitle(leaf.title),
+          chapter_title: chapter.title,
+          dom_order: leaf.dom_order,
+          chapter_dom_order: chapterIndex * 1000 + leafIndex,
+        })),
+      };
+    });
+}
+
+function buildChaptersFromVisible(
+  chapters: VisibleChapter[],
+  leaves: VisibleLeaf[]
+): ChapterEntry[] {
+  const chaptersByNumber = new Map<string, VisibleChapter>();
+  for (const chapter of chapters) {
+    if (!chapter.chapter_number) continue;
+    if (!chaptersByNumber.has(chapter.chapter_number)) {
+      chaptersByNumber.set(chapter.chapter_number, chapter);
+    }
+  }
+
+  for (const leaf of leaves) {
+    if (!leaf.chapter_number) continue;
+    if (!chaptersByNumber.has(leaf.chapter_number)) {
+      chaptersByNumber.set(leaf.chapter_number, {
+        text: leaf.chapter_title ?? `第${leaf.chapter_number}章`,
+        normalized_text: normalizeTitle(leaf.chapter_title ?? `第${leaf.chapter_number}章`),
+        chapter_number: leaf.chapter_number,
+        visible: true,
+        expanded: null,
+        dom_order: Number(leaf.chapter_number) * 1000,
+        bounding_box: null,
+      });
+    }
+  }
+
+  return [...chaptersByNumber.values()]
+    .sort((a, b) => Number(a.chapter_number) - Number(b.chapter_number))
+    .map((chapter, chapterIndex) => {
+      const chapterLeaves = leaves
+        .filter((leaf) => leaf.chapter_number === chapter.chapter_number)
+        .map((leaf, leafIndex) => ({
+          ...leaf,
+          section_number: leaf.section_number ?? "",
+          chapter_number: leaf.chapter_number ?? chapter.chapter_number ?? "",
+          chapter_title: chapter.text,
+          chapter_dom_order: chapterIndex * 1000 + leafIndex,
+        }));
+      return {
+        chapter_title: chapter.text,
+        expanded: chapterLeaves.length > 0,
+        leaf_count: chapterLeaves.length,
+        leaves: chapterLeaves,
       };
     });
 }
@@ -909,22 +990,17 @@ async function main(): Promise<void> {
     page.setDefaultTimeout(NAVIGATION_TIMEOUT_MS);
 
     log("opening knowledge route");
-    await page.goto(SOURCE_URL, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
-    await waitForRender(page);
-    await selectContextIfNeeded(page, warnings);
+    await openKnowledgeRoute(page);
+    const contextResult = await ensureRuankaodarenContext(page);
+    warnings.push(...contextResult.warnings);
 
-    log("collecting initial directory snapshot");
-    const initialSnapshot = await collectDirectorySnapshot(page);
+    log("collecting directory snapshot through shared DOM explorer");
+    const exploration = await exploreVisibleChapters(page);
+    warnings.push(...exploration.warnings);
 
-    log(`expanding visible chapters: ${initialSnapshot.chapters.length}`);
-    const expansionSnapshots = await expandVisibleChapters(page, initialSnapshot, warnings);
-
-    log("scrolling reachable directory containers");
-    const scrollSnapshots = await collectDuringDirectoryScroll(page, warnings);
-    const mergedSnapshot = mergeSnapshots([...expansionSnapshots, ...scrollSnapshots, await collectDirectorySnapshot(page)]);
-
-    const chapters = buildChapters(mergedSnapshot);
-    const { recommendedTargets, notRecommendedTargets } = selectRecommendedTargets(mergedSnapshot.leaves);
+    const chapters = buildChaptersFromVisible(exploration.chapters, exploration.leaves);
+    const catalogLeaves = chapters.flatMap((chapter) => chapter.leaves);
+    const { recommendedTargets, notRecommendedTargets } = selectRecommendedTargets(catalogLeaves);
 
     const screenshotPath = resolve(generatedDir, "phase3_11_reachable_leaf_catalog.png");
     mkdirSync(generatedDir, { recursive: true });
@@ -938,7 +1014,7 @@ async function main(): Promise<void> {
       final_url: page.url(),
       screenshot_path: existsSync(screenshotPath) ? toRepoPath(screenshotPath) : null,
       chapter_count: chapters.length,
-      leaf_count: mergedSnapshot.leaves.length,
+      leaf_count: exploration.leaves.length,
       chapters,
       recommended_targets: recommendedTargets,
       not_recommended_targets: notRecommendedTargets,

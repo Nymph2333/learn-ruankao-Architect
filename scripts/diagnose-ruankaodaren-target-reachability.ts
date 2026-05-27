@@ -11,6 +11,22 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, type BrowserContextOptions, type Page } from "playwright";
+import {
+  captureReplayDebugSnapshot,
+  ensureRuankaodarenContext,
+  openKnowledgeRoute,
+  replayCatalogLeaf,
+  type BoundingBox,
+  type ReplayDebugPaths,
+  type VisibleChapter,
+  type VisibleLeaf,
+} from "./lib/ruankaodaren-dom-explorer.js";
+import {
+  findCatalogLeaf,
+  loadReachableLeafCatalog,
+  type CatalogMatchStrategy,
+  type CatalogLeafMatch,
+} from "./lib/ruankaodaren-target-resolution.js";
 
 const SOURCE_URL = "https://ruankaodaren.com/exam/#/knowlegde";
 const NAVIGATION_TIMEOUT_MS = 30_000;
@@ -23,7 +39,12 @@ const repoRoot = resolve(scriptDir, "..");
 const authStatePath = resolve(repoRoot, ".auth/ruankaodaren.storageState.json");
 const generatedDir = resolve(repoRoot, "verification/generated");
 
-type MatchStrategy = "exact_full_title" | "number_and_keywords" | "number_only" | "same_chapter_fallback" | "failed";
+type MatchStrategy =
+  | CatalogMatchStrategy
+  | "number_and_keywords"
+  | "number_only"
+  | "same_chapter_fallback"
+  | "failed";
 
 interface ParsedTarget {
   target_section_number: string;
@@ -42,6 +63,24 @@ interface LeafMatch {
 interface ReachabilityReport {
   generated_at: string;
   target: string;
+  catalog_match_found: boolean;
+  catalog_match_strategy: string;
+  catalog_chapter_title: string | null;
+  catalog_leaf_title: string | null;
+  catalog_leaf_count: number;
+  live_replay_attempted: boolean;
+  live_replay_success: boolean;
+  live_chapter_found: boolean;
+  live_leaf_exact_match_found: boolean;
+  failure_type: "catalog_target_not_found" | "catalog_live_replay_mismatch" | null;
+  visible_chapter_count: number;
+  visible_leaf_count: number;
+  visible_chapters: VisibleChapter[];
+  top_leaf_candidates: VisibleLeaf[];
+  debug_paths: ReplayDebugPaths | null;
+  matched_leaf_title: string | null;
+  matched_leaf_strategy: string | null;
+  matched_leaf_bounding_box: BoundingBox | null;
   target_section_number: string | null;
   target_chapter_number: string | null;
   chapter_found: boolean;
@@ -51,7 +90,7 @@ interface ReachabilityReport {
   leaf_candidates_same_chapter: string[];
   best_match: string | null;
   best_match_strategy: MatchStrategy;
-  recommendation: "safe_to_crawl" | "target_not_found" | "use_exact_leaf_title" | "inspect_dom";
+  recommendation: "catalog_reachable" | "safe_to_crawl" | "target_not_found" | "use_exact_leaf_title" | "inspect_dom";
   next_steps: string[];
   constraints: {
     no_formal_raw_snapshot: true;
@@ -265,6 +304,7 @@ async function findLeafMatch(page: Page, target: string, parsed: ParsedTarget): 
 }
 
 function recommendationFor(report: Omit<ReachabilityReport, "recommendation" | "next_steps" | "constraints" | "generated_at">): ReachabilityReport["recommendation"] {
+  if (report.catalog_match_found) return "catalog_reachable";
   if (report.leaf_exact_match_found) return "safe_to_crawl";
   if (!report.chapter_found || report.leaf_candidates_same_chapter.length === 0) return "target_not_found";
   if (report.best_match) return "use_exact_leaf_title";
@@ -288,6 +328,16 @@ function writeReports(report: ReachabilityReport): void {
     "| Field | Value |",
     "|---|---|",
     `| target | ${report.target} |`,
+    `| catalog_match_found | ${report.catalog_match_found} |`,
+    `| catalog_match_strategy | ${report.catalog_match_strategy} |`,
+    `| catalog_chapter_title | ${report.catalog_chapter_title ?? ""} |`,
+    `| catalog_leaf_title | ${report.catalog_leaf_title ?? ""} |`,
+    `| live_replay_success | ${report.live_replay_success} |`,
+    `| failure_type | ${report.failure_type ?? ""} |`,
+    `| visible_chapter_count | ${report.visible_chapter_count} |`,
+    `| visible_leaf_count | ${report.visible_leaf_count} |`,
+    `| matched_leaf_title | ${report.matched_leaf_title ?? ""} |`,
+    `| matched_leaf_strategy | ${report.matched_leaf_strategy ?? ""} |`,
     `| target_section_number | ${report.target_section_number ?? ""} |`,
     `| target_chapter_number | ${report.target_chapter_number ?? ""} |`,
     `| chapter_found | ${report.chapter_found} |`,
@@ -303,6 +353,18 @@ function writeReports(report: ReachabilityReport): void {
     ...(report.leaf_candidates_same_chapter.length > 0
       ? report.leaf_candidates_same_chapter.map((candidate) => `- ${candidate}`)
       : ["- None found."]),
+    "",
+    "## Top Leaf Candidates",
+    "",
+    ...(report.top_leaf_candidates.length > 0
+      ? report.top_leaf_candidates.map((candidate) => `- ${candidate.title}`)
+      : ["- None found."]),
+    "",
+    "## Debug Paths",
+    "",
+    ...(report.debug_paths
+      ? Object.entries(report.debug_paths).map(([key, value]) => `- ${key}: ${value}`)
+      : ["- None."]),
     "",
     "## Next Steps",
     "",
@@ -327,7 +389,10 @@ function writeReports(report: ReachabilityReport): void {
 
 async function main(): Promise<void> {
   const target = parseArgs();
-  const parsed = parseTarget(target);
+  const catalog = loadReachableLeafCatalog();
+  const catalogMatch: CatalogLeafMatch = findCatalogLeaf(target, catalog);
+  const liveTarget = catalogMatch.found && catalogMatch.leaf_title ? catalogMatch.leaf_title : target;
+  const parsed = parseTarget(liveTarget);
   if (!parsed) {
     console.error("[target-diagnose] ERROR: target must be a full leaf title such as \"3.6 关系数据库的规范化\".");
     process.exit(1);
@@ -342,38 +407,60 @@ async function main(): Promise<void> {
       contextOptions.storageState = authStatePath;
     }
     const context = await browser.newContext(contextOptions);
+    await context.addInitScript("globalThis.__name = (fn) => fn;");
     const page = await context.newPage();
+    await page.evaluate("globalThis.__name = (fn) => fn;").catch(() => undefined);
     page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);
     page.setDefaultTimeout(NAVIGATION_TIMEOUT_MS);
 
-    await page.goto(SOURCE_URL, { waitUntil: "domcontentloaded", timeout: NAVIGATION_TIMEOUT_MS });
-    await waitForRender(page);
-
-    const chapterBefore = await findChapter(page, parsed.target_chapter_number);
-    let leafMatch = await findLeafMatch(page, target, parsed);
-    let chapterExpandSuccess = leafMatch.leaf_candidates_same_chapter.length > 0;
-
-    if (!leafMatch.leaf_exact_match_found) {
-      chapterExpandSuccess = await clickMarkedChapter(page);
-      await waitForRender(page);
-      leafMatch = await findLeafMatch(page, target, parsed);
-      if (!leafMatch.leaf_exact_match_found && leafMatch.leaf_candidates_same_chapter.length === 0 && chapterBefore.found) {
-        await findChapter(page, parsed.target_chapter_number);
-        await clickMarkedChapter(page);
-        await waitForRender(page);
-        leafMatch = await findLeafMatch(page, target, parsed);
-        chapterExpandSuccess = leafMatch.leaf_candidates_same_chapter.length > 0;
-      }
-    }
-
+    await openKnowledgeRoute(page);
+    await ensureRuankaodarenContext(page);
+    const replay = await replayCatalogLeaf(page, catalogMatch);
+    const debugPaths = replay.success
+      ? null
+      : await captureReplayDebugSnapshot(page, {
+          target,
+          visibleChapters: replay.visible_chapters,
+          visibleLeaves: replay.visible_leaves,
+          candidates: replay.match.candidates,
+        });
+    const liveReplaySuccess = catalogMatch.found ? replay.success : false;
+    const failureType: ReachabilityReport["failure_type"] = !catalogMatch.found
+      ? "catalog_target_not_found"
+      : liveReplaySuccess
+        ? null
+        : "catalog_live_replay_mismatch";
     const partial = {
       target,
+      catalog_match_found: catalogMatch.found,
+      catalog_match_strategy: catalogMatch.match_strategy,
+      catalog_chapter_title: catalogMatch.chapter_title,
+      catalog_leaf_title: catalogMatch.leaf_title,
+      catalog_leaf_count: catalog?.leaf_count ?? 0,
+      live_replay_attempted: true,
+      live_replay_success: liveReplaySuccess,
+      live_chapter_found: replay.visible_chapters.length > 0,
+      live_leaf_exact_match_found: replay.match.found,
+      failure_type: failureType,
+      visible_chapter_count: replay.visible_chapters.length,
+      visible_leaf_count: replay.visible_leaves.length,
+      visible_chapters: replay.visible_chapters,
+      top_leaf_candidates: replay.match.candidates.slice(0, 10),
+      debug_paths: debugPaths,
+      matched_leaf_title: replay.match.leaf?.title ?? null,
+      matched_leaf_strategy: replay.match.found ? replay.match.strategy : null,
+      matched_leaf_bounding_box: replay.match.leaf?.bounding_box ?? null,
       target_section_number: parsed.target_section_number,
       target_chapter_number: parsed.target_chapter_number,
-      chapter_found: chapterBefore.found,
-      chapter_text: chapterBefore.text,
-      chapter_expand_success: chapterExpandSuccess,
-      ...leafMatch,
+      chapter_found: catalogMatch.found || replay.visible_chapters.length > 0,
+      chapter_text: catalogMatch.chapter_title ?? replay.visible_chapters[0]?.text ?? null,
+      chapter_expand_success: replay.visible_leaves.some((leaf) => leaf.chapter_number === parsed.target_chapter_number),
+      leaf_exact_match_found: catalogMatch.found || replay.match.found,
+      leaf_candidates_same_chapter: replay.visible_leaves
+        .filter((leaf) => leaf.chapter_number === parsed.target_chapter_number)
+        .map((leaf) => leaf.title),
+      best_match: catalogMatch.leaf_title ?? replay.match.leaf?.title ?? null,
+      best_match_strategy: catalogMatch.found ? "exact_full_title" as const : replay.match.strategy as MatchStrategy,
     };
 
     const report: ReachabilityReport = {
@@ -381,7 +468,12 @@ async function main(): Promise<void> {
       ...partial,
       recommendation: recommendationFor(partial),
       next_steps:
-        recommendationFor(partial) === "target_not_found"
+        failureType === "catalog_live_replay_mismatch"
+          ? [
+              "Catalog contains this target, but live DOM replay could not find it in the current browser state.",
+              "Inspect the catalog script and crawler replay selectors for DOM parity before sampling.",
+            ]
+          : recommendationFor(partial) === "target_not_found"
           ? [
               "Run `pnpm catalog:reachable-leaves` to refresh the current UI reachable leaf catalog.",
               "Choose the next target from `verification/generated/phase3_11_reachable_leaf_catalog.md`.",
@@ -402,6 +494,9 @@ async function main(): Promise<void> {
     console.log("[target-diagnose] completed");
     console.log(`  target:                 ${report.target}`);
     console.log(`  chapter_found:          ${report.chapter_found}`);
+    console.log(`  catalog_match_found:    ${report.catalog_match_found}`);
+    console.log(`  live_replay_success:    ${report.live_replay_success}`);
+    console.log(`  failure_type:           ${report.failure_type ?? "(none)"}`);
     console.log(`  leaf_exact_match_found: ${report.leaf_exact_match_found}`);
     console.log(`  best_match:             ${report.best_match ?? "(none)"}`);
     console.log(`  recommendation:         ${report.recommendation}`);

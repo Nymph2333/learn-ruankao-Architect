@@ -92,6 +92,14 @@ interface TargetRun {
   target_resolution_failure_reason: string | null;
   target_leaf_exact_match: boolean | null;
   actual_node_matches_requested_target: boolean | null;
+  catalog_resolver_used: boolean | null;
+  catalog_match_found: boolean | null;
+  catalog_live_replay_success: boolean | null;
+  catalog_match_strategy: string | null;
+  live_replay_visible_chapter_count: number | null;
+  live_replay_visible_leaf_count: number | null;
+  live_replay_top_candidates: string[];
+  live_replay_debug_paths: Record<string, string> | null;
   parse_timestamp_alignment: "matched" | "mismatched" | "unknown";
   classification: string | null;
   image_refs_count: number | null;
@@ -144,6 +152,14 @@ interface MetadataShape {
   target_resolution_failure_reason?: string | null;
   target_leaf_exact_match?: boolean;
   actual_node_matches_requested_target?: boolean;
+  catalog_resolver_used?: boolean;
+  catalog_match_found?: boolean;
+  catalog_live_replay_success?: boolean | null;
+  catalog_match_strategy?: string | null;
+  live_replay_visible_chapter_count?: number | null;
+  live_replay_visible_leaf_count?: number | null;
+  live_replay_top_candidates?: string[];
+  live_replay_debug_paths?: Record<string, string> | null;
 }
 
 interface ManifestShape {
@@ -542,6 +558,18 @@ function writeDiagnostic(
     target_resolution_failure_reason: run.target_resolution_failure_reason,
     target_leaf_exact_match: run.target_leaf_exact_match,
     actual_node_matches_requested_target: run.actual_node_matches_requested_target,
+    catalog_resolver_used: run.catalog_resolver_used,
+    catalog_match_found: run.catalog_match_found,
+    catalog_live_replay_success: run.catalog_live_replay_success,
+    catalog_match_strategy: run.catalog_match_strategy,
+    live_replay_visible_chapter_count: run.live_replay_visible_chapter_count,
+    live_replay_visible_leaf_count: run.live_replay_visible_leaf_count,
+    live_replay_top_candidates: run.live_replay_top_candidates,
+    live_replay_debug_paths: run.live_replay_debug_paths,
+    catalog_live_replay_note:
+      run.target_resolution_failure_reason === "catalog_live_replay_mismatch"
+        ? "catalog said reachable, live replay failed"
+        : null,
     excluded_from_renderer_baseline: true,
     preflight_report_path: toRepoPath(preflightReportPathForTimestamp(run.produced_timestamp)),
     preflight,
@@ -561,6 +589,14 @@ function applyMetadataToRun(run: TargetRun, metadata: MetadataShape | null): voi
   run.target_resolution_failure_reason = metadata?.target_resolution_failure_reason ?? null;
   run.target_leaf_exact_match = metadata?.target_leaf_exact_match ?? null;
   run.actual_node_matches_requested_target = metadata?.actual_node_matches_requested_target ?? null;
+  run.catalog_resolver_used = metadata?.catalog_resolver_used ?? null;
+  run.catalog_match_found = metadata?.catalog_match_found ?? null;
+  run.catalog_live_replay_success = metadata?.catalog_live_replay_success ?? null;
+  run.catalog_match_strategy = metadata?.catalog_match_strategy ?? null;
+  run.live_replay_visible_chapter_count = metadata?.live_replay_visible_chapter_count ?? null;
+  run.live_replay_visible_leaf_count = metadata?.live_replay_visible_leaf_count ?? null;
+  run.live_replay_top_candidates = metadata?.live_replay_top_candidates ?? [];
+  run.live_replay_debug_paths = metadata?.live_replay_debug_paths ?? null;
 }
 
 function distributionFromResults(results: TargetRun[]): Record<string, number> {
@@ -1050,6 +1086,14 @@ function writePhase312Reports(results: TargetRun[]): void {
       target_resolution_trusted: run.target_resolution_trusted,
       target_leaf_exact_match: run.target_leaf_exact_match,
       actual_node_matches_requested_target: run.actual_node_matches_requested_target,
+      catalog_resolver_used: run.catalog_resolver_used,
+      catalog_match_found: run.catalog_match_found,
+      catalog_live_replay_success: run.catalog_live_replay_success,
+      catalog_match_strategy: run.catalog_match_strategy,
+      live_replay_visible_chapter_count: run.live_replay_visible_chapter_count,
+      live_replay_visible_leaf_count: run.live_replay_visible_leaf_count,
+      live_replay_top_candidates: run.live_replay_top_candidates,
+      live_replay_debug_paths: run.live_replay_debug_paths,
       actual_knowledge_node_click_text: run.actual_knowledge_node_click_text,
       failure_reason: run.failure_reason ?? run.asset_failure_reason,
     };
@@ -1200,6 +1244,14 @@ function runTarget(target: SampleTarget): TargetRun {
     target_resolution_failure_reason: null,
     target_leaf_exact_match: null,
     actual_node_matches_requested_target: null,
+    catalog_resolver_used: null,
+    catalog_match_found: null,
+    catalog_live_replay_success: null,
+    catalog_match_strategy: null,
+    live_replay_visible_chapter_count: null,
+    live_replay_visible_leaf_count: null,
+    live_replay_top_candidates: [],
+    live_replay_debug_paths: null,
     parse_timestamp_alignment: "unknown",
     classification: null,
     image_refs_count: null,
@@ -1232,7 +1284,7 @@ function runTarget(target: SampleTarget): TargetRun {
     run.chapter_level_rejected = run.require_leaf && isChapterLevelText(run.actual_knowledge_node_click_text);
     run.failure_reason =
       run.require_leaf && failedMetadata?.leaf_requirement_failed === true
-        ? "leaf_resolution_failed"
+        ? failedMetadata.target_resolution_failure_reason ?? "leaf_resolution_failed"
         : failureFromStep(crawlStep);
     writeDiagnostic(run, "crawl", run.failure_reason);
     return run;
@@ -1245,7 +1297,7 @@ function runTarget(target: SampleTarget): TargetRun {
   applyMetadataToRun(run, metadata);
 
   if (run.require_leaf && (metadata?.leaf_requirement_failed === true || !run.leaf_resolution_success)) {
-    run.failure_reason = "leaf_resolution_failed";
+    run.failure_reason = metadata?.target_resolution_failure_reason ?? "leaf_resolution_failed";
     writeDiagnostic(run, "metadata_gate", run.failure_reason);
     return run;
   }

@@ -65,3 +65,5 @@ If asset capture fails:
 
 - The sample may be retained with an asset risk marker.
 - Do not enter renderer unless the sample has no image references and the remaining gates pass.
+
+Phase 3.13 adds catalog-backed resolver parity because Phase 3.12 showed reachable catalog targets could not be replayed by the crawler resolver.
