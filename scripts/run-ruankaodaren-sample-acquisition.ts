@@ -18,13 +18,26 @@ import {
 } from "node:fs";
 import { basename, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { chromium, type BrowserContextOptions } from "playwright";
+import {
+  ensureRuankaodarenContext,
+  openKnowledgeRoute,
+  replayCatalogLeaf,
+} from "./lib/ruankaodaren-dom-explorer.js";
+import {
+  findCatalogLeaf,
+  isLikelySameLeaf,
+  loadReachableLeafCatalog,
+} from "./lib/ruankaodaren-target-resolution.js";
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
 const maxTargets = 3;
+const maxLiveReplayCandidates = 5;
 
 const sampleConfigPath = resolve(repoRoot, "config/ruankaodaren-sample-targets.yaml");
 const generatedDir = resolve(repoRoot, "verification/generated");
+const authStatePath = resolve(repoRoot, ".auth/ruankaodaren.storageState.json");
 const metadataDir = resolve(repoRoot, "sources/ruankaodaren/raw/metadata");
 const samplesDir = resolve(repoRoot, "data/intermediate/ruankaodaren/samples");
 const diagnosticsDir = resolve(repoRoot, "data/intermediate/ruankaodaren/diagnostics");
@@ -32,8 +45,10 @@ const manifestsDir = resolve(repoRoot, "sources/ruankaodaren/raw/assets/manifest
 const coverageJsonPath = resolve(repoRoot, "verification/generated/phase3_2_sample_coverage.json");
 const semanticAuditPath = resolve(repoRoot, "verification/generated/phase3_7_semantic_alignment_audit.json");
 const qualityAuditPath = resolve(repoRoot, "verification/generated/phase3_4_sample_quality_audit.json");
+const readinessAuditPath = resolve(repoRoot, "verification/generated/phase3_21_renderer_readiness_audit.json");
 
 type StepName =
+  | "live_replay"
   | "crawl"
   | "preflight_metadata"
   | "parse"
@@ -43,6 +58,7 @@ type StepName =
   | "validate_assets"
   | "audit_semantic"
   | "audit_quality"
+  | "audit_readiness"
   | "report_coverage";
 
 interface SampleTarget {
@@ -55,7 +71,10 @@ interface SampleTarget {
   timestamp: string | null;
   require_leaf: string | null;
   require_preflight: string | null;
+  require_live_replay: string | null;
   source_catalog: string | null;
+  require_discovery_evidence: string | null;
+  discovery_evidence: string | null;
 }
 
 interface CommandStep {
@@ -78,8 +97,14 @@ interface TargetRun {
   steps: CommandStep[];
   produced_timestamp: string | null;
   produced_metadata_path: string | null;
+  produced_outer_html_paths: string[];
+  produced_dom_text_path: string | null;
+  produced_screenshot_path: string | null;
   produced_intermediate_path: string | null;
   produced_manifest_path: string | null;
+  latest_success_timestamp_used_by_parser: string | null;
+  semantic_audit_sample_path: string | null;
+  semantic_audit_reason: string | null;
   new_sample_added: boolean;
   actual_knowledge_node_click_text: string | null;
   require_leaf: boolean;
@@ -92,6 +117,11 @@ interface TargetRun {
   target_resolution_failure_reason: string | null;
   target_leaf_exact_match: boolean | null;
   actual_node_matches_requested_target: boolean | null;
+  require_live_replay: boolean;
+  live_replay_checked: boolean;
+  live_replay_result: "pass" | "fail" | "not_checked";
+  live_replay_reject_reason: string | null;
+  live_replay_matched_leaf_title: string | null;
   catalog_resolver_used: boolean | null;
   catalog_match_found: boolean | null;
   catalog_live_replay_success: boolean | null;
@@ -110,6 +140,9 @@ interface TargetRun {
   content_ready: boolean | null;
   content_readiness_reason: string | null;
   diagnostic_sample: boolean;
+  static_low_text_promotion_attempted: boolean;
+  static_low_text_evidence_path: string | null;
+  static_low_text_evidence_valid: boolean;
   constraint_violations: string[];
   asset_manifest_status:
     | "not_run"
@@ -141,6 +174,9 @@ interface MetadataShape {
   knowledge_node_click_text?: string | null;
   detail_entry_target_text?: string | null;
   final_url?: string;
+  outer_html_paths?: string[];
+  dom_text_path?: string;
+  screenshot_path?: string;
   require_leaf?: boolean;
   chapter_level_hit?: boolean;
   chapter_level_text?: string | null;
@@ -160,6 +196,23 @@ interface MetadataShape {
   live_replay_visible_leaf_count?: number | null;
   live_replay_top_candidates?: string[];
   live_replay_debug_paths?: Record<string, string> | null;
+  detail_content_stabilization_status?: string;
+}
+
+interface LiveReplayCheckResult {
+  checked: boolean;
+  success: boolean;
+  step: CommandStep;
+  catalog_match_found: boolean;
+  catalog_match_strategy: string | null;
+  catalog_leaf_title: string | null;
+  catalog_chapter_title: string | null;
+  live_replay_success: boolean;
+  matched_leaf_title: string | null;
+  visible_chapter_count: number | null;
+  visible_leaf_count: number | null;
+  top_candidates: string[];
+  reject_reason: string | null;
 }
 
 interface ManifestShape {
@@ -194,9 +247,13 @@ interface PreflightReport {
 
 interface SemanticAuditShape {
   samples?: Array<{
+    sample_path?: string;
     timestamp?: string;
     title?: string;
+    alignment?: string;
     renderer_eligible?: boolean;
+    quarantine_reason?: string | null;
+    body_alignment?: string;
   }>;
 }
 
@@ -207,6 +264,32 @@ interface QualityAuditShape {
   };
   summary?: {
     renderer_eligible_leaf_count?: number;
+  };
+}
+
+interface ReadinessAuditShape {
+  samples?: Array<{
+    title?: string;
+    timestamp?: string;
+    content_shape?: string;
+    readiness_class?: string;
+    eligible_for_phase4_baseline?: boolean;
+    renderer_policy?: {
+      render_as?: string;
+      preserve_asset_refs?: boolean;
+      allow_markdown_generation_later?: boolean;
+      notes?: string[];
+    };
+    reason?: string;
+  }>;
+  summary?: {
+    total_evaluated?: number;
+    eligible_for_phase4_baseline_count?: number;
+    static_low_text_verified_count?: number;
+  };
+  overall_gate?: {
+    phase4_renderer_allowed?: boolean;
+    eligible_for_phase4_baseline_count?: number;
   };
 }
 
@@ -241,7 +324,10 @@ function parseSampleTargets(yamlText: string): SampleTarget[] {
         timestamp: current.timestamp ?? null,
         require_leaf: current.require_leaf ?? null,
         require_preflight: current.require_preflight ?? null,
+        require_live_replay: current.require_live_replay ?? null,
         source_catalog: current.source_catalog ?? null,
+        require_discovery_evidence: current.require_discovery_evidence ?? null,
+        discovery_evidence: current.discovery_evidence ?? null,
       });
     }
   }
@@ -272,7 +358,10 @@ function parseSampleTargets(yamlText: string): SampleTarget[] {
       key === "timestamp" ||
       key === "require_leaf" ||
       key === "require_preflight" ||
-      key === "source_catalog"
+      key === "require_live_replay" ||
+      key === "source_catalog" ||
+      key === "require_discovery_evidence" ||
+      key === "discovery_evidence"
     ) {
       current[key] = value;
     }
@@ -338,6 +427,25 @@ function runCommand(name: StepName, command: string): CommandStep {
   };
   console.log(`[phase3.3] ${name}: ${step.success ? "success" : `failed (${exitCode})`}`);
   return step;
+}
+
+function directStep(
+  name: StepName,
+  command: string,
+  started: number,
+  success: boolean,
+  stdoutSummary: string,
+  stderrSummary = ""
+): CommandStep {
+  return {
+    name,
+    command,
+    exit_code: success ? 0 : 1,
+    success,
+    stdout_summary: summarizeOutput(stdoutSummary),
+    stderr_summary: summarizeOutput(stderrSummary),
+    duration_ms: Date.now() - started,
+  };
 }
 
 function listJsonFiles(dir: string): string[] {
@@ -512,13 +620,143 @@ function readPreflightReport(timestamp: string | null): PreflightReport | null {
 }
 
 function semanticItemForTimestamp(timestamp: string | null): {
+  sample_path?: string;
   timestamp?: string;
   title?: string;
+  alignment?: string;
   renderer_eligible?: boolean;
+  quarantine_reason?: string | null;
+  body_alignment?: string;
 } | null {
   if (!timestamp) return null;
   const semanticAudit = readJson<SemanticAuditShape>(semanticAuditPath);
   return (semanticAudit?.samples ?? []).find((sample) => sample.timestamp === timestamp) ?? null;
+}
+
+function applySemanticAuditToRun(run: TargetRun): void {
+  const semanticItem = semanticItemForTimestamp(run.produced_timestamp);
+  run.semantic_audit_sample_path = semanticItem?.sample_path ?? null;
+  run.semantic_audit_reason =
+    semanticItem?.quarantine_reason ??
+    (semanticItem?.renderer_eligible === false ? semanticItem.body_alignment ?? "renderer_eligible_false" : null);
+}
+
+async function checkLiveReplay(target: SampleTarget): Promise<LiveReplayCheckResult> {
+  const started = Date.now();
+  const command = `internal live replay check --target ${commandArg(target.title_hint)}`;
+  console.log(`[phase3.15] running live_replay: ${target.title_hint}`);
+
+  const catalog = loadReachableLeafCatalog();
+  const catalogMatch = findCatalogLeaf(target.title_hint, catalog);
+  if (!catalogMatch.found) {
+    const step = directStep(
+      "live_replay",
+      command,
+      started,
+      false,
+      "catalog target not found",
+      "target_not_found"
+    );
+    console.log("[phase3.15] live_replay: failed (target_not_found)");
+    return {
+      checked: true,
+      success: false,
+      step,
+      catalog_match_found: false,
+      catalog_match_strategy: catalogMatch.match_strategy,
+      catalog_leaf_title: null,
+      catalog_chapter_title: null,
+      live_replay_success: false,
+      matched_leaf_title: null,
+      visible_chapter_count: null,
+      visible_leaf_count: null,
+      top_candidates: [],
+      reject_reason: "target_not_found",
+    };
+  }
+
+  let browser: Awaited<ReturnType<typeof chromium.launch>> | null = null;
+  try {
+    browser = await chromium.launch({ headless: true });
+    const contextOptions: BrowserContextOptions = existsSync(authStatePath)
+      ? { storageState: authStatePath }
+      : {};
+    const context = await browser.newContext(contextOptions);
+    await context.addInitScript(() => {
+      Reflect.set(globalThis, "__name", (fn: unknown) => fn);
+    });
+    const page = await context.newPage();
+
+    try {
+      await openKnowledgeRoute(page);
+      await ensureRuankaodarenContext(page);
+      const replay = await replayCatalogLeaf(page, catalogMatch);
+      const matchedLeafTitle = replay.match.leaf?.title ?? null;
+      const matched =
+        replay.success &&
+        matchedLeafTitle !== null &&
+        isLikelySameLeaf(matchedLeafTitle, target.title_hint);
+      const rejectReason = matched
+        ? null
+        : replay.failure_type ?? (matchedLeafTitle ? "matched_leaf_title_mismatch" : "live_leaf_not_found");
+      const step = directStep(
+        "live_replay",
+        command,
+        started,
+        matched,
+        [
+          `catalog_match_found=${catalogMatch.found}`,
+          `live_replay_success=${replay.success}`,
+          `matched_leaf_title=${matchedLeafTitle ?? ""}`,
+          `visible_chapter_count=${replay.visible_chapters.length}`,
+          `visible_leaf_count=${replay.visible_leaves.length}`,
+        ].join("\n"),
+        rejectReason ?? ""
+      );
+
+      await context.close();
+      console.log(`[phase3.15] live_replay: ${matched ? "success" : `failed (${rejectReason})`}`);
+      return {
+        checked: true,
+        success: matched,
+        step,
+        catalog_match_found: true,
+        catalog_match_strategy: catalogMatch.match_strategy,
+        catalog_leaf_title: catalogMatch.leaf_title,
+        catalog_chapter_title: catalogMatch.chapter_title,
+        live_replay_success: replay.success,
+        matched_leaf_title: matchedLeafTitle,
+        visible_chapter_count: replay.visible_chapters.length,
+        visible_leaf_count: replay.visible_leaves.length,
+        top_candidates: replay.match.candidates.slice(0, 10).map((candidate) => candidate.title),
+        reject_reason: rejectReason,
+      };
+    } catch (error) {
+      await context.close().catch(() => undefined);
+      throw error;
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const step = directStep("live_replay", command, started, false, "", message);
+    console.log(`[phase3.15] live_replay: failed (${message})`);
+    return {
+      checked: true,
+      success: false,
+      step,
+      catalog_match_found: catalogMatch.found,
+      catalog_match_strategy: catalogMatch.match_strategy,
+      catalog_leaf_title: catalogMatch.leaf_title,
+      catalog_chapter_title: catalogMatch.chapter_title,
+      live_replay_success: false,
+      matched_leaf_title: null,
+      visible_chapter_count: null,
+      visible_leaf_count: null,
+      top_candidates: [],
+      reject_reason: message.includes("Timeout") ? "catalog_live_replay_mismatch" : message,
+    };
+  } finally {
+    await browser?.close().catch(() => undefined);
+  }
 }
 
 function failureFromStep(step: CommandStep): string {
@@ -544,14 +782,21 @@ function writeDiagnostic(
   const diagnostic = {
     created_at: new Date().toISOString(),
     source_name: "ruankaodaren",
-    phase: "3.12",
+    phase: run.require_live_replay ? "3.15" : "3.12",
     target_id: run.target_id,
     title_hint: run.title_hint,
     stage,
     failure_reason: failureReason,
     produced_timestamp: run.produced_timestamp,
     produced_metadata_path: run.produced_metadata_path,
+    produced_outer_html_paths: run.produced_outer_html_paths,
+    produced_dom_text_path: run.produced_dom_text_path,
+    produced_screenshot_path: run.produced_screenshot_path,
     produced_intermediate_path: run.produced_intermediate_path,
+    produced_manifest_path: run.produced_manifest_path,
+    latest_success_timestamp_used_by_parser: run.latest_success_timestamp_used_by_parser,
+    semantic_audit_sample_path: run.semantic_audit_sample_path,
+    semantic_audit_reason: run.semantic_audit_reason,
     actual_knowledge_node_click_text: run.actual_knowledge_node_click_text,
     resolved_leaf_text: run.resolved_leaf_text,
     target_resolution_trusted: run.target_resolution_trusted,
@@ -562,6 +807,10 @@ function writeDiagnostic(
     catalog_match_found: run.catalog_match_found,
     catalog_live_replay_success: run.catalog_live_replay_success,
     catalog_match_strategy: run.catalog_match_strategy,
+    live_replay_checked: run.live_replay_checked,
+    live_replay_result: run.live_replay_result,
+    live_replay_reject_reason: run.live_replay_reject_reason,
+    live_replay_matched_leaf_title: run.live_replay_matched_leaf_title,
     live_replay_visible_chapter_count: run.live_replay_visible_chapter_count,
     live_replay_visible_leaf_count: run.live_replay_visible_leaf_count,
     live_replay_top_candidates: run.live_replay_top_candidates,
@@ -597,6 +846,9 @@ function applyMetadataToRun(run: TargetRun, metadata: MetadataShape | null): voi
   run.live_replay_visible_leaf_count = metadata?.live_replay_visible_leaf_count ?? null;
   run.live_replay_top_candidates = metadata?.live_replay_top_candidates ?? [];
   run.live_replay_debug_paths = metadata?.live_replay_debug_paths ?? null;
+  run.produced_outer_html_paths = metadata?.outer_html_paths ?? [];
+  run.produced_dom_text_path = metadata?.dom_text_path ?? null;
+  run.produced_screenshot_path = metadata?.screenshot_path ?? null;
 }
 
 function distributionFromResults(results: TargetRun[]): Record<string, number> {
@@ -1219,8 +1471,220 @@ function writePhase312Reports(results: TargetRun[]): void {
   console.log(`[phase3.12] phase4_renderer_allowed: ${phase312Report.phase4_renderer_allowed}`);
 }
 
-function runTarget(target: SampleTarget): TargetRun {
-  const run: TargetRun = {
+function writePhase315Reports(results: TargetRun[], candidateTargets: SampleTarget[]): void {
+  mkdirSync(generatedDir, { recursive: true });
+
+  const semanticAudit = readJson<SemanticAuditShape>(semanticAuditPath);
+  const qualityAudit = readJson<QualityAuditShape>(qualityAuditPath);
+  const semanticEligibleTimestamps = new Set(
+    (semanticAudit?.samples ?? [])
+      .filter((sample) => sample.renderer_eligible === true)
+      .map((sample) => sample.timestamp)
+      .filter((timestamp): timestamp is string => typeof timestamp === "string")
+  );
+
+  const perTargetResults = results.map((run) => {
+    const preflightMetadataStep = run.steps.find((step) => step.name === "preflight_metadata");
+    const preflightContentStep = run.steps.find((step) => step.name === "preflight_content");
+    const parseStep = run.steps.find((step) => step.name === "parse");
+    const semanticStep = run.steps.find((step) => step.name === "audit_semantic");
+    const captureStep = run.steps.find((step) => step.name === "capture_assets");
+    const validateAssetsStep = run.steps.find((step) => step.name === "validate_assets");
+    const rendererEligible =
+      run.produced_timestamp !== null && semanticEligibleTimestamps.has(run.produced_timestamp);
+    const preflightResult =
+      preflightMetadataStep?.success && (!preflightContentStep || preflightContentStep.success)
+        ? "pass"
+        : preflightMetadataStep
+          ? "fail"
+          : "not_reached";
+    const semanticAuditResult = rendererEligible
+      ? "pass"
+      : semanticStep
+        ? semanticStep.success
+          ? "fail_not_renderer_eligible"
+          : "fail"
+        : "not_reached";
+
+    return {
+      target_id: run.target_id,
+      title_hint: run.title_hint,
+      commands: run.steps.map((step) => ({
+        name: step.name,
+        command: step.command,
+        exit_code: step.exit_code,
+        success: step.success,
+      })),
+      live_replay_result: run.live_replay_result,
+      live_replay_checked: run.live_replay_checked,
+      live_replay_reject_reason: run.live_replay_reject_reason,
+      live_replay_matched_leaf_title: run.live_replay_matched_leaf_title,
+      live_replay_visible_chapter_count: run.live_replay_visible_chapter_count,
+      live_replay_visible_leaf_count: run.live_replay_visible_leaf_count,
+      catalog_match_found: run.catalog_match_found,
+      catalog_live_replay_success: run.catalog_live_replay_success,
+      catalog_match_strategy: run.catalog_match_strategy,
+      preflight_result: preflightResult,
+      parse_result: parseStep ? (parseStep.success ? "pass" : "fail") : "not_reached",
+      semantic_audit_result: semanticAuditResult,
+      asset_capture_result: captureStep
+        ? captureStep.success
+          ? validateAssetsStep
+            ? validateAssetsStep.success
+              ? "validated"
+              : "validation_failed"
+            : "captured"
+          : "failed"
+        : "not_reached",
+      renderer_eligibility: rendererEligible ? "eligible" : "not_eligible",
+      renderer_eligible: rendererEligible,
+      crawl_timestamp: run.produced_timestamp,
+      metadata_path: run.produced_metadata_path,
+      outer_html_paths: run.produced_outer_html_paths,
+      dom_text_path: run.produced_dom_text_path,
+      screenshot_path: run.produced_screenshot_path,
+      produced_timestamp: run.produced_timestamp,
+      produced_intermediate_path: run.produced_intermediate_path,
+      produced_manifest_path: run.produced_manifest_path,
+      intermediate_path: run.produced_intermediate_path,
+      manifest_path: run.produced_manifest_path,
+      latest_success_timestamp_used_by_parser: run.latest_success_timestamp_used_by_parser,
+      semantic_audit_sample_path: run.semantic_audit_sample_path,
+      semantic_audit_reason: run.semantic_audit_reason,
+      reject_reason: run.failure_reason ?? run.asset_failure_reason ?? run.live_replay_reject_reason,
+    };
+  });
+
+  const rendererEligibleAdded = results.filter(
+    (run) =>
+      run.new_sample_added &&
+      run.produced_timestamp !== null &&
+      semanticEligibleTimestamps.has(run.produced_timestamp)
+  );
+  const finalRendererEligibleCount =
+    qualityAudit?.summary?.renderer_eligible_leaf_count ?? semanticEligibleTimestamps.size;
+  const phase4Allowed = qualityAudit?.overall_gate?.phase4_renderer_allowed ?? false;
+  const requiredBeforePhase4 = qualityAudit?.overall_gate?.required_before_phase4 ?? [
+    `acquire ${Math.max(0, 3 - finalRendererEligibleCount)} more renderer-eligible leaf samples`,
+  ];
+
+  const report = {
+    generated_at: new Date().toISOString(),
+    phase: "3.15",
+    candidate_list: candidateTargets.map((target) => ({
+      target_id: target.id,
+      title_hint: target.title_hint,
+    })),
+    acquisition_target_list: results
+      .filter((run) => run.live_replay_result === "pass")
+      .map((run) => ({ target_id: run.target_id, title_hint: run.title_hint })),
+    live_replay_checked_count: results.filter((run) => run.live_replay_checked).length,
+    live_replay_pass_count: results.filter((run) => run.live_replay_result === "pass").length,
+    live_replay_fail_count: results.filter((run) => run.live_replay_result === "fail").length,
+    acquisition_attempt_count: results.filter((run) => run.live_replay_result === "pass").length,
+    preflight_pass_count: perTargetResults.filter((run) => run.preflight_result === "pass").length,
+    preflight_fail_count: perTargetResults.filter((run) => run.preflight_result === "fail").length,
+    semantic_pass_count: perTargetResults.filter((run) => run.semantic_audit_result === "pass").length,
+    semantic_fail_count: perTargetResults.filter((run) =>
+      String(run.semantic_audit_result).startsWith("fail")
+    ).length,
+    renderer_eligible_added_count: rendererEligibleAdded.length,
+    renderer_eligible_added_titles: rendererEligibleAdded
+      .map((run) => run.actual_knowledge_node_click_text ?? run.title_hint)
+      .filter((title): title is string => typeof title === "string" && title.length > 0),
+    final_renderer_eligible_count: finalRendererEligibleCount,
+    phase4_renderer_allowed: phase4Allowed,
+    required_before_phase4: requiredBeforePhase4,
+    per_target_results: perTargetResults,
+    constraints: {
+      no_markdown_generated: true,
+      no_ocr: true,
+      no_encrypt1_decrypted: true,
+      no_image_table_reconstructed: true,
+      no_full_site_crawl: true,
+      phase4_not_entered: true,
+    },
+  };
+
+  const jsonPath = resolve(generatedDir, "phase3_15_live_replay_verified_acquisition_run.json");
+  writeFileSync(jsonPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+
+  const mdLines: string[] = [
+    "# Phase 3.15 Live-replay-verified Acquisition Run",
+    "",
+    `Generated at: ${report.generated_at}`,
+    "",
+    "## Summary",
+    "",
+    "| Metric | Value |",
+    "|---|---|",
+    `| Candidate targets | ${report.candidate_list.length} |`,
+    `| Live replay checked | ${report.live_replay_checked_count} |`,
+    `| Live replay pass | ${report.live_replay_pass_count} |`,
+    `| Live replay fail | ${report.live_replay_fail_count} |`,
+    `| Acquisition attempts | ${report.acquisition_attempt_count} |`,
+    `| Preflight pass | ${report.preflight_pass_count} |`,
+    `| Preflight fail | ${report.preflight_fail_count} |`,
+    `| Semantic pass | ${report.semantic_pass_count} |`,
+    `| Semantic fail | ${report.semantic_fail_count} |`,
+    `| Renderer eligible added | ${report.renderer_eligible_added_count} |`,
+    `| Final renderer eligible count | ${report.final_renderer_eligible_count} |`,
+    `| Phase 4 renderer allowed | ${report.phase4_renderer_allowed} |`,
+    "",
+    "## Candidate List",
+    "",
+    ...report.candidate_list.map((target, index) => `${index + 1}. ${target.title_hint}`),
+    "",
+    "## Acquisition Target List",
+    "",
+    ...(report.acquisition_target_list.length === 0
+      ? ["- None."]
+      : report.acquisition_target_list.map((target) => `- ${target.title_hint}`)),
+    "",
+    "## Target Results",
+    "",
+    "| Target | Live Replay | Preflight | Parse | Semantic Audit | Asset Capture | Renderer Eligibility | Reject Reason |",
+    "|---|---|---|---|---|---|---|---|",
+    ...perTargetResults.map(
+      (run) =>
+        `| ${run.title_hint} | ${run.live_replay_result} | ${run.preflight_result} | ${run.parse_result} | ${run.semantic_audit_result} | ${run.asset_capture_result} | ${run.renderer_eligibility} | ${run.reject_reason ?? ""} |`
+    ),
+    "",
+    "## Renderer Eligible Added",
+    "",
+    ...(report.renderer_eligible_added_titles.length === 0
+      ? ["- None added in this run."]
+      : report.renderer_eligible_added_titles.map((title) => `- ${title}`)),
+    "",
+    "## Phase 4 Gate",
+    "",
+    `- **phase4_renderer_allowed**: ${report.phase4_renderer_allowed}`,
+    "- **required_before_phase4**:",
+    ...(requiredBeforePhase4.length === 0 ? ["  - (none)"] : requiredBeforePhase4.map((item) => `  - ${item}`)),
+    "",
+    "## Constraints",
+    "",
+    "- No Markdown knowledge documents generated.",
+    "- No OCR used.",
+    "- No encrypt=1 data decrypted.",
+    "- No image table reconstructed.",
+    "- No full-site batch crawl performed.",
+    "- Phase 4 was not entered.",
+    "",
+  ];
+
+  const mdPath = resolve(generatedDir, "phase3_15_live_replay_verified_acquisition_run.md");
+  writeFileSync(mdPath, mdLines.join("\n"), "utf8");
+
+  console.log(`[phase3.15] JSON report written: ${toRepoPath(jsonPath)}`);
+  console.log(`[phase3.15] Markdown report written: ${toRepoPath(mdPath)}`);
+  console.log(`[phase3.15] renderer_eligible_added_count: ${report.renderer_eligible_added_count}`);
+  console.log(`[phase3.15] final_renderer_eligible_count: ${report.final_renderer_eligible_count}`);
+  console.log(`[phase3.15] phase4_renderer_allowed: ${report.phase4_renderer_allowed}`);
+}
+
+function createTargetRun(target: SampleTarget): TargetRun {
+  return {
     target_id: target.id,
     title_hint: target.title_hint,
     expected_classification: target.expected_classification,
@@ -1230,8 +1694,14 @@ function runTarget(target: SampleTarget): TargetRun {
     steps: [],
     produced_timestamp: null,
     produced_metadata_path: null,
+    produced_outer_html_paths: [],
+    produced_dom_text_path: null,
+    produced_screenshot_path: null,
     produced_intermediate_path: null,
     produced_manifest_path: null,
+    latest_success_timestamp_used_by_parser: null,
+    semantic_audit_sample_path: null,
+    semantic_audit_reason: null,
     new_sample_added: false,
     actual_knowledge_node_click_text: null,
     require_leaf: target.expected_shape === "leaf_knowledge_point" && target.require_leaf === "true",
@@ -1244,6 +1714,11 @@ function runTarget(target: SampleTarget): TargetRun {
     target_resolution_failure_reason: null,
     target_leaf_exact_match: null,
     actual_node_matches_requested_target: null,
+    require_live_replay: target.require_live_replay === "true",
+    live_replay_checked: false,
+    live_replay_result: "not_checked",
+    live_replay_reject_reason: null,
+    live_replay_matched_leaf_title: null,
     catalog_resolver_used: null,
     catalog_match_found: null,
     catalog_live_replay_success: null,
@@ -1262,11 +1737,103 @@ function runTarget(target: SampleTarget): TargetRun {
     content_ready: null,
     content_readiness_reason: null,
     diagnostic_sample: false,
+    static_low_text_promotion_attempted: false,
+    static_low_text_evidence_path: null,
+    static_low_text_evidence_valid: false,
     constraint_violations: [],
     asset_manifest_status: "not_run",
   };
+}
+
+function applyLiveReplayToRun(run: TargetRun, liveReplay: LiveReplayCheckResult): void {
+  run.live_replay_checked = liveReplay.checked;
+  run.live_replay_result = liveReplay.success ? "pass" : "fail";
+  run.live_replay_reject_reason = liveReplay.reject_reason;
+  run.live_replay_matched_leaf_title = liveReplay.matched_leaf_title;
+  run.catalog_match_found = liveReplay.catalog_match_found;
+  run.catalog_match_strategy = liveReplay.catalog_match_strategy;
+  run.catalog_live_replay_success = liveReplay.live_replay_success;
+  run.live_replay_visible_chapter_count = liveReplay.visible_chapter_count;
+  run.live_replay_visible_leaf_count = liveReplay.visible_leaf_count;
+  run.live_replay_top_candidates = liveReplay.top_candidates;
+  run.steps.push(liveReplay.step);
+}
+
+function validateStaticLowTextEvidence(target: SampleTarget): {
+  valid: boolean;
+  evidence_path: string | null;
+  reason: string;
+} {
+  if (
+    target.expected_classification !== "STATIC_LOW_TEXT_VERIFIED" ||
+    target.require_discovery_evidence !== "true"
+  ) {
+    return { valid: false, evidence_path: null, reason: "not_applicable" };
+  }
+
+  if (!target.discovery_evidence) {
+    return { valid: false, evidence_path: null, reason: "discovery_evidence_path_missing" };
+  }
+
+  // Convert .md path to .json for structured access
+  const jsonPath = resolve(repoRoot, target.discovery_evidence.replace(/\.md$/, ".json"));
+
+  if (!existsSync(jsonPath)) {
+    return { valid: false, evidence_path: jsonPath, reason: "discovery_evidence_file_missing" };
+  }
+
+  try {
+    const evidence = JSON.parse(readFileSync(jsonPath, "utf-8")) as {
+      conclusion?: { content_access_pattern?: string; recommended_next_action?: string };
+    };
+    const pattern = evidence?.conclusion?.content_access_pattern;
+    if (pattern !== "static_low_text") {
+      return {
+        valid: false,
+        evidence_path: jsonPath,
+        reason: `discovery_evidence_pattern_not_static_low_text: ${pattern}`,
+      };
+    }
+    return { valid: true, evidence_path: jsonPath, reason: "discovery_evidence_valid" };
+  } catch (e) {
+    return { valid: false, evidence_path: jsonPath, reason: `discovery_evidence_parse_error: ${e}` };
+  }
+}
+
+function runTarget(target: SampleTarget, liveReplay?: LiveReplayCheckResult): TargetRun {
+  const run = createTargetRun(target);
+
+  // Determine if this is a discovery-verified static low-text target
+  const staticLowTextEvidence = validateStaticLowTextEvidence(target);
+  const isStaticLowTextVerified =
+    target.expected_classification === "STATIC_LOW_TEXT_VERIFIED" && staticLowTextEvidence.valid;
+  run.static_low_text_promotion_attempted = target.expected_classification === "STATIC_LOW_TEXT_VERIFIED";
+  run.static_low_text_evidence_path = staticLowTextEvidence.evidence_path
+    ? toRepoPath(staticLowTextEvidence.evidence_path)
+    : null;
+  run.static_low_text_evidence_valid = staticLowTextEvidence.valid;
+
+  if (target.expected_classification === "STATIC_LOW_TEXT_VERIFIED" && !staticLowTextEvidence.valid) {
+    run.failure_reason = `static_low_text_evidence_invalid: ${staticLowTextEvidence.reason}`;
+    writeDiagnostic(run, "audit_readiness", run.failure_reason);
+    return run;
+  }
 
   console.log(`\n[phase3.3] target ${target.id}: ${target.title_hint}`);
+
+  if (run.require_live_replay) {
+    if (!liveReplay) {
+      run.failure_reason = "live_replay_not_checked";
+      writeDiagnostic(run, "live_replay", run.failure_reason);
+      return run;
+    }
+    applyLiveReplayToRun(run, liveReplay);
+    if (!liveReplay.success) {
+      run.failure_reason = `live_replay_failed: ${liveReplay.reject_reason ?? "unknown"}`;
+      writeDiagnostic(run, "live_replay", run.failure_reason);
+      return run;
+    }
+  }
 
   const metadataBefore = filenameSet(metadataDir);
   const requireLeafArg = run.require_leaf ? " --require-leaf" : "";
@@ -1328,6 +1895,20 @@ function runTarget(target: SampleTarget): TargetRun {
     return run;
   }
 
+  const stabStatus = metadata?.detail_content_stabilization_status ?? null;
+  if (
+    stabStatus === "timeout_no_container" ||
+    stabStatus === "timeout_unstable" ||
+    (stabStatus === "stable_but_low_text" && !isStaticLowTextVerified)
+  ) {
+    run.failure_reason = `detail_content_not_ready: stabilization_status=${stabStatus}`;
+    writeDiagnostic(run, "detail_content_not_ready", run.failure_reason);
+    return run;
+  }
+  if (stabStatus === "stable_but_low_text" && isStaticLowTextVerified) {
+    console.log(`[phase3.22] bypass stable_but_low_text gate for discovery-verified static low-text target: ${target.title_hint}`);
+  }
+
   const preflightMetadataStep = runCommand(
     "preflight_metadata",
     `pnpm preflight:sample -- --timestamp ${commandArg(run.produced_timestamp)}`
@@ -1361,6 +1942,7 @@ function runTarget(target: SampleTarget): TargetRun {
     ? !intermediateBefore.has(basename(intermediatePath))
     : false;
   const intermediateTimestamp = intermediate?.source?.timestamp ?? (intermediatePath ? basename(intermediatePath, ".json") : null);
+  run.latest_success_timestamp_used_by_parser = intermediateTimestamp;
   if (run.produced_timestamp && intermediateTimestamp) {
     run.parse_timestamp_alignment =
       run.produced_timestamp === intermediateTimestamp ? "matched" : "mismatched";
@@ -1370,11 +1952,14 @@ function runTarget(target: SampleTarget): TargetRun {
   run.text_blocks_count = textBlocksCount(intermediate);
   run.total_text_length = totalTextLength(intermediate);
   const contentReadiness = assessContentReadiness(intermediate);
-  run.content_ready = contentReadiness.contentReady;
+  run.content_ready = isStaticLowTextVerified ? true : contentReadiness.contentReady;
   run.content_readiness_reason = contentReadiness.reason;
-  if (!contentReadiness.contentReady) {
+  if (!contentReadiness.contentReady && !isStaticLowTextVerified) {
     run.diagnostic_sample = true;
     run.failure_reason = "not_ready_low_text";
+  }
+  if (!contentReadiness.contentReady && isStaticLowTextVerified) {
+    console.log(`[phase3.22] bypass content readiness gate for discovery-verified static low-text target: ${target.title_hint} (reason: ${contentReadiness.reason})`);
   }
   run.constraint_violations = checkIntermediateConstraints(intermediate);
   if (!run.actual_knowledge_node_click_text) {
@@ -1421,7 +2006,7 @@ function runTarget(target: SampleTarget): TargetRun {
     return run;
   }
 
-  if (run.require_leaf && !contentMentionsTitleSignal(intermediate)) {
+  if (run.require_leaf && !contentMentionsTitleSignal(intermediate) && !isStaticLowTextVerified) {
     run.content_ready = false;
     run.content_readiness_reason = "target_mismatch_content_body";
     run.diagnostic_sample = true;
@@ -1431,6 +2016,8 @@ function runTarget(target: SampleTarget): TargetRun {
     run.steps.push(semanticAuditStep);
     if (!semanticAuditStep.success) {
       run.asset_failure_reason = failureFromStep(semanticAuditStep);
+    } else {
+      applySemanticAuditToRun(run);
     }
     return run;
   }
@@ -1447,7 +2034,16 @@ function runTarget(target: SampleTarget): TargetRun {
   );
   run.steps.push(preflightContentStep);
   const contentPreflight = readPreflightReport(run.produced_timestamp);
-  if (!preflightContentStep.success || !contentPreflight || contentPreflight.overall !== "pass" || contentPreflight.content_gate !== "pass") {
+  const preflightFailureReasons: string[] = contentPreflight?.failure_reasons ?? [];
+  const isOnlyLowTextFail =
+    preflightFailureReasons.length > 0 &&
+    preflightFailureReasons.every(
+      (r) => r === "low_text_without_image_refs" || r === "body_missing_target_tokens"
+    );
+  if (
+    (!preflightContentStep.success || !contentPreflight || contentPreflight.overall !== "pass" || contentPreflight.content_gate !== "pass") &&
+    !(isStaticLowTextVerified && isOnlyLowTextFail)
+  ) {
     const reason = contentPreflight
       ? ((contentPreflight.failure_reasons ?? []).join("; ") || contentPreflight.recommended_action || "unknown")
       : failureFromStep(preflightContentStep);
@@ -1461,8 +2057,13 @@ function runTarget(target: SampleTarget): TargetRun {
     run.steps.push(semanticAuditStep);
     if (!semanticAuditStep.success) {
       run.asset_failure_reason = failureFromStep(semanticAuditStep);
+    } else {
+      applySemanticAuditToRun(run);
     }
     return run;
+  }
+  if (isStaticLowTextVerified && isOnlyLowTextFail) {
+    console.log(`[phase3.22] bypass content preflight low_text_without_image_refs for discovery-verified static low-text target: ${target.title_hint}`);
   }
 
   const validateIntermediateStep = runCommand("validate_intermediate", "pnpm validate:intermediate");
@@ -1480,13 +2081,26 @@ function runTarget(target: SampleTarget): TargetRun {
     return run;
   }
 
+  applySemanticAuditToRun(run);
   const semanticItem = semanticItemForTimestamp(run.produced_timestamp);
-  if (semanticItem?.renderer_eligible !== true) {
+  const isSemanticLowTextOnly =
+    isStaticLowTextVerified &&
+    semanticItem?.renderer_eligible !== true &&
+    (semanticItem?.quarantine_reason === "low_text" ||
+      semanticItem?.quarantine_reason === null ||
+      semanticItem?.quarantine_reason === "duplicate_same_title" ||
+      semanticItem?.quarantine_reason === "duplicate_actual_content") &&
+    (semanticItem?.alignment === "matched" || semanticItem?.alignment === "likely_matched");
+  if (semanticItem?.renderer_eligible !== true && !isSemanticLowTextOnly) {
     run.content_ready = false;
     run.diagnostic_sample = true;
     run.failure_reason = "semantic_audit_renderer_eligible_false";
     writeDiagnostic(run, "semantic_audit", run.failure_reason);
     return run;
+  }
+  if (isSemanticLowTextOnly) {
+    run.content_ready = true;
+    console.log(`[phase3.22] bypass semantic renderer_eligible gate for discovery-verified static low-text target: ${target.title_hint} (quarantine_reason: ${semanticItem?.quarantine_reason})`);
   }
 
   const manifestsBefore = filenameSet(manifestsDir);
@@ -1522,6 +2136,12 @@ function runTarget(target: SampleTarget): TargetRun {
     run.asset_failure_reason = failureFromStep(qualityAuditStep);
   }
 
+  const readinessAuditStep = runCommand("audit_readiness", "pnpm audit:renderer-readiness");
+  run.steps.push(readinessAuditStep);
+  if (!readinessAuditStep.success) {
+    run.asset_failure_reason = failureFromStep(readinessAuditStep);
+  }
+
   const reportCoverageStep = runCommand("report_coverage", "pnpm report:sample-coverage");
   run.steps.push(reportCoverageStep);
   if (!reportCoverageStep.success) {
@@ -1532,12 +2152,104 @@ function runTarget(target: SampleTarget): TargetRun {
   return run;
 }
 
-function main(): void {
+function writePhase322Reports(results: TargetRun[]): void {
+  const phase322Results = results.filter((r) => r.static_low_text_promotion_attempted);
+  if (phase322Results.length === 0) return;
+
+  const readinessAudit = readJson<ReadinessAuditShape>(readinessAuditPath);
+  const eligibleCount = readinessAudit?.overall_gate?.eligible_for_phase4_baseline_count ?? 0;
+  const phase4Allowed = readinessAudit?.overall_gate?.phase4_renderer_allowed ?? false;
+
+  const runReports = phase322Results.map((r) => ({
+    target: r.target_id,
+    title: r.title_hint,
+    discovery_evidence_path: r.static_low_text_evidence_path,
+    discovery_evidence_valid: r.static_low_text_evidence_valid,
+    crawl_result: r.steps.find((s) => s.name === "crawl")?.success ? "pass" : "fail",
+    preflight_result: r.steps.find((s) => s.name === "preflight_content")?.success ? "pass" : "fail",
+    parse_result: r.steps.find((s) => s.name === "parse")?.success ? "pass" : "fail",
+    semantic_alignment_result: r.semantic_audit_reason ?? "unknown",
+    renderer_readiness: (() => {
+      const item = readinessAudit?.samples?.find((s) => s.title === r.title_hint || s.timestamp === r.produced_timestamp);
+      return item
+        ? {
+            content_shape: item.content_shape,
+            readiness_class: item.readiness_class,
+            eligible_for_phase4_baseline: item.eligible_for_phase4_baseline,
+            renderer_policy: item.renderer_policy,
+          }
+        : null;
+    })(),
+    promoted_to_renderer_baseline: r.static_low_text_evidence_valid && r.status === "success",
+    status: r.status,
+    failure_reason: r.failure_reason,
+  }));
+
+  const report = {
+    phase: "3.22",
+    timestamp: new Date().toISOString(),
+    promoted_static_low_text_count: phase322Results.filter((r) => r.static_low_text_evidence_valid && r.status === "success").length,
+    promoted_static_low_text_titles: phase322Results
+      .filter((r) => r.static_low_text_evidence_valid && r.status === "success")
+      .map((r) => r.title_hint),
+    final_eligible_for_phase4_baseline_count: eligibleCount,
+    phase4_renderer_allowed: phase4Allowed,
+    runs: runReports,
+  };
+
+  const jsonPath = resolve(repoRoot, "verification/generated/phase3_22_static_low_text_promotion_run.json");
+  const mdPath = resolve(repoRoot, "verification/generated/phase3_22_static_low_text_promotion_run.md");
+  writeFileSync(jsonPath, JSON.stringify(report, null, 2), "utf-8");
+
+  const md = [
+    "# Phase 3.22 Static Low-text Promotion Run",
+    "",
+    `Generated: ${report.timestamp}`,
+    "",
+    "## Summary",
+    "",
+    `- promoted_static_low_text_count: ${report.promoted_static_low_text_count}`,
+    `- promoted_static_low_text_titles: ${report.promoted_static_low_text_titles.join(", ") || "(none)"}`,
+    `- final_eligible_for_phase4_baseline_count: ${report.final_eligible_for_phase4_baseline_count}`,
+    `- phase4_renderer_allowed: ${report.phase4_renderer_allowed}`,
+    "",
+    "## Runs",
+    "",
+    ...runReports.map((r) => [
+      `### ${r.title ?? r.target}`,
+      "",
+      `- target: ${r.target}`,
+      `- discovery_evidence_valid: ${r.discovery_evidence_valid}`,
+      `- crawl_result: ${r.crawl_result}`,
+      `- preflight_result: ${r.preflight_result}`,
+      `- parse_result: ${r.parse_result}`,
+      `- semantic_alignment_result: ${r.semantic_alignment_result}`,
+      `- promoted_to_renderer_baseline: ${r.promoted_to_renderer_baseline}`,
+      `- status: ${r.status}`,
+      r.failure_reason ? `- failure_reason: ${r.failure_reason}` : "",
+      r.renderer_readiness
+        ? [
+            `- content_shape: ${r.renderer_readiness.content_shape}`,
+            `- readiness_class: ${r.renderer_readiness.readiness_class}`,
+            `- eligible_for_phase4_baseline: ${r.renderer_readiness.eligible_for_phase4_baseline}`,
+            `- render_as: ${r.renderer_readiness.renderer_policy?.render_as}`,
+          ].join("\n")
+        : "- renderer_readiness: not_available",
+      "",
+    ].filter(Boolean).join("\n")),
+  ].join("\n");
+
+  writeFileSync(mdPath, md, "utf-8");
+  console.log(`[phase3.22] promotion report written: ${jsonPath}`);
+}
+
+async function main(): Promise<void> {
   if (!existsSync(sampleConfigPath)) {
     console.error(`[phase3.3] ERROR: sample config missing: ${sampleConfigPath}`);
     process.exit(1);
   }
 
+  const requestedTargetId = process.env.RUANKAODAREN_SAMPLE_TARGET_ID?.trim() || null;
   const yamlText = readFileSync(sampleConfigPath, "utf8");
   const targets = parseSampleTargets(yamlText);
   const pendingTargets = targets.filter(
@@ -1547,26 +2259,68 @@ function main(): void {
       target.require_leaf === "true" &&
       target.require_preflight === "true"
   );
+  const phase315Targets = pendingTargets
+    .filter((target) => target.require_live_replay === "true")
+    .sort((a, _b) => (a.expected_classification === "STATIC_LOW_TEXT_VERIFIED" ? -1 : 1))
+    .slice(0, maxLiveReplayCandidates);
   const phase312Targets = pendingTargets.filter(
     (target) =>
       target.source_catalog === "verification/generated/phase3_11_reachable_leaf_catalog.md" ||
       target.id.startsWith("phase312_")
   );
-  const selectedTargets = (phase312Targets.length > 0 ? phase312Targets : pendingTargets).slice(0, maxTargets);
+  const phase324Targets = pendingTargets.filter((target) => target.id.startsWith("phase324_"));
+  const selectedTargets = requestedTargetId
+    ? pendingTargets.filter((target) => target.id === requestedTargetId)
+    : phase324Targets.length > 0
+      ? phase324Targets.slice(0, maxTargets)
+      : phase315Targets.length > 0
+        ? phase315Targets
+        : (phase312Targets.length > 0 ? phase312Targets : pendingTargets).slice(0, maxTargets);
+  const selectedTargetsRequireLiveReplay = selectedTargets.some(
+    (target) => target.require_live_replay === "true"
+  );
 
   console.log("[phase3.3] controlled sample acquisition started");
+  if (requestedTargetId) {
+    console.log(`[phase3.3] target id filter: ${requestedTargetId}`);
+  }
   console.log(`[phase3.3] pending targets found: ${pendingTargets.length}`);
+  console.log(`[phase3.3] phase 3.24 third-baseline targets found: ${phase324Targets.length}`);
+  console.log(`[phase3.3] phase 3.15 live-replay targets found: ${phase315Targets.length}`);
   console.log(`[phase3.3] phase 3.12 reachable-leaf targets found: ${phase312Targets.length}`);
   console.log(`[phase3.3] targets selected: ${selectedTargets.length}`);
 
   const results: TargetRun[] = [];
-  for (const target of selectedTargets) {
-    results.push(runTarget(target));
+  let acquisitionAttempts = 0;
+  if (selectedTargetsRequireLiveReplay) {
+    for (const target of selectedTargets) {
+      const liveReplay = await checkLiveReplay(target);
+      if (!liveReplay.success) {
+        results.push(runTarget(target, liveReplay));
+        continue;
+      }
+      if (acquisitionAttempts >= maxTargets) {
+        break;
+      }
+      acquisitionAttempts += 1;
+      results.push(runTarget(target, liveReplay));
+      if (acquisitionAttempts >= maxTargets) {
+        break;
+      }
+    }
+  } else {
+    for (const target of selectedTargets) {
+      results.push(runTarget(target));
+    }
   }
 
   writeReports(results, pendingTargets);
   writePhase39Reports(results);
   writePhase312Reports(results);
+  if (selectedTargetsRequireLiveReplay) {
+    writePhase315Reports(results, phase315Targets);
+  }
+  writePhase322Reports(results);
 
   const coverage = readCoverageSummary();
   console.log("\n[phase3.3] acquisition summary");
@@ -1603,4 +2357,7 @@ function main(): void {
   console.log("[phase3.3] completed");
 }
 
-main();
+main().catch((error) => {
+  console.error(`[phase3.3] ERROR: ${error instanceof Error ? error.message : String(error)}`);
+  process.exit(1);
+});

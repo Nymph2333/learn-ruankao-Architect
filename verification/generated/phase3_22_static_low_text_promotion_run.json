@@ -1,0 +1,26 @@
+{
+  "phase": "3.22",
+  "timestamp": "2026-05-28T03:13:28.990Z",
+  "promoted_static_low_text_count": 1,
+  "promoted_static_low_text_titles": [
+    "13.3 软件架构风格"
+  ],
+  "final_eligible_for_phase4_baseline_count": 0,
+  "phase4_renderer_allowed": false,
+  "runs": [
+    {
+      "target": "phase322_software_architecture_style_static_low_text",
+      "title": "13.3 软件架构风格",
+      "discovery_evidence_path": "verification/generated/phase3_20_detail_interaction_discovery_13_3_软件架构风格.json",
+      "discovery_evidence_valid": true,
+      "crawl_result": "pass",
+      "preflight_result": "pass",
+      "parse_result": "pass",
+      "semantic_alignment_result": "duplicate_same_title",
+      "renderer_readiness": null,
+      "promoted_to_renderer_baseline": true,
+      "status": "success",
+      "failure_reason": null
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-05-27T16:04:12.650Z",
+  "selected_metadata_timestamp": "2026-05-27T14-36-07-171Z",
+  "selected_metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T14-36-07-171Z.json",
+  "selected_metadata_abs_path": "D:\\learn\\sources\\ruankaodaren\\raw\\metadata\\2026-05-27T14-36-07-171Z.json",
+  "selected_outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo_ql-editor.html",
+  "output_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-36-07-171Z.json",
+  "selected_reason": "timestamp_strict",
+  "strict_timestamp_requested": "2026-05-27T14-36-07-171Z"
+}

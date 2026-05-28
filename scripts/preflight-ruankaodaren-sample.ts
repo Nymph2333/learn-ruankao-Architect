@@ -56,6 +56,10 @@ interface MetadataShape {
   resolved_leaf_text?: string | null;
   post_detail_content_signal?: boolean;
   outer_html_paths?: string[];
+  detail_content_stabilization_attempted?: boolean;
+  detail_content_stabilization_status?: string;
+  detail_content_stabilization_text_length?: number;
+  detail_content_stabilization_img_count?: number;
 }
 
 interface SemanticAuditReport {
@@ -128,6 +132,9 @@ interface PreflightReport {
       title: string | null;
       kind: "different_title" | "same_title";
     } | null;
+    detail_content_stabilization_status: string | null;
+    detail_content_stabilization_text_length: number | null;
+    detail_content_stabilization_img_count: number | null;
   };
 }
 
@@ -326,6 +333,12 @@ function evaluateMetadataGate(
   if (!metadata?.require_leaf && !knownGoodException) reasons.push("require_leaf_false");
   if (metadata?.post_detail_content_signal !== true) reasons.push("post_detail_content_signal_false");
   if (!outerHtmlPath) reasons.push("knowInfo_ql_editor_outer_html_missing");
+  if (
+    metadata?.detail_content_stabilization_status === "timeout_no_container" ||
+    metadata?.detail_content_stabilization_status === "timeout_unstable"
+  ) {
+    reasons.push("detail_content_not_stable");
+  }
 
   if (metadata?.require_leaf === true) {
     const requested = metadata.requested_target_text ?? null;
@@ -613,6 +626,9 @@ function main(): void {
       matched_tokens: contentResult.matchedTokens,
       quarantined: quarantineMap.has(timestamp),
       duplicate_match: duplicateResult.duplicateMatch,
+      detail_content_stabilization_status: metadata?.detail_content_stabilization_status ?? null,
+      detail_content_stabilization_text_length: metadata?.detail_content_stabilization_text_length ?? null,
+      detail_content_stabilization_img_count: metadata?.detail_content_stabilization_img_count ?? null,
     },
   };
 

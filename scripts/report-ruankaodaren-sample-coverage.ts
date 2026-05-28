@@ -25,6 +25,8 @@ const quarantineManifestPath = resolve(
   "data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json"
 );
 const semanticAuditPath = resolve(repoRoot, "verification/generated/phase3_7_semantic_alignment_audit.json");
+const readinessAuditPath = resolve(repoRoot, "verification/generated/phase3_21_renderer_readiness_audit.json");
+const baselineManifestPath = resolve(repoRoot, "verification/generated/phase3_23_renderer_baseline_manifest.json");
 const generatedDir = resolve(repoRoot, "verification/generated");
 const diagnosticsDir = resolve(repoRoot, "data/intermediate/ruankaodaren/diagnostics");
 
@@ -90,6 +92,18 @@ interface CoverageReport {
     | "candidate_ready";
   renderer_eligible_titles: string[];
   missing_renderer_eligible_count: number;
+  // Phase 3.21 additions
+  renderer_readiness_classes_distribution: Record<string, number>;
+  content_shape_distribution: Record<string, number>;
+  eligible_for_phase4_baseline_count: number;
+  static_low_text_verified_count: number;
+  renderer_policy_summary: Array<{ title: string | null; render_as: string; allow_markdown: boolean }>;
+  // Phase 3.23 additions
+  renderer_baseline_manifest_exists: boolean;
+  unique_renderer_baseline_count: number;
+  canonical_baseline_titles: string[];
+  duplicate_eligible_samples_excluded: number;
+  phase4_input_contract_ready: boolean;
 }
 
 interface AssetManifestSummary {
@@ -337,6 +351,89 @@ if (rendererEligibleSamples >= 3 && constraintViolationsTotal === 0) {
   phase4CandidateStatus = "blocked_insufficient_renderer_eligible";
 }
 
+// Phase 3.21: load readiness audit if present
+interface ReadinessAuditItemCoverage {
+  timestamp: string;
+  title?: string | null;
+  content_shape: string;
+  readiness_class: string;
+  eligible_for_phase4_baseline: boolean;
+  renderer_policy?: {
+    render_as: string;
+    allow_markdown_generation_later: boolean;
+  } | null;
+}
+interface ReadinessAuditReportCoverage {
+  items?: ReadinessAuditItemCoverage[];
+}
+
+const readinessClassesDist: Record<string, number> = {};
+const contentShapeDist: Record<string, number> = {};
+let eligibleForPhase4Count = 0;
+let staticLowTextVerifiedCount = 0;
+const rendererPolicySummary: Array<{ title: string | null; render_as: string; allow_markdown: boolean }> = [];
+
+if (existsSync(readinessAuditPath)) {
+  try {
+    const raw = readFileSync(readinessAuditPath, "utf8");
+    const readinessReport = JSON.parse(raw) as ReadinessAuditReportCoverage;
+    for (const item of readinessReport.items ?? []) {
+      readinessClassesDist[item.readiness_class] = (readinessClassesDist[item.readiness_class] ?? 0) + 1;
+      contentShapeDist[item.content_shape] = (contentShapeDist[item.content_shape] ?? 0) + 1;
+      if (item.eligible_for_phase4_baseline) eligibleForPhase4Count++;
+      if (item.content_shape === "STATIC_LOW_TEXT_VERIFIED") staticLowTextVerifiedCount++;
+      if (item.renderer_policy) {
+        rendererPolicySummary.push({
+          title: item.title ?? null,
+          render_as: item.renderer_policy.render_as,
+          allow_markdown: item.renderer_policy.allow_markdown_generation_later,
+        });
+      }
+    }
+  } catch {
+    // readiness audit unreadable — leave distributions empty
+  }
+}
+
+// Phase 3.23: load unique renderer baseline manifest if present
+interface BaselineManifestForCoverage {
+  unique_title_count?: number;
+  phase4_input_contract_ready?: boolean;
+  baseline_items?: Array<{ canonical_title?: string }>;
+  excluded_items?: Array<{ reason?: string }>;
+}
+
+let baselineManifestExists = false;
+let uniqueRendererBaselineCount = 0;
+let canonicalBaselineTitles: string[] = [];
+let duplicateEligibleSamplesExcluded = 0;
+let phase4InputContractReady = false;
+
+if (existsSync(baselineManifestPath)) {
+  try {
+    const bm = JSON.parse(readFileSync(baselineManifestPath, "utf8")) as BaselineManifestForCoverage;
+    baselineManifestExists = true;
+    uniqueRendererBaselineCount = bm.unique_title_count ?? 0;
+    canonicalBaselineTitles = (bm.baseline_items ?? [])
+      .map((i) => i.canonical_title ?? "")
+      .filter(Boolean);
+    duplicateEligibleSamplesExcluded = (bm.excluded_items ?? []).filter(
+      (i) => i.reason === "duplicate_same_title" || i.reason === "duplicate_actual_content" || i.reason === "duplicate_of_canonical"
+    ).length;
+    phase4InputContractReady = bm.phase4_input_contract_ready ?? false;
+    // Override phase4 status based on unique baseline manifest
+    if (phase4InputContractReady && uniqueRendererBaselineCount >= 3) {
+      phase4CandidateStatus = "candidate_ready";
+    } else if (constraintViolationsTotal > 0) {
+      phase4CandidateStatus = "blocked_constraints_violation";
+    } else {
+      phase4CandidateStatus = "blocked_insufficient_renderer_eligible";
+    }
+  } catch {
+    // unreadable manifest — ignore
+  }
+}
+
 const report: CoverageReport = {
   generated_at: new Date().toISOString(),
   total_samples: samples.length,
@@ -364,6 +461,16 @@ const report: CoverageReport = {
   phase4_candidate_status: phase4CandidateStatus,
   renderer_eligible_titles: rendererEligibleTitles,
   missing_renderer_eligible_count: missingRendererEligibleCount,
+  renderer_readiness_classes_distribution: readinessClassesDist,
+  content_shape_distribution: contentShapeDist,
+  eligible_for_phase4_baseline_count: eligibleForPhase4Count,
+  static_low_text_verified_count: staticLowTextVerifiedCount,
+  renderer_policy_summary: rendererPolicySummary,
+  renderer_baseline_manifest_exists: baselineManifestExists,
+  unique_renderer_baseline_count: uniqueRendererBaselineCount,
+  canonical_baseline_titles: canonicalBaselineTitles,
+  duplicate_eligible_samples_excluded: duplicateEligibleSamplesExcluded,
+  phase4_input_contract_ready: phase4InputContractReady,
 };
 
 // ---------------------------------------------------------------------------
@@ -392,6 +499,29 @@ console.log(`  renderer_eligible_titles:     ${report.renderer_eligible_titles.j
 console.log(`  total text_blocks:            ${report.total_text_blocks}`);
 console.log(`  total key_terms:              ${report.total_key_terms}`);
 console.log(`  total image_refs:             ${report.total_image_refs}`);
+console.log("\n  Phase 3.21 readiness distributions:");
+if (Object.keys(report.renderer_readiness_classes_distribution).length > 0) {
+  for (const [k, v] of Object.entries(report.renderer_readiness_classes_distribution)) {
+    console.log(`    readiness_class ${k}: ${v}`);
+  }
+  for (const [k, v] of Object.entries(report.content_shape_distribution)) {
+    console.log(`    content_shape ${k}: ${v}`);
+  }
+  console.log(`  eligible_for_phase4_baseline: ${report.eligible_for_phase4_baseline_count}`);
+  console.log(`  static_low_text_verified:     ${report.static_low_text_verified_count}`);
+} else {
+  console.log("    (no readiness audit — run pnpm audit:renderer-readiness)");
+}
+console.log("\n  Phase 3.23 unique baseline manifest:");
+if (report.renderer_baseline_manifest_exists) {
+  console.log(`  renderer_baseline_manifest_exists: true`);
+  console.log(`  unique_renderer_baseline_count:    ${report.unique_renderer_baseline_count}`);
+  console.log(`  canonical_baseline_titles:         ${report.canonical_baseline_titles.join(", ") || "(none)"}`);
+  console.log(`  duplicate_eligible_excluded:       ${report.duplicate_eligible_samples_excluded}`);
+  console.log(`  phase4_input_contract_ready:       ${report.phase4_input_contract_ready}`);
+} else {
+  console.log("    (no baseline manifest — run pnpm build:renderer-baseline)");
+}
 console.log("\n  classification distribution:");
 for (const [cls, count] of Object.entries(classificationDist)) {
   console.log(`    ${cls}: ${count}`);
@@ -455,6 +585,28 @@ const mdLines: string[] = [
   `| Total text_blocks | ${report.total_text_blocks} |`,
   `| Total key_terms | ${report.total_key_terms} |`,
   `| Total image_refs | ${report.total_image_refs} |`,
+  `| eligible_for_phase4_baseline | ${report.eligible_for_phase4_baseline_count} |`,
+  `| static_low_text_verified | ${report.static_low_text_verified_count} |`,
+  `| renderer_baseline_manifest_exists | ${report.renderer_baseline_manifest_exists} |`,
+  `| unique_renderer_baseline_count | ${report.unique_renderer_baseline_count} |`,
+  `| duplicate_eligible_samples_excluded | ${report.duplicate_eligible_samples_excluded} |`,
+  `| phase4_input_contract_ready | ${report.phase4_input_contract_ready} |`,
+  "",
+  "## Renderer Readiness Classes (Phase 3.21)",
+  "",
+  Object.keys(report.renderer_readiness_classes_distribution).length > 0
+    ? ["| Readiness Class | Count |", "|---|---:|",
+        ...Object.entries(report.renderer_readiness_classes_distribution).map(([k, v]) => `| ${k} | ${v} |`)]
+        .join("\n")
+    : "- (no readiness audit — run `pnpm audit:renderer-readiness`)",
+  "",
+  "## Content Shape Distribution (Phase 3.21)",
+  "",
+  Object.keys(report.content_shape_distribution).length > 0
+    ? ["| Content Shape | Count |", "|---|---:|",
+        ...Object.entries(report.content_shape_distribution).map(([k, v]) => `| ${k} | ${v} |`)]
+        .join("\n")
+    : "- (no readiness audit)",
   "",
   "## Renderer Eligible Titles",
   "",

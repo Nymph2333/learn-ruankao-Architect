@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-05-27T16:04:13.385Z",
+  "timestamp": "2026-05-27T14-37-21-375Z",
+  "source_outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo_ql-editor.html",
+  "root_selector": ".knowInfo.ql-editor",
+  "root_text_length": 131,
+  "total_text_length": 128,
+  "direct_text_node_count": 9,
+  "extracted_text_block_count": 15,
+  "contains_direct_text": true,
+  "root_text_loss_ratio": 0.022900763358778664,
+  "text_block_types": [
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text",
+    "root_text"
+  ],
+  "constraints": {
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true
+  }
+}

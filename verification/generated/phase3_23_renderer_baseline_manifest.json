@@ -1,0 +1,157 @@
+{
+  "created_at": "2026-05-28T05:27:02.593Z",
+  "source_name": "ruankaodaren",
+  "baseline_policy": {
+    "unit": "unique_title",
+    "duplicates_count_once": true,
+    "quarantined_excluded": true,
+    "diagnostic_excluded": true,
+    "min_unique_titles_for_phase4": 3
+  },
+  "baseline_count": 3,
+  "unique_title_count": 3,
+  "phase4_input_contract_ready": true,
+  "required_before_phase4": [],
+  "baseline_items": [
+    {
+      "canonical_title": "1.3 指令系统CISC和RISC",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-26T09-40-21-903Z.json",
+      "timestamp": "2026-05-26T09-40-21-903Z",
+      "readiness_class": "renderer_ready_with_asset_refs",
+      "content_shape": "MIXED_TEXT_IMAGE",
+      "renderer_policy": {
+        "render_as": "asset_card",
+        "preserve_asset_refs": true,
+        "allow_markdown_generation_later": true,
+        "notes": [
+          "asset refs must be preserved as links",
+          "no OCR on image content",
+          "no image table reconstruction"
+        ]
+      },
+      "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
+      "duplicate_sample_paths": [],
+      "manual_review_required": true,
+      "constraints": {
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false
+      }
+    },
+    {
+      "canonical_title": "13.3 软件架构风格",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-54-15-543Z.json",
+      "timestamp": "2026-05-28T02-54-15-543Z",
+      "readiness_class": "renderer_ready_short_card",
+      "content_shape": "STATIC_LOW_TEXT_VERIFIED",
+      "renderer_policy": {
+        "render_as": "short_card",
+        "preserve_asset_refs": false,
+        "allow_markdown_generation_later": true,
+        "notes": [
+          "content is genuinely short — do not inflate or pad",
+          "Phase 3.20 discovery confirmed static_low_text pattern",
+          "manual human review recommended before publishing"
+        ]
+      },
+      "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json",
+      "duplicate_sample_paths": [
+        "data/intermediate/ruankaodaren/samples/2026-05-28T02-59-11-656Z.json",
+        "data/intermediate/ruankaodaren/samples/2026-05-28T03-03-37-856Z.json",
+        "data/intermediate/ruankaodaren/samples/2026-05-28T03-10-01-532Z.json"
+      ],
+      "manual_review_required": true,
+      "constraints": {
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false
+      }
+    },
+    {
+      "canonical_title": "9.1 信息安全基础知识",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "timestamp": "2026-05-28T05-25-27-891Z",
+      "readiness_class": "renderer_ready_text",
+      "content_shape": "HTML_RICH_TEXT",
+      "renderer_policy": {
+        "render_as": "concept_card",
+        "preserve_asset_refs": false,
+        "allow_markdown_generation_later": true,
+        "notes": [
+          "standard concept card rendering",
+          "do not rewrite exam content"
+        ]
+      },
+      "asset_manifest_path": null,
+      "duplicate_sample_paths": [],
+      "manual_review_required": true,
+      "constraints": {
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false
+      }
+    }
+  ],
+  "excluded_items": [
+    {
+      "title": "13.3 软件架构风格",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-59-11-656Z.json",
+      "reason": "duplicate_same_title"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T03-03-37-856Z.json",
+      "reason": "duplicate_same_title"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T03-10-01-532Z.json",
+      "reason": "duplicate_same_title"
+    },
+    {
+      "title": "第3章 数据库系统",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T01-32-02-914Z.json",
+      "reason": "diagnostic"
+    },
+    {
+      "title": "第5章 计算机网络",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T01-32-47-268Z.json",
+      "reason": "diagnostic"
+    },
+    {
+      "title": "3.1 数据库系统常识",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T02-17-40-989Z.json",
+      "reason": "low_text"
+    },
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T02-34-55-788Z.json",
+      "reason": "target_mismatch"
+    },
+    {
+      "title": "1.5 存储系统",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T02-35-30-393Z.json",
+      "reason": "target_mismatch"
+    },
+    {
+      "title": "1.4 指令的流水处理",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T02-36-04-460Z.json",
+      "reason": "target_mismatch"
+    },
+    {
+      "title": "3.3 数据库的设计",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-34-52-493Z.json",
+      "reason": "low_text"
+    },
+    {
+      "title": "5.1 网络概述和模型",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-36-07-171Z.json",
+      "reason": "low_text"
+    },
+    {
+      "title": "8.8 典型信息系统架构模型",
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-37-21-375Z.json",
+      "reason": "target_mismatch"
+    }
+  ]
+}

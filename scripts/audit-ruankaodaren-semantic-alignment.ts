@@ -60,6 +60,14 @@ interface SampleAudit {
   body_alignment: BodyAlignment;
   expected_tokens: string[];
   matched_body_tokens: string[];
+  matched_expected_tokens: string[];
+  missing_expected_tokens: string[];
+  conflicting_tokens: string[];
+  evidence_sources_used: string[];
+  decision_reason: string;
+  text_preview_used: string;
+  image_refs_surrounding_text_used: string[];
+  html_fragment_text_used: string;
   detected_body_signals: string[];
   duplicate_group_id: string | null;
   duplicate_kind: DuplicateKind;
@@ -116,6 +124,12 @@ function stripHtml(value: string): string {
     .trim();
 }
 
+function truncate(value: string, maxLength = 500): string {
+  const normalized = value.replace(/\s+/g, " ").trim();
+  if (normalized.length <= maxLength) return normalized;
+  return `${normalized.slice(0, maxLength)}...`;
+}
+
 function isChapterTitle(title: string | null | undefined): boolean {
   const normalized = normalizeText(title);
   return /^第\s*\d+\s*章/.test(normalized) || (normalized.startsWith("第") && normalized.includes("章"));
@@ -137,8 +151,42 @@ function titleWithoutNumber(value: string | null | undefined): string {
 function tokenCandidates(value: string | null | undefined): string[] {
   const text = titleWithoutNumber(value);
   const number = sectionNumber(value);
-  const withoutWeakSuffix = text.replace(/(常识|基础|知识|系统|技术|处理|设计)$/, "");
-  const weakTerms = new Set(["系统", "技术", "处理", "设计", "常识", "基础", "知识", "计算机"]);
+  const withoutWeakSuffix = text.replace(/(常识|基础|知识|系统|技术|处理|设计|模型|概述|组成|框架)$/, "");
+  const genericTerms = new Set([
+    "的",
+    "和",
+    "与",
+    "系统",
+    "设计",
+    "模型",
+    "基础",
+    "概述",
+    "知识",
+    "组成",
+    "框架",
+    "技术",
+    "处理",
+    "常识",
+    "计算机",
+  ]);
+  const domainTerms = [
+    "数据库",
+    "网络",
+    "软件测试",
+    "架构",
+    "信息安全",
+    "信息系统",
+    "事务",
+    "索引",
+    "规范化",
+    "关系数据库",
+    "电子政务",
+    "政府信息化",
+    "TCP",
+    "IP",
+    "CISC",
+    "RISC",
+  ];
   const rawTokens = [
     number ?? "",
     text,
@@ -147,12 +195,15 @@ function tokenCandidates(value: string | null | undefined): string[] {
     ...(text.match(/[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*/g) ?? []),
     ...(text.match(/\p{Script=Han}{2,}/gu) ?? []),
   ];
+  for (const term of domainTerms) {
+    if (text.toLowerCase().includes(term.toLowerCase())) rawTokens.push(term);
+  }
   const seen = new Set<string>();
   const tokens: string[] = [];
 
   for (const rawToken of rawTokens) {
     const token = normalizeComparable(rawToken);
-    if (token.length < 2 || weakTerms.has(token) || seen.has(token)) continue;
+    if (token.length < 2 || genericTerms.has(token) || seen.has(token)) continue;
     seen.add(token);
     tokens.push(token);
   }
@@ -160,16 +211,35 @@ function tokenCandidates(value: string | null | undefined): string[] {
   return tokens;
 }
 
-function bodyText(doc: RuankaoIntermediateDocument, metadata: CrawlerMetadata | null): string {
-  const parts = [
-    ...(doc.content?.text_blocks ?? []).map((block) => block.text),
-    ...(doc.content?.key_terms ?? []).map((term) => term.text),
-    ...(doc.content?.image_refs ?? []).map((ref) => ref.surrounding_text ?? ""),
-    ...(doc.content?.html_fragments ?? []).map((fragment) => stripHtml(fragment.outer_html ?? "")),
-    metadata?.detail_content_text_preview ?? "",
-  ];
+function bodyEvidenceParts(doc: RuankaoIntermediateDocument, metadata: CrawlerMetadata | null): {
+  textParts: string[];
+  keyTermParts: string[];
+  imageRefParts: string[];
+  htmlFragmentParts: string[];
+  metadataPreview: string;
+} {
+  return {
+    textParts: (doc.content?.text_blocks ?? []).map((block) => block.text),
+    keyTermParts: (doc.content?.key_terms ?? []).map((term) => term.text),
+    imageRefParts: (doc.content?.image_refs ?? []).map((ref) => ref.surrounding_text ?? ""),
+    htmlFragmentParts: (doc.content?.html_fragments ?? []).map((fragment) =>
+      stripHtml(fragment.outer_html ?? "")
+    ),
+    metadataPreview: metadata?.detail_content_text_preview ?? "",
+  };
+}
 
-  return normalizeText(parts.join("\n"));
+function bodyText(doc: RuankaoIntermediateDocument, metadata: CrawlerMetadata | null): string {
+  const evidence = bodyEvidenceParts(doc, metadata);
+  return normalizeText(
+    [
+      ...evidence.textParts,
+      ...evidence.keyTermParts,
+      ...evidence.imageRefParts,
+      ...evidence.htmlFragmentParts,
+      evidence.metadataPreview,
+    ].join("\n")
+  );
 }
 
 function detectedSignals(text: string): string[] {
@@ -252,6 +322,9 @@ function judgeBodyAlignment(
   bodyAlignment: BodyAlignment;
   expectedTokens: string[];
   matchedTokens: string[];
+  conflictingTokens: string[];
+  evidenceSourcesUsed: string[];
+  decisionReason: string;
 } {
   const doc = record.doc;
   const title = doc.content?.title ?? null;
@@ -262,41 +335,95 @@ function judgeBodyAlignment(
     ...tokenCandidates(target),
     ...tokenCandidates(requested),
   ])];
+  const evidence = bodyEvidenceParts(doc, record.metadata);
+  const evidenceSources: Array<{ name: string; text: string }> = [
+    { name: "text_blocks", text: evidence.textParts.join("\n") },
+    { name: "key_terms", text: evidence.keyTermParts.join("\n") },
+    { name: "image_refs.surrounding_text", text: evidence.imageRefParts.join("\n") },
+    { name: "html_fragments", text: evidence.htmlFragmentParts.join("\n") },
+    { name: "metadata.detail_content_text_preview", text: evidence.metadataPreview },
+  ];
   const body = normalizeComparable(bodyText(doc, record.metadata));
   const textLength = (doc.content?.text_blocks ?? []).reduce((sum, block) => sum + block.text.length, 0);
   const imageRefs = doc.content?.image_refs?.length ?? 0;
   const matchedTokens = expectedTokens.filter((token) => body.includes(token));
+  const evidenceSourcesUsed = evidenceSources
+    .filter((source) => normalizeComparable(source.text).length > 0)
+    .map((source) => source.name);
 
   if (matchedTokens.length > 0) {
-    return { bodyAlignment: "matched", expectedTokens, matchedTokens };
+    return {
+      bodyAlignment: "matched",
+      expectedTokens,
+      matchedTokens,
+      conflictingTokens: [],
+      evidenceSourcesUsed,
+      decisionReason: "body_contains_expected_token",
+    };
   }
 
   if (textLength < 80 && imageRefs === 0) {
-    return { bodyAlignment: "insufficient_text", expectedTokens, matchedTokens };
+    return {
+      bodyAlignment: "insufficient_text",
+      expectedTokens,
+      matchedTokens,
+      conflictingTokens: [],
+      evidenceSourcesUsed,
+      decisionReason: "text_too_short_without_image_refs",
+    };
   }
 
   if (imageRefs > 0 && textLength < 80) {
-    return { bodyAlignment: "image_dominant_unknown", expectedTokens, matchedTokens };
+    return {
+      bodyAlignment: "image_dominant_unknown",
+      expectedTokens,
+      matchedTokens,
+      conflictingTokens: [],
+      evidenceSourcesUsed,
+      decisionReason: "image_dominant_with_insufficient_text",
+    };
   }
 
-  const otherDistinctiveTokens = allRecords
+  const otherDistinctiveTokens = [...new Set(allRecords
     .filter((other) => other.timestamp !== record.timestamp)
     .flatMap((other) => [
       ...tokenCandidates(other.doc.content?.title ?? null),
       ...tokenCandidates(other.doc.navigation_context?.target_node_text ?? ""),
       ...tokenCandidates(other.metadata?.requested_target_text ?? null),
     ])
-    .filter((token) => !expectedTokens.includes(token));
+    .filter((token) => !expectedTokens.includes(token)))];
+  const conflictingTokens = otherDistinctiveTokens.filter((token) => body.includes(token));
 
-  if (otherDistinctiveTokens.some((token) => body.includes(token))) {
-    return { bodyAlignment: "mismatched", expectedTokens, matchedTokens };
+  if (conflictingTokens.length > 0) {
+    return {
+      bodyAlignment: "mismatched",
+      expectedTokens,
+      matchedTokens,
+      conflictingTokens,
+      evidenceSourcesUsed,
+      decisionReason: "body_contains_conflicting_tokens",
+    };
   }
 
   if (isLeafTitle(title)) {
-    return { bodyAlignment: "mismatched", expectedTokens, matchedTokens };
+    return {
+      bodyAlignment: "mismatched",
+      expectedTokens,
+      matchedTokens,
+      conflictingTokens: [],
+      evidenceSourcesUsed,
+      decisionReason: "leaf_title_without_body_token_evidence",
+    };
   }
 
-  return { bodyAlignment: "unknown", expectedTokens, matchedTokens };
+  return {
+    bodyAlignment: "unknown",
+    expectedTokens,
+    matchedTokens,
+    conflictingTokens: [],
+    evidenceSourcesUsed,
+    decisionReason: "no_decisive_body_evidence",
+  };
 }
 
 function loadMetadata(timestamp: string): CrawlerMetadata | null {
@@ -380,7 +507,11 @@ function buildAudits(records: SampleRecord[]): SampleAudit[] {
     const effectiveTarget = requested || target;
     const alignment = titleTargetAlignment(title, target, requested);
     const body = bodyText(doc, record.metadata);
+    const evidenceParts = bodyEvidenceParts(doc, record.metadata);
     const bodyResult = judgeBodyAlignment(record, records);
+    const missingExpectedTokens = bodyResult.expectedTokens.filter(
+      (token) => !bodyResult.matchedTokens.includes(token)
+    );
     const fingerprint = contentFingerprint(doc);
     const duplicateGroup = duplicateGroups.get(fingerprint) ?? [];
     const duplicateGroupId = duplicateGroupIds.get(fingerprint) ?? null;
@@ -415,6 +546,16 @@ function buildAudits(records: SampleRecord[]): SampleAudit[] {
       body_alignment: bodyResult.bodyAlignment,
       expected_tokens: bodyResult.expectedTokens,
       matched_body_tokens: bodyResult.matchedTokens,
+      matched_expected_tokens: bodyResult.matchedTokens,
+      missing_expected_tokens: missingExpectedTokens,
+      conflicting_tokens: bodyResult.conflictingTokens,
+      evidence_sources_used: bodyResult.evidenceSourcesUsed,
+      decision_reason: bodyResult.decisionReason,
+      text_preview_used: truncate([...evidenceParts.textParts, ...evidenceParts.keyTermParts, evidenceParts.metadataPreview].join(" "), 500),
+      image_refs_surrounding_text_used: evidenceParts.imageRefParts
+        .map((part) => truncate(part, 200))
+        .filter((part) => part.length > 0),
+      html_fragment_text_used: truncate(evidenceParts.htmlFragmentParts.join(" "), 500),
       detected_body_signals: detectedSignals(body),
       duplicate_group_id: duplicateGroupId,
       duplicate_kind: duplicateKind,
@@ -507,6 +648,25 @@ function writeAuditReports(audits: SampleAudit[], manifest: QuarantineManifest, 
         `| ${audit.timestamp} | ${audit.title ?? ""} | ${audit.requested_target_text ?? ""} | ${audit.target_node_text} | ${audit.alignment} | ${audit.body_alignment} | ${audit.duplicate_group_id ?? ""} | ${audit.quarantined ? "yes" : "no"} | ${audit.quarantine_reason ?? ""} | ${audit.renderer_eligible ? "yes" : "no"} |`
     ),
     "",
+    "## Failure Evidence",
+    "",
+    ...audits
+      .filter((audit) => audit.quarantined || audit.body_alignment !== "matched")
+      .flatMap((audit) => [
+        `### ${audit.timestamp} / ${audit.title ?? ""}`,
+        "",
+        `- expected_tokens: ${audit.expected_tokens.join(", ") || "(none)"}`,
+        `- matched_expected_tokens: ${audit.matched_expected_tokens.join(", ") || "(none)"}`,
+        `- missing_expected_tokens: ${audit.missing_expected_tokens.join(", ") || "(none)"}`,
+        `- conflicting_tokens: ${audit.conflicting_tokens.join(", ") || "(none)"}`,
+        `- evidence_sources_used: ${audit.evidence_sources_used.join(", ") || "(none)"}`,
+        `- decision_reason: ${audit.decision_reason}`,
+        `- detected_body_signals: ${audit.detected_body_signals.join(", ") || "(none)"}`,
+        `- text_preview_used: ${audit.text_preview_used || "(empty)"}`,
+        `- image_refs_surrounding_text_used: ${audit.image_refs_surrounding_text_used.join(" | ") || "(none)"}`,
+        `- html_fragment_text_used: ${audit.html_fragment_text_used || "(empty)"}`,
+        "",
+      ]),
     "## Quarantine Manifest",
     "",
     `Path: \`${toRepoPath(quarantineManifestPath)}\``,

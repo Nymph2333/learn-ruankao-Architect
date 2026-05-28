@@ -34,6 +34,7 @@ import type {
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
+const generatedDir = resolve(repoRoot, "verification/generated");
 
 // ---------------------------------------------------------------------------
 // Argument parsing
@@ -86,7 +87,17 @@ function isSuccessfulMetadata(meta: CrawlerMetadata): boolean {
   );
 }
 
-function findLatestSuccessfulMetadata(timestamp?: string): { ts: string; meta: CrawlerMetadata } {
+interface MetadataSelection {
+  ts: string;
+  meta: CrawlerMetadata;
+  metadataPath: string;
+  selectedReason: "timestamp_strict" | "latest_success_auto" | "auto_success";
+}
+
+function findLatestSuccessfulMetadata(
+  timestamp?: string,
+  selectedReason: "latest_success_auto" | "auto_success" = "auto_success"
+): MetadataSelection {
   const metaDir = resolve(repoRoot, "sources/ruankaodaren/raw/metadata");
 
   if (!existsSync(metaDir)) {
@@ -119,7 +130,12 @@ function findLatestSuccessfulMetadata(timestamp?: string): { ts: string; meta: C
       console.error("[parser]          outer_html_paths contains knowInfo_ql-editor");
       process.exit(1);
     }
-    return { ts: timestamp, meta };
+    return {
+      ts: timestamp,
+      meta,
+      metadataPath: resolve(metaDir, fname),
+      selectedReason: "timestamp_strict",
+    };
   }
 
   // Auto-discover latest successful metadata
@@ -128,7 +144,12 @@ function findLatestSuccessfulMetadata(timestamp?: string): { ts: string; meta: C
     if (isSuccessfulMetadata(meta)) {
       const ts = fname.replace(".json", "");
       console.log(`[parser] auto-selected timestamp: ${ts}`);
-      return { ts, meta };
+      return {
+        ts,
+        meta,
+        metadataPath: resolve(metaDir, fname),
+        selectedReason,
+      };
     }
   }
 
@@ -156,67 +177,168 @@ function findOuterHtmlRelPath(meta: CrawlerMetadata): string {
 // Extraction helpers
 // ---------------------------------------------------------------------------
 
+type CheerioApi = ReturnType<typeof load>;
+type CheerioNode = {
+  type?: string;
+  name?: string;
+  data?: string;
+  children?: CheerioNode[];
+};
+
+interface ExtractionDiagnostics {
+  root_text_length: number;
+  total_text_length: number;
+  direct_text_node_count: number;
+  extracted_text_block_count: number;
+  contains_direct_text: boolean;
+}
+
+function normalizeInlineText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
+}
+
+function normalizeComparableText(value: string): string {
+  return value.replace(/\s+/g, "").trim();
+}
+
+function selectorHint($: CheerioApi, node: CheerioNode, fallback: string): string {
+  if (node.type === "text") return fallback;
+  const $node = $(node as never);
+  const name = node.name ?? "unknown";
+  const id = $node.attr("id");
+  const className = ($node.attr("class") ?? "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(".");
+  if (id) return `${name}#${id}`;
+  if (className) return `${name}.${className}`;
+  return name;
+}
+
+function isBlockElementName(name: string | undefined): boolean {
+  return Boolean(name && /^(p|li|h[1-6]|table|blockquote|pre)$/i.test(name));
+}
+
+function blockTypeForName(name: string | undefined): RuankaoContentBlock["type"] {
+  if (!name) return "unknown";
+  if (/^h[1-6]$/i.test(name)) return "heading";
+  if (name.toLowerCase() === "li") return "list_item";
+  return "paragraph";
+}
+
 function extractTextBlocks(
-  $: ReturnType<typeof load>,
+  $: CheerioApi,
   rootSel: string
-): RuankaoContentBlock[] {
-  const blocks: RuankaoContentBlock[] = [];
-  const seenTexts = new Set<string>();
-  let order = 0;
+): { blocks: RuankaoContentBlock[]; diagnostics: ExtractionDiagnostics } {
+  const rootEl = $(rootSel).first();
+  const rootNode = rootEl.get(0) as CheerioNode | undefined;
+  const rootText = normalizeInlineText(rootEl.text());
+  const directTextNodeCount = rootEl
+    .contents()
+    .toArray()
+    .filter((node) => node.type === "text" && normalizeInlineText((node as CheerioNode).data ?? "").length > 0)
+    .length;
+  const candidates: Array<Omit<RuankaoContentBlock, "order"> & { order_hint: number }> = [];
+  let orderHint = 0;
 
-  // Block-level elements: p and li (direct DOM traversal respects order)
-  const blockDefs: Array<[string, "paragraph" | "list_item"]> = [
-    ["p", "paragraph"],
-    ["li", "list_item"],
-  ];
+  function candidateCovered(text: string): boolean {
+    const comparable = normalizeComparableText(text);
+    if (!comparable) return true;
+    return candidates.some((candidate) => {
+      const candidateComparable = normalizeComparableText(candidate.text);
+      return candidateComparable === comparable || candidateComparable.includes(comparable);
+    });
+  }
 
-  for (const [sel, type] of blockDefs) {
-    const elems = $(`${rootSel} ${sel}`);
-    for (let i = 0; i < elems.length; i++) {
-      const $el = elems.eq(i);
-      const text = $el.text().trim();
-      if (!text || seenTexts.has(text)) continue;
-      seenTexts.add(text);
-      blocks.push({
-        type,
-        text,
-        order: order++,
-        source_selector: sel,
-        html: $.html($el) ?? "",
-      });
+  function addCandidate(
+    type: RuankaoContentBlock["type"],
+    text: string,
+    sourceSelector: string,
+    html: string,
+    hint = orderHint++
+  ): void {
+    const normalizedText = normalizeInlineText(text);
+    if (!normalizedText) return;
+    const comparable = normalizeComparableText(normalizedText);
+    if (!comparable) return;
+    if (candidates.some((candidate) => normalizeComparableText(candidate.text) === comparable)) return;
+    candidates.push({
+      type,
+      text: normalizedText,
+      source_selector: sourceSelector,
+      html,
+      order_hint: hint,
+    });
+  }
+
+  function walk(node: CheerioNode | undefined): void {
+    if (!node?.children) return;
+
+    for (const child of node.children) {
+      if (child.type === "text") {
+        const text = normalizeInlineText(child.data ?? "");
+        if (text) {
+          addCandidate("root_text", text, `${rootSel}::text`, text);
+        }
+        continue;
+      }
+
+      if (child.type !== "tag") continue;
+
+      const name = child.name?.toLowerCase();
+      if (isBlockElementName(name)) {
+        addCandidate(
+          blockTypeForName(name),
+          $(child as never).text(),
+          selectorHint($, child, name ?? "unknown"),
+          $.html(child as never) ?? ""
+        );
+        continue;
+      }
+
+      walk(child);
     }
   }
 
-  // Inline elements: strong, em — only if not already subsumed by a block
-  const inlineDefs: Array<[string, "inline"]> = [
-    ["strong", "inline"],
-    ["em", "inline"],
-  ];
+  walk(rootNode);
 
-  for (const [sel, type] of inlineDefs) {
-    const elems = $(`${rootSel} ${sel}`);
-    for (let i = 0; i < elems.length; i++) {
-      const $el = elems.eq(i);
-      const text = $el.text().trim();
-      if (!text) continue;
-      if (seenTexts.has(text)) continue;
-      // Skip if the text is fully contained within any already-seen block text
-      const alreadyCovered = [...seenTexts].some((seen) => seen.includes(text));
-      if (alreadyCovered) continue;
-      seenTexts.add(text);
-      blocks.push({
-        type,
-        text,
-        order: order++,
-        source_selector: sel,
-        html: $.html($el) ?? "",
-      });
-    }
+  const capturedTextLength = candidates.reduce((sum, candidate) => sum + candidate.text.length, 0);
+  const shouldAddWholeRootText =
+    rootText.length > 0 &&
+    (directTextNodeCount > 0 || candidates.length === 0) &&
+    rootText.length > capturedTextLength + 20 &&
+    !candidateCovered(rootText);
+
+  if (shouldAddWholeRootText) {
+    addCandidate("root_text", rootText, rootSel, $.html(rootEl) ?? "", -1);
   }
 
-  // Sort by DOM order (p elements come first, then inline)
-  blocks.sort((a, b) => a.order - b.order);
-  return blocks;
+  const inlineElements = $(`${rootSel} strong, ${rootSel} em, ${rootSel} span, ${rootSel} a`);
+  for (let index = 0; index < inlineElements.length; index += 1) {
+    const $el = inlineElements.eq(index);
+    const text = normalizeInlineText($el.text());
+    if (!text || candidateCovered(text)) continue;
+    addCandidate("inline", text, selectorHint($, $el.get(0) as CheerioNode, "inline"), $.html($el) ?? "");
+  }
+
+  const blocks = candidates
+    .sort((a, b) => a.order_hint - b.order_hint)
+    .map(({ order_hint: _orderHint, ...block }, order) => ({
+      ...block,
+      order,
+    }));
+
+  return {
+    blocks,
+    diagnostics: {
+      root_text_length: rootText.length,
+      total_text_length: blocks.reduce((sum, block) => sum + block.text.length, 0),
+      direct_text_node_count: directTextNodeCount,
+      extracted_text_block_count: blocks.length,
+      contains_direct_text: directTextNodeCount > 0,
+    },
+  };
 }
 
 function extractKeyTerms(
@@ -246,7 +368,7 @@ function extractKeyTerms(
 }
 
 function extractImageRefs(
-  $: ReturnType<typeof load>,
+  $: CheerioApi,
   rootSel: string
 ): RuankaoImageRef[] {
   const refs: RuankaoImageRef[] = [];
@@ -262,8 +384,10 @@ function extractImageRefs(
     // Find surrounding text: text of nearest preceding <p>
     const $parent = $img.parent();
     const surroundingText =
+      $parent.text().trim() ||
       $parent.prev("p").text().trim() ||
       $parent.prevAll("p").first().text().trim() ||
+      $img.closest("p, li, div").text().trim() ||
       "";
 
     refs.push({
@@ -282,9 +406,10 @@ function extractImageRefs(
 }
 
 function extractHtmlFragments(
-  $: ReturnType<typeof load>,
+  $: CheerioApi,
   rootSel: string,
-  rawHtml: string
+  rawHtml: string,
+  diagnostics: ExtractionDiagnostics
 ): RuankaoHtmlFragment[] {
   const rootEl = $(rootSel).first();
   return [
@@ -292,6 +417,7 @@ function extractHtmlFragments(
       source_selector: rootSel,
       outer_html: rawHtml,
       text_length: rootEl.text().trim().length,
+      contains_direct_text: diagnostics.contains_direct_text,
       contains_image: rootEl.find("img").length > 0,
       contains_table: rootEl.find("table").length > 0,
     },
@@ -341,7 +467,10 @@ function classify(
 
 const { timestamp, latestSuccess } = parseArgs();
 // --latest-success uses the same auto-discovery as no-flag (finds latest successful metadata)
-const { ts, meta } = findLatestSuccessfulMetadata(latestSuccess ? undefined : timestamp);
+const { ts, meta, metadataPath, selectedReason } = findLatestSuccessfulMetadata(
+  timestamp,
+  latestSuccess ? "latest_success_auto" : "auto_success"
+);
 console.log(`[parser] timestamp: ${ts}`);
 
 const outerHtmlRelPath = findOuterHtmlRelPath(meta);
@@ -375,11 +504,18 @@ const title: string | null =
   rootEl.find("p").first().text().trim() ||
   null;
 
-const textBlocks = extractTextBlocks($, rootSel);
+const extraction = extractTextBlocks($, rootSel);
+const textBlocks = extraction.blocks;
 const keyTerms = extractKeyTerms($, rootSel);
 const imageRefs = extractImageRefs($, rootSel);
-const htmlFragments = extractHtmlFragments($, rootSel, rawHtml);
+const htmlFragments = extractHtmlFragments($, rootSel, rawHtml, extraction.diagnostics);
 const { classification, confidence, reasons } = classify(textBlocks, imageRefs);
+const parserReasons = [
+  ...reasons,
+  extraction.diagnostics.contains_direct_text
+    ? `Direct .knowInfo.ql-editor text nodes detected: ${extraction.diagnostics.direct_text_node_count}`
+    : "",
+].filter((reason) => reason.length > 0);
 
 // Route extraction from final_url hash fragment
 const finalUrl = meta.final_url ?? "";
@@ -419,8 +555,8 @@ const doc: RuankaoIntermediateDocument = {
   classification: {
     content_source_classification: classification,
     parser_confidence: confidence,
-    requires_manual_review: reasons.length > 0,
-    manual_review_reasons: reasons,
+    requires_manual_review: parserReasons.length > 0,
+    manual_review_reasons: parserReasons,
   },
   constraints: {
     ocr_used: false,
@@ -435,7 +571,53 @@ mkdirSync(outputDir, { recursive: true });
 const outputPath = resolve(outputDir, `${ts}.json`);
 writeFileSync(outputPath, JSON.stringify(doc, null, 2), "utf8");
 
+mkdirSync(generatedDir, { recursive: true });
+const selectionLog = {
+  generated_at: new Date().toISOString(),
+  selected_metadata_timestamp: ts,
+  selected_metadata_path: `sources/ruankaodaren/raw/metadata/${ts}.json`,
+  selected_metadata_abs_path: metadataPath,
+  selected_outer_html_path: outerHtmlRelPath,
+  output_intermediate_path: `data/intermediate/ruankaodaren/samples/${ts}.json`,
+  selected_reason: selectedReason,
+  strict_timestamp_requested: timestamp ?? null,
+  latest_success_requested: latestSuccess,
+};
+const selectionLogPath = resolve(generatedDir, `phase3_16_parser_selection_${ts}.json`);
+writeFileSync(selectionLogPath, `${JSON.stringify(selectionLog, null, 2)}\n`, "utf8");
+
+const parserDiagnostics = {
+  generated_at: new Date().toISOString(),
+  timestamp: ts,
+  source_outer_html_path: outerHtmlRelPath,
+  root_selector: rootSel,
+  ...extraction.diagnostics,
+  root_text_loss_ratio:
+    extraction.diagnostics.root_text_length === 0
+      ? 0
+      : 1 - extraction.diagnostics.total_text_length / extraction.diagnostics.root_text_length,
+  text_block_types: textBlocks.map((block) => block.type),
+  constraints: {
+    no_markdown_generated: true,
+    no_ocr: true,
+    no_encrypt1_decrypted: true,
+    no_image_table_reconstructed: true,
+  },
+};
+const parserDiagnosticsPath = resolve(generatedDir, `phase3_17_parser_diagnostics_${ts}.json`);
+writeFileSync(parserDiagnosticsPath, `${JSON.stringify(parserDiagnostics, null, 2)}\n`, "utf8");
+
 console.log(`[parser] output: ${outputPath}`);
+console.log(`[parser] selected_metadata_timestamp: ${selectionLog.selected_metadata_timestamp}`);
+console.log(`[parser] selected_metadata_path: ${selectionLog.selected_metadata_path}`);
+console.log(`[parser] selected_outer_html_path: ${selectionLog.selected_outer_html_path}`);
+console.log(`[parser] output_intermediate_path: ${selectionLog.output_intermediate_path}`);
+console.log(`[parser] selected_reason: ${selectionLog.selected_reason}`);
+console.log(`[parser] selection_log: ${selectionLogPath}`);
+console.log(`[parser] parser_diagnostics: ${parserDiagnosticsPath}`);
+console.log(`[parser] root_text_length: ${extraction.diagnostics.root_text_length}`);
+console.log(`[parser] total_text_length: ${extraction.diagnostics.total_text_length}`);
+console.log(`[parser] direct_text_node_count: ${extraction.diagnostics.direct_text_node_count}`);
 console.log(`[parser] title: ${doc.content.title}`);
 console.log(`[parser] text_blocks: ${doc.content.text_blocks.length}`);
 console.log(`[parser] key_terms: ${doc.content.key_terms.length}`);

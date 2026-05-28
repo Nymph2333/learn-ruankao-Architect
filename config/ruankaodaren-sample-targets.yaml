@@ -28,6 +28,61 @@ ruankaodaren:
       quarantine_reason: "target_body_mismatch"
       selection_reason: "Phase 3.6 candidate; quarantined in Phase 3.8 due to target_body_mismatch"
 
+    - id: phase315_database_design
+      title_hint: "3.3 数据库的设计"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      source_catalog: "verification/generated/phase3_11_reachable_leaf_catalog.md"
+      selection_reason: "Phase 3.15 live-replay-verified reachable leaf target"
+
+    - id: phase315_network_overview_model
+      title_hint: "5.1 网络概述和模型"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      source_catalog: "verification/generated/phase3_11_reachable_leaf_catalog.md"
+      selection_reason: "Phase 3.15 live-replay-verified reachable leaf target"
+
+    - id: phase315_typical_information_system_architecture
+      title_hint: "8.8 典型信息系统架构模型"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      source_catalog: "verification/generated/phase3_11_reachable_leaf_catalog.md"
+      selection_reason: "Phase 3.15 live-replay-verified reachable leaf target"
+
+    - id: phase315_information_security_basics
+      title_hint: "9.1 信息安全基础知识"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      source_catalog: "verification/generated/phase3_11_reachable_leaf_catalog.md"
+      selection_reason: "Phase 3.15 live-replay-verified reachable leaf target"
+
+    - id: phase315_information_security_framework
+      title_hint: "9.2 信息安全系统的组成框架"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      source_catalog: "verification/generated/phase3_11_reachable_leaf_catalog.md"
+      selection_reason: "Phase 3.15 live-replay-verified reachable leaf target"
+
     - id: phase312_database_design
       title_hint: "3.3 数据库的设计"
       expected_shape: "leaf_knowledge_point"
@@ -84,6 +139,31 @@ ruankaodaren:
       require_leaf: "true"
       require_preflight: "true"
       selection_reason: "Phase 3.9 target; chapter 2 not previously attempted; 软件测试 has uniquely distinct content from chapters 1/3/5"
+
+    - id: phase322_software_architecture_style_static_low_text
+      title_hint: "13.3 软件架构风格"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "STATIC_LOW_TEXT_VERIFIED"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      require_discovery_evidence: "true"
+      discovery_evidence: "verification/generated/phase3_20_detail_interaction_discovery_13_3_软件架构风格.md"
+      selection_reason: "Phase 3.20 proved this node is stable static low-text; Phase 3.21 allows short-card readiness with discovery evidence."
+
+    - id: phase324_9_1_信息安全基础知识
+      title_hint: "9.1 信息安全基础知识"
+      expected_shape: "leaf_knowledge_point"
+      expected_classification: "UNKNOWN"
+      status: "pending_capture"
+      require_leaf: "true"
+      require_preflight: "true"
+      require_live_replay: "true"
+      require_discovery_evidence: "true"
+      discovery_evidence: "verification/generated/phase3_20_detail_interaction_discovery_9_1_信息安全基础知识.md"
+      source_catalog: "verification/generated/phase3_11_reachable_leaf_catalog.md"
+      selection_reason: "Phase 3.24 discovery-first third unique renderer baseline promotion candidate"
 
 # Notes:
 # - status = existing_success: already crawled and parsed; intermediate JSON exists

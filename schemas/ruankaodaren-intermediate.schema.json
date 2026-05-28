@@ -86,7 +86,7 @@
       "required": ["type", "text", "order", "source_selector", "html"],
       "additionalProperties": false,
       "properties": {
-        "type": { "type": "string", "enum": ["paragraph", "heading", "list_item", "inline", "unknown"] },
+        "type": { "type": "string", "enum": ["paragraph", "heading", "list_item", "inline", "root_text", "unknown"] },
         "text": { "type": "string", "minLength": 1 },
         "order": { "type": "integer", "minimum": 0 },
         "source_selector": { "type": "string" },
@@ -127,6 +127,7 @@
         "source_selector": { "type": "string" },
         "outer_html": { "type": "string" },
         "text_length": { "type": "integer", "minimum": 0 },
+        "contains_direct_text": { "type": "boolean" },
         "contains_image": { "type": "boolean" },
         "contains_table": { "type": "boolean" }
       }

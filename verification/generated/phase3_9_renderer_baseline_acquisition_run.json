@@ -1,75 +1,32 @@
 {
-  "generated_at": "2026-05-27T08:15:00.764Z",
+  "generated_at": "2026-05-28T05:26:21.584Z",
   "phase": "3.9",
-  "attempted_target_count": 3,
+  "attempted_target_count": 1,
   "target_list": [
     {
-      "target_id": "phase312_database_design",
-      "title_hint": "3.3 数据库的设计"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "title_hint": "5.1 网络概述和模型"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "title_hint": "8.8 典型信息系统架构模型"
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识"
     }
   ],
   "per_target_results": [
     {
-      "target_id": "phase312_database_design",
-      "title_hint": "3.3 数据库的设计",
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识",
       "preflight_result": "not_reached",
-      "target_resolution_trusted": false,
-      "target_leaf_exact_match": false,
-      "target_resolution_failure_reason": "chapter_not_found",
-      "semantic_audit_result": "fail_not_renderer_eligible",
-      "renderer_eligible": false,
-      "reject_reason": "leaf_resolution_failed"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "title_hint": "5.1 网络概述和模型",
-      "preflight_result": "not_reached",
-      "target_resolution_trusted": false,
-      "target_leaf_exact_match": false,
-      "target_resolution_failure_reason": "chapter_not_found",
-      "semantic_audit_result": "fail_not_renderer_eligible",
-      "renderer_eligible": false,
-      "reject_reason": "leaf_resolution_failed"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "title_hint": "8.8 典型信息系统架构模型",
-      "preflight_result": "not_reached",
-      "target_resolution_trusted": false,
-      "target_leaf_exact_match": false,
-      "target_resolution_failure_reason": "chapter_not_found",
-      "semantic_audit_result": "fail_not_renderer_eligible",
-      "renderer_eligible": false,
-      "reject_reason": "leaf_resolution_failed"
+      "target_resolution_trusted": true,
+      "target_leaf_exact_match": true,
+      "target_resolution_failure_reason": null,
+      "semantic_audit_result": "pass",
+      "renderer_eligible": true,
+      "reject_reason": "target_mismatch_content_body"
     }
   ],
   "preflight_pass_count": 0,
   "preflight_fail_count": 0,
-  "target_resolution_trusted_count": 0,
-  "target_resolution_failed_count": 3,
-  "exact_leaf_match_count": 0,
-  "target_resolution_failure_reasons": [
-    {
-      "target_id": "phase312_database_design",
-      "reason": "chapter_not_found"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "reason": "chapter_not_found"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "reason": "chapter_not_found"
-    }
-  ],
+  "target_resolution_trusted_count": 1,
+  "target_resolution_failed_count": 0,
+  "exact_leaf_match_count": 1,
+  "target_resolution_failure_reasons": [],
   "renderer_eligible_added_count": 0,
   "renderer_eligible_added_titles": [],
   "rejected_by_preflight": [],
@@ -78,10 +35,7 @@
   "final_renderer_eligible_count": 1,
   "phase4_renderer_allowed": false,
   "required_before_phase4": [
-    "acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)",
-    "validate at least 3 unique renderer-ready leaf titles",
-    "improve target selection for chapter-level hints",
-    "avoid using chapter overview as renderer baseline"
+    "need at least 3 unique renderer-ready titles (have 2/3)"
   ],
   "constraints": {
     "no_markdown_generated": true,

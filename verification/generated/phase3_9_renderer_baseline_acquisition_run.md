@@ -1,17 +1,17 @@
 # Phase 3.9 Renderer Baseline Acquisition Run
 
-Generated at: 2026-05-27T08:15:00.764Z
+Generated at: 2026-05-28T05:26:21.584Z
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Attempted targets | 3 |
+| Attempted targets | 1 |
 | Preflight pass | 0 |
 | Preflight fail | 0 |
-| Target resolution trusted | 0 |
-| Target resolution failed | 3 |
-| Exact leaf match | 0 |
+| Target resolution trusted | 1 |
+| Target resolution failed | 0 |
+| Exact leaf match | 1 |
 | Renderer eligible added | 0 |
 | Final renderer eligible count | 1 |
 | Phase 4 renderer allowed | false |
@@ -20,9 +20,7 @@ Generated at: 2026-05-27T08:15:00.764Z
 
 | Target | Hint | Preflight | Trusted | Exact leaf | Semantic Audit | Renderer Eligible | Reject Reason |
 |---|---|---|---|---|---|---|---|
-| phase312_database_design | 3.3 数据库的设计 | not_reached | no | no | fail_not_renderer_eligible | no | leaf_resolution_failed |
-| phase312_network_overview_model | 5.1 网络概述和模型 | not_reached | no | no | fail_not_renderer_eligible | no | leaf_resolution_failed |
-| phase312_typical_information_system_architecture | 8.8 典型信息系统架构模型 | not_reached | no | no | fail_not_renderer_eligible | no | leaf_resolution_failed |
+| phase324_9_1_信息安全基础知识 | 9.1 信息安全基础知识 | not_reached | yes | yes | pass | yes | target_mismatch_content_body |
 
 ## Renderer Eligible Added
 
@@ -40,10 +38,7 @@ Generated at: 2026-05-27T08:15:00.764Z
 
 - **phase4_renderer_allowed**: false
 - **required_before_phase4**:
-  - acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)
-  - validate at least 3 unique renderer-ready leaf titles
-  - improve target selection for chapter-level hints
-  - avoid using chapter overview as renderer baseline
+  - need at least 3 unique renderer-ready titles (have 2/3)
 
 ## Constraints
 

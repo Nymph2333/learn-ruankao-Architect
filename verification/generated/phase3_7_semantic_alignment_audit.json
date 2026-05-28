@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-05-27T14:23:47.102Z",
-  "total_samples": 7,
-  "matched_count": 3,
+  "generated_at": "2026-05-28T05:27:01.469Z",
+  "total_samples": 15,
+  "matched_count": 11,
   "likely_matched_count": 3,
-  "mismatched_count": 3,
-  "quarantined_count": 6,
-  "duplicate_actual_content_count": 6,
-  "duplicate_same_title_count": 1,
-  "renderer_eligible_count": 1,
+  "mismatched_count": 4,
+  "quarantined_count": 13,
+  "duplicate_actual_content_count": 10,
+  "duplicate_same_title_count": 4,
+  "renderer_eligible_count": 2,
   "quarantine_manifest_path": "data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json",
   "samples": [
     {
@@ -34,6 +34,30 @@
         "cisc",
         "指令系统"
       ],
+      "matched_expected_tokens": [
+        "risc",
+        "cisc",
+        "指令系统"
+      ],
+      "missing_expected_tokens": [
+        "1.3",
+        "指令系统cisc和risc",
+        "指令系统cisc"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "image_refs.surrounding_text",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "body_contains_expected_token",
+      "text_preview_used": "CISC是复杂指令系统：兼容性强，指令繁多、长度可变，由微程序实现。 RISC是精简指令系统：指令少，使用频率接近，主要依靠硬件实现(通用寄存器、硬布线逻辑控制)。 二者各方面区分如下图： 兼容性强 指令繁多 长度可变 微程序 指令少 硬件实现 CISC是复杂指令系统： CISC是复杂指令系统：兼容性强，指令繁多、长度可变，由微程序实现。 RISC是精简指令系统：指令少，使用频率接近，主要依靠硬件实现(通用寄存器、硬布线逻辑控制)。 二者各方面区分如下图：",
+      "image_refs_surrounding_text_used": [
+        "二者各方面区分如下图："
+      ],
+      "html_fragment_text_used": "CISC是复杂指令系统： 兼容性强 ， 指令繁多 、 长度可变 ，由 微程序 实现。 RISC是精简指令系统： 指令少 ，使用频率接近，主要依靠 硬件实现 (通用寄存器、硬布线逻辑控制)。 二者各方面区分如下图：",
       "detected_body_signals": [
         "CISC",
         "RISC"
@@ -71,6 +95,24 @@
         "数据库"
       ],
       "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "第3章数据库系统",
+        "第3章数据库",
+        "章数据库系统",
+        "数据库"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "no_decisive_body_evidence",
+      "text_preview_used": "码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。 1 改变的位数 2 纠错和检错 码距： 码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "码距： 就单个编码A:00而言，其码距为 1 ，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要 改变的位数 称为码距，如A:00要转换为B:11，码距为 2 。一般来说，码距越大，越利于 纠错和检错 。",
       "detected_body_signals": [
         "码距",
         "纠错",
@@ -111,6 +153,23 @@
         "网络"
       ],
       "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "第5章计算机网络",
+        "章计算机网络",
+        "网络"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "no_decisive_body_evidence",
+      "text_preview_used": "码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。 1 改变的位数 2 纠错和检错 码距： 码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "码距： 就单个编码A:00而言，其码距为 1 ，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要 改变的位数 称为码距，如A:00要转换为B:11，码距为 2 。一般来说，码距越大，越利于 纠错和检错 。",
       "detected_body_signals": [
         "码距",
         "纠错",
@@ -155,6 +214,25 @@
         "数据库系统",
         "数据库"
       ],
+      "matched_expected_tokens": [
+        "数据库系统",
+        "数据库"
+      ],
+      "missing_expected_tokens": [
+        "3.1",
+        "数据库系统常识"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "body_contains_expected_token",
+      "text_preview_used": "数据库系统DBS的组成： 数据库 硬件 软件 人员 数据库系统DBS的组成： 数据库系统DBS的组成：数据库、硬件、软件、人员。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "数据库系统DBS的组成： 数据库 、 硬件 、 软件 、 人员 。",
       "detected_body_signals": [
         "数据库"
       ],
@@ -193,13 +271,43 @@
         "3.6",
         "关系数据库的规范化",
         "关系数据库",
-        "规范化"
+        "规范化",
+        "数据库"
       ],
       "matched_body_tokens": [
         "risc",
         "cisc",
         "指令系统"
       ],
+      "matched_expected_tokens": [
+        "risc",
+        "cisc",
+        "指令系统"
+      ],
+      "missing_expected_tokens": [
+        "1.3",
+        "指令系统cisc和risc",
+        "指令系统cisc",
+        "3.6",
+        "关系数据库的规范化",
+        "关系数据库",
+        "规范化",
+        "数据库"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "image_refs.surrounding_text",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "body_contains_expected_token",
+      "text_preview_used": "CISC是复杂指令系统：兼容性强，指令繁多、长度可变，由微程序实现。 RISC是精简指令系统：指令少，使用频率接近，主要依靠硬件实现(通用寄存器、硬布线逻辑控制)。 二者各方面区分如下图： 兼容性强 指令繁多 长度可变 微程序 指令少 硬件实现 CISC是复杂指令系统： CISC是复杂指令系统：兼容性强，指令繁多、长度可变，由微程序实现。 RISC是精简指令系统：指令少，使用频率接近，主要依靠硬件实现(通用寄存器、硬布线逻辑控制)。 二者各方面区分如下图：",
+      "image_refs_surrounding_text_used": [
+        "二者各方面区分如下图："
+      ],
+      "html_fragment_text_used": "CISC是复杂指令系统： 兼容性强 ， 指令繁多 、 长度可变 ，由 微程序 实现。 RISC是精简指令系统： 指令少 ，使用频率接近，主要依靠 硬件实现 (通用寄存器、硬布线逻辑控制)。 二者各方面区分如下图：",
       "detected_body_signals": [
         "CISC",
         "RISC"
@@ -237,6 +345,23 @@
         "存储"
       ],
       "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "1.5",
+        "存储系统",
+        "存储"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "leaf_title_without_body_token_evidence",
+      "text_preview_used": "码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。 1 改变的位数 2 纠错和检错 码距： 码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "码距： 就单个编码A:00而言，其码距为 1 ，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要 改变的位数 称为码距，如A:00要转换为B:11，码距为 2 。一般来说，码距越大，越利于 纠错和检错 。",
       "detected_body_signals": [
         "码距",
         "纠错",
@@ -278,6 +403,25 @@
         "流水处理"
       ],
       "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "1.4",
+        "指令的流水处理",
+        "指令的流水",
+        "指令",
+        "流水处理"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "leaf_title_without_body_token_evidence",
+      "text_preview_used": "码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。 1 改变的位数 2 纠错和检错 码距： 码距：就单个编码A:00而言，其码距为1，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要改变的位数称为码距，如A:00要转换为B:11，码距为2。一般来说，码距越大，越利于纠错和检错。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "码距： 就单个编码A:00而言，其码距为 1 ，因为其只需要改变一位就变成另一个编码。在两个编码中，从A码到B码转换所需要 改变的位数 称为码距，如A:00要转换为B:11，码距为 2 。一般来说，码距越大，越利于 纠错和检错 。",
       "detected_body_signals": [
         "码距",
         "纠错",
@@ -299,6 +443,428 @@
       "notes": [
         "duplicate actual content group: dup-2"
       ]
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-34-52-493Z.json",
+      "timestamp": "2026-05-27T14-34-52-493Z",
+      "title": "3.3 数据库的设计",
+      "target_node_text": "3.3 数据库的设计",
+      "requested_target_text": "3.3 数据库的设计",
+      "effective_target_text": "3.3 数据库的设计",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468124184663",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "insufficient_text",
+      "expected_tokens": [
+        "3.3",
+        "数据库的设计",
+        "数据库的",
+        "数据库"
+      ],
+      "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "3.3",
+        "数据库的设计",
+        "数据库的",
+        "数据库"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "text_too_short_without_image_refs",
+      "text_preview_used": "需求分析：即分析数据存储的要求，产出物有数据流图、数据字典、需求说明书。获得用户对系统的三个要求：信息要求、处理要求、系统要求。 数据流图 数据字典 需求说明书 信息要求 处理要求 系统要求 需求分析： 需求分析：即分析数据存储的要求，产出物有数据流图、数据字典、需求说明书。获得用户对系统的三个要求：信息要求、处理要求、系统要求。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "需求分析： 即分析数据存储的要求，产出物有 数据流图 、 数据字典 、 需求说明书 。获得用户对系统的三个要求： 信息要求 、 处理要求 、 系统要求 。",
+      "detected_body_signals": [
+        "存储"
+      ],
+      "duplicate_group_id": null,
+      "duplicate_kind": "none",
+      "duplicate_actual_content": false,
+      "duplicate_group_titles": [
+        "3.3 数据库的设计"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "low_text",
+      "renderer_eligible": false,
+      "requires_manual_review": false,
+      "notes": []
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-36-07-171Z.json",
+      "timestamp": "2026-05-27T14-36-07-171Z",
+      "title": "5.1 网络概述和模型",
+      "target_node_text": "5.1 网络概述和模型",
+      "requested_target_text": "5.1 网络概述和模型",
+      "effective_target_text": "5.1 网络概述和模型",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468128379004",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "matched",
+      "expected_tokens": [
+        "5.1",
+        "网络概述和模型",
+        "网络概述和",
+        "网络概述",
+        "网络"
+      ],
+      "matched_body_tokens": [
+        "网络"
+      ],
+      "matched_expected_tokens": [
+        "网络"
+      ],
+      "missing_expected_tokens": [
+        "5.1",
+        "网络概述和模型",
+        "网络概述和",
+        "网络概述"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "body_contains_expected_token",
+      "text_preview_used": "计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。 远程通信 远程信息处理 资源共 享 计算机网络是计算机技术与通信技术相结合的产物，它实现了 、 和 计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "计算机网络是计算机技术与通信技术相结合的产物，它实现了 远程通信 、 远程信息处理 和 资源共 享 。",
+      "detected_body_signals": [
+        "网络"
+      ],
+      "duplicate_group_id": null,
+      "duplicate_kind": "none",
+      "duplicate_actual_content": false,
+      "duplicate_group_titles": [
+        "5.1 网络概述和模型"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "low_text",
+      "renderer_eligible": false,
+      "requires_manual_review": false,
+      "notes": []
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-37-21-375Z.json",
+      "timestamp": "2026-05-27T14-37-21-375Z",
+      "title": "8.8 典型信息系统架构模型",
+      "target_node_text": "8.8 典型信息系统架构模型",
+      "requested_target_text": "8.8 典型信息系统架构模型",
+      "effective_target_text": "8.8 典型信息系统架构模型",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468132573284",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "mismatched",
+      "expected_tokens": [
+        "8.8",
+        "典型信息系统架构模型",
+        "典型信息系统架构",
+        "架构",
+        "信息系统"
+      ],
+      "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "8.8",
+        "典型信息系统架构模型",
+        "典型信息系统架构",
+        "架构",
+        "信息系统"
+      ],
+      "conflicting_tokens": [
+        "网络"
+      ],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "body_contains_conflicting_tokens",
+      "text_preview_used": "政府信息化和电子政府： 电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即 利用信息技术 和 其他相关技术 ，将其 管理 服务职能 进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现 公务 、 政务 商务 事务 的一体化管理与运行。 利用信息技术 其他相关技术 管理 服务职能 公务 政务 商务 事务 政府信息化和电子政府： 政府信息化和电子政府：电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即利用信息技术和其他相关技术，将其管理和服务职能进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现公务、政务、商务、事务的一体化管理与运行。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "政府信息化和电子政府： 电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即 利用信息技术 和 其他相关技术 ，将其 管理 和 服务职能 进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现 公务 、 政务 、 商务 、 事务 的一体化管理与运行。",
+      "detected_body_signals": [
+        "网络"
+      ],
+      "duplicate_group_id": null,
+      "duplicate_kind": "none",
+      "duplicate_actual_content": false,
+      "duplicate_group_titles": [
+        "8.8 典型信息系统架构模型"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "target_body_mismatch",
+      "renderer_eligible": false,
+      "requires_manual_review": true,
+      "notes": []
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-54-15-543Z.json",
+      "timestamp": "2026-05-28T02-54-15-543Z",
+      "title": "13.3 软件架构风格",
+      "target_node_text": "13.3 软件架构风格",
+      "requested_target_text": "13.3 软件架构风格",
+      "effective_target_text": "13.3 软件架构风格",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "insufficient_text",
+      "expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "text_too_short_without_image_refs",
+      "text_preview_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。 软件的构件，构件 的外部可见属性以及它们之间的相互关系 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 软件的构件，构件 的外部可见属性以及它们之间的相互关系 。",
+      "detected_body_signals": [],
+      "duplicate_group_id": "dup-3",
+      "duplicate_kind": "none",
+      "duplicate_actual_content": true,
+      "duplicate_group_titles": [
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "low_text",
+      "renderer_eligible": false,
+      "requires_manual_review": false,
+      "notes": [
+        "duplicate actual content group: dup-3"
+      ]
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-59-11-656Z.json",
+      "timestamp": "2026-05-28T02-59-11-656Z",
+      "title": "13.3 软件架构风格",
+      "target_node_text": "13.3 软件架构风格",
+      "requested_target_text": "13.3 软件架构风格",
+      "effective_target_text": "13.3 软件架构风格",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "insufficient_text",
+      "expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "text_too_short_without_image_refs",
+      "text_preview_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。 软件的构件，构件 的外部可见属性以及它们之间的相互关系 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 软件的构件，构件 的外部可见属性以及它们之间的相互关系 。",
+      "detected_body_signals": [],
+      "duplicate_group_id": "dup-3",
+      "duplicate_kind": "duplicate_same_title",
+      "duplicate_actual_content": true,
+      "duplicate_group_titles": [
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "duplicate_same_title",
+      "renderer_eligible": false,
+      "requires_manual_review": false,
+      "notes": [
+        "duplicate actual content group: dup-3"
+      ]
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T03-03-37-856Z.json",
+      "timestamp": "2026-05-28T03-03-37-856Z",
+      "title": "13.3 软件架构风格",
+      "target_node_text": "13.3 软件架构风格",
+      "requested_target_text": "13.3 软件架构风格",
+      "effective_target_text": "13.3 软件架构风格",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "insufficient_text",
+      "expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "text_too_short_without_image_refs",
+      "text_preview_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。 软件的构件，构件 的外部可见属性以及它们之间的相互关系 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 软件的构件，构件 的外部可见属性以及它们之间的相互关系 。",
+      "detected_body_signals": [],
+      "duplicate_group_id": "dup-3",
+      "duplicate_kind": "duplicate_same_title",
+      "duplicate_actual_content": true,
+      "duplicate_group_titles": [
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "duplicate_same_title",
+      "renderer_eligible": false,
+      "requires_manual_review": false,
+      "notes": [
+        "duplicate actual content group: dup-3"
+      ]
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T03-10-01-532Z.json",
+      "timestamp": "2026-05-28T03-10-01-532Z",
+      "title": "13.3 软件架构风格",
+      "target_node_text": "13.3 软件架构风格",
+      "requested_target_text": "13.3 软件架构风格",
+      "effective_target_text": "13.3 软件架构风格",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "insufficient_text",
+      "expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "matched_body_tokens": [],
+      "matched_expected_tokens": [],
+      "missing_expected_tokens": [
+        "13.3",
+        "软件架构风格",
+        "架构"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "text_too_short_without_image_refs",
+      "text_preview_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。 软件的构件，构件 的外部可见属性以及它们之间的相互关系 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括 软件的构件，构件 的外部可见属性以及它们之间的相互关系 。",
+      "detected_body_signals": [],
+      "duplicate_group_id": "dup-3",
+      "duplicate_kind": "duplicate_same_title",
+      "duplicate_actual_content": true,
+      "duplicate_group_titles": [
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格",
+        "13.3 软件架构风格"
+      ],
+      "quarantined": true,
+      "quarantine_reason": "duplicate_same_title",
+      "renderer_eligible": false,
+      "requires_manual_review": false,
+      "notes": [
+        "duplicate actual content group: dup-3"
+      ]
+    },
+    {
+      "sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "timestamp": "2026-05-28T05-25-27-891Z",
+      "title": "9.1 信息安全基础知识",
+      "target_node_text": "9.1 信息安全基础知识",
+      "requested_target_text": "9.1 信息安全基础知识",
+      "effective_target_text": "9.1 信息安全基础知识",
+      "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468132573339",
+      "classification": "HTML_RICH_TEXT",
+      "alignment": "matched",
+      "body_alignment": "matched",
+      "expected_tokens": [
+        "9.1",
+        "信息安全基础知识",
+        "信息安全基础",
+        "信息安全"
+      ],
+      "matched_body_tokens": [
+        "信息安全"
+      ],
+      "matched_expected_tokens": [
+        "信息安全"
+      ],
+      "missing_expected_tokens": [
+        "9.1",
+        "信息安全基础知识",
+        "信息安全基础"
+      ],
+      "conflicting_tokens": [],
+      "evidence_sources_used": [
+        "text_blocks",
+        "key_terms",
+        "html_fragments",
+        "metadata.detail_content_text_preview"
+      ],
+      "decision_reason": "body_contains_expected_token",
+      "text_preview_used": "信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。 (1)机密性：确保信息不暴露给未授权的实体或进程。 (2)完整性：只有得到允许的人才能修改数据，并且能够判别出数据是否己被篡改。 (3)可用性：得到授权的实体在需要时可访问数据，即攻击者不能占用所有的资源而阻碍授权 者的工作。 (4)可控性：可以控制授权范围内的信息流向及行为方式。 (5)可审查性：对出现的信息安全问题提供调查的依据和手段。 信息安全包括5个基本要素： 机密性 、 完整性 可用性 可控性 与 可审查性 。 (1) ：确保信息不暴露给未授权的实体或进程。 (2) ：只有得到允许的人才能修改数据，并且能够判别出数据是否己被篡改。 (3) ：得到授权的实体在需要时可访问数据，即攻击者不能占用所有的资源而阻碍授权 者的工作。 (4) ：可以控制授权范围内的信息流向及行为方式。 (5) ：对出现的信息安全问题提供调查的依据和手段。 机密性 完整性 可用性 可控性 可审查性 机密性 完整性 可用性 可控性 可审查性 信息安全包括5个基本要素： 信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。 ...",
+      "image_refs_surrounding_text_used": [],
+      "html_fragment_text_used": "信息安全包括5个基本要素： 机密性 、 完整性 、 可用性 、 可控性 与 可审查性 。 (1) 机密性 ：确保信息不暴露给未授权的实体或进程。 (2) 完整性 ：只有得到允许的人才能修改数据，并且能够判别出数据是否己被篡改。 (3) 可用性 ：得到授权的实体在需要时可访问数据，即攻击者不能占用所有的资源而阻碍授权 者的工作。 (4) 可控性 ：可以控制授权范围内的信息流向及行为方式。 (5) 可审查性 ：对出现的信息安全问题提供调查的依据和手段。",
+      "detected_body_signals": [],
+      "duplicate_group_id": null,
+      "duplicate_kind": "none",
+      "duplicate_actual_content": false,
+      "duplicate_group_titles": [
+        "9.1 信息安全基础知识"
+      ],
+      "quarantined": false,
+      "quarantine_reason": null,
+      "renderer_eligible": true,
+      "requires_manual_review": true,
+      "notes": []
     }
   ]
 }

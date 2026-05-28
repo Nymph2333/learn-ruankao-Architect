@@ -1,129 +1,94 @@
 {
-  "generated_at": "2026-05-27T08:15:00.766Z",
+  "generated_at": "2026-05-28T05:26:21.587Z",
   "phase": "3.12",
   "target_list": [
     {
-      "target_id": "phase312_database_design",
-      "title_hint": "3.3 数据库的设计"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "title_hint": "5.1 网络概述和模型"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "title_hint": "8.8 典型信息系统架构模型"
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识"
     }
   ],
-  "attempted_target_count": 3,
-  "exact_leaf_target_count": 3,
-  "preflight_pass_count": 0,
+  "attempted_target_count": 1,
+  "exact_leaf_target_count": 1,
+  "preflight_pass_count": 1,
   "preflight_fail_count": 0,
-  "semantic_pass_count": 0,
+  "semantic_pass_count": 1,
   "semantic_fail_count": 0,
-  "renderer_eligible_added_count": 0,
-  "renderer_eligible_added_titles": [],
-  "rejected_targets": [
-    {
-      "target_id": "phase312_database_design",
-      "title_hint": "3.3 数据库的设计",
-      "reason": "leaf_resolution_failed"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "title_hint": "5.1 网络概述和模型",
-      "reason": "leaf_resolution_failed"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "title_hint": "8.8 典型信息系统架构模型",
-      "reason": "leaf_resolution_failed"
-    }
+  "renderer_eligible_added_count": 1,
+  "renderer_eligible_added_titles": [
+    "9.1 信息安全基础知识"
   ],
+  "rejected_targets": [],
   "per_target_results": [
     {
-      "target_id": "phase312_database_design",
-      "title_hint": "3.3 数据库的设计",
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识",
       "commands": [
         {
-          "name": "crawl",
-          "command": "pnpm crawl:ruankaodaren -- --target \"3.3 数据库的设计\" --require-leaf",
-          "exit_code": 1,
-          "success": false
-        }
-      ],
-      "preflight_result": "not_reached",
-      "parse_result": "not_reached",
-      "semantic_audit_result": "not_reached",
-      "asset_capture_result": "not_reached",
-      "renderer_eligible": false,
-      "produced_timestamp": "2026-05-27T08-14-35-634Z",
-      "produced_intermediate_path": null,
-      "produced_manifest_path": null,
-      "target_resolution_trusted": false,
-      "target_leaf_exact_match": false,
-      "actual_node_matches_requested_target": false,
-      "actual_knowledge_node_click_text": null,
-      "failure_reason": "leaf_resolution_failed"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "title_hint": "5.1 网络概述和模型",
-      "commands": [
+          "name": "live_replay",
+          "command": "internal live replay check --target \"9.1 信息安全基础知识\"",
+          "exit_code": 0,
+          "success": true
+        },
         {
           "name": "crawl",
-          "command": "pnpm crawl:ruankaodaren -- --target \"5.1 网络概述和模型\" --require-leaf",
-          "exit_code": 1,
-          "success": false
-        }
-      ],
-      "preflight_result": "not_reached",
-      "parse_result": "not_reached",
-      "semantic_audit_result": "not_reached",
-      "asset_capture_result": "not_reached",
-      "renderer_eligible": false,
-      "produced_timestamp": "2026-05-27T08-14-43-990Z",
-      "produced_intermediate_path": null,
-      "produced_manifest_path": null,
-      "target_resolution_trusted": false,
-      "target_leaf_exact_match": false,
-      "actual_node_matches_requested_target": false,
-      "actual_knowledge_node_click_text": null,
-      "failure_reason": "leaf_resolution_failed"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "title_hint": "8.8 典型信息系统架构模型",
-      "commands": [
+          "command": "pnpm crawl:ruankaodaren -- --target \"9.1 信息安全基础知识\" --require-leaf",
+          "exit_code": 0,
+          "success": true
+        },
         {
-          "name": "crawl",
-          "command": "pnpm crawl:ruankaodaren -- --target \"8.8 典型信息系统架构模型\" --require-leaf",
-          "exit_code": 1,
-          "success": false
+          "name": "preflight_metadata",
+          "command": "pnpm preflight:sample -- --timestamp \"2026-05-28T05-25-27-891Z\"",
+          "exit_code": 0,
+          "success": true
+        },
+        {
+          "name": "parse",
+          "command": "pnpm parse:ruankaodaren -- --latest-success",
+          "exit_code": 0,
+          "success": true
+        },
+        {
+          "name": "audit_semantic",
+          "command": "pnpm audit:semantic-alignment",
+          "exit_code": 0,
+          "success": true
         }
       ],
-      "preflight_result": "not_reached",
-      "parse_result": "not_reached",
-      "semantic_audit_result": "not_reached",
+      "preflight_result": "pass",
+      "parse_result": "pass",
+      "semantic_audit_result": "pass",
       "asset_capture_result": "not_reached",
-      "renderer_eligible": false,
-      "produced_timestamp": "2026-05-27T08-14-51-787Z",
-      "produced_intermediate_path": null,
+      "renderer_eligible": true,
+      "produced_timestamp": "2026-05-28T05-25-27-891Z",
+      "produced_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
       "produced_manifest_path": null,
-      "target_resolution_trusted": false,
-      "target_leaf_exact_match": false,
-      "actual_node_matches_requested_target": false,
-      "actual_knowledge_node_click_text": null,
-      "failure_reason": "leaf_resolution_failed"
+      "target_resolution_trusted": true,
+      "target_leaf_exact_match": true,
+      "actual_node_matches_requested_target": true,
+      "catalog_resolver_used": true,
+      "catalog_match_found": true,
+      "catalog_live_replay_success": true,
+      "catalog_match_strategy": "exact_full_title",
+      "live_replay_visible_chapter_count": 18,
+      "live_replay_visible_leaf_count": 104,
+      "live_replay_top_candidates": [
+        "9.1 信息安全基础知识",
+        "9.2 信息安全系统的组成框架",
+        "9.3 信息安全技术",
+        "9.4 信息安全的抗攻击技术",
+        "9.5 信息安全的保证体系与评估方法",
+        "9.6 网络安全技术",
+        "9.7 网络安全协议"
+      ],
+      "live_replay_debug_paths": null,
+      "actual_knowledge_node_click_text": "9.1 信息安全基础知识",
+      "failure_reason": "target_mismatch_content_body"
     }
   ],
   "final_renderer_eligible_count": 1,
   "phase4_renderer_allowed": false,
   "required_before_phase4": [
-    "acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)",
-    "validate at least 3 unique renderer-ready leaf titles",
-    "improve target selection for chapter-level hints",
-    "avoid using chapter overview as renderer baseline"
+    "need at least 3 unique renderer-ready titles (have 2/3)"
   ],
   "constraints": {
     "no_markdown_generated": true,

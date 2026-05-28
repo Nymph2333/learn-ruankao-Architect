@@ -1,87 +1,82 @@
 {
-  "generated_at": "2026-05-27T08:15:00.761Z",
+  "generated_at": "2026-05-28T05:26:21.580Z",
   "config_path": "config/ruankaodaren-sample-targets.yaml",
-  "attempted_target_count": 3,
+  "attempted_target_count": 1,
   "max_target_count": 3,
-  "pending_target_count": 6,
+  "pending_target_count": 13,
   "successful_sample_count": 0,
-  "successful_new_sample_count": 0,
-  "failed_target_count": 3,
+  "successful_new_sample_count": 1,
+  "failed_target_count": 1,
   "content_ready_success_count": 0,
   "low_text_rejected_count": 0,
-  "diagnostic_sample_count": 0,
+  "diagnostic_sample_count": 1,
   "renderer_baseline_candidate_titles": [],
   "chapter_level_rejected_count": 0,
-  "leaf_resolution_success_count": 0,
-  "leaf_resolution_failed_count": 3,
-  "target_resolution_trusted_count": 0,
-  "target_resolution_failed_count": 3,
-  "exact_leaf_match_count": 0,
-  "target_resolution_failure_reasons": [
-    {
-      "target_id": "phase312_database_design",
-      "reason": "chapter_not_found"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "reason": "chapter_not_found"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "reason": "chapter_not_found"
-    }
+  "leaf_resolution_success_count": 1,
+  "leaf_resolution_failed_count": 0,
+  "target_resolution_trusted_count": 1,
+  "target_resolution_failed_count": 0,
+  "exact_leaf_match_count": 1,
+  "target_resolution_failure_reasons": [],
+  "resolved_leaf_titles": [
+    "9.1 信息安全基础知识"
   ],
-  "resolved_leaf_titles": [],
-  "actual_titles": [],
-  "classification_distribution": {},
-  "image_refs_distribution": {},
+  "actual_titles": [
+    "9.1 信息安全基础知识"
+  ],
+  "classification_distribution": {
+    "HTML_RICH_TEXT": 1
+  },
+  "image_refs_distribution": {
+    "0": 1
+  },
   "asset_manifest_status": {
-    "phase312_database_design": "not_run",
-    "phase312_network_overview_model": "not_run",
-    "phase312_typical_information_system_architecture": "not_run"
+    "phase324_9_1_信息安全基础知识": "not_run"
   },
   "constraint_violations": [],
   "commands_executed": [
     {
-      "target_id": "phase312_database_design",
-      "command": "pnpm crawl:ruankaodaren -- --target \"3.3 数据库的设计\" --require-leaf",
-      "exit_code": 1,
-      "success": false
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "command": "internal live replay check --target \"9.1 信息安全基础知识\"",
+      "exit_code": 0,
+      "success": true
     },
     {
-      "target_id": "phase312_network_overview_model",
-      "command": "pnpm crawl:ruankaodaren -- --target \"5.1 网络概述和模型\" --require-leaf",
-      "exit_code": 1,
-      "success": false
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "command": "pnpm crawl:ruankaodaren -- --target \"9.1 信息安全基础知识\" --require-leaf",
+      "exit_code": 0,
+      "success": true
     },
     {
-      "target_id": "phase312_typical_information_system_architecture",
-      "command": "pnpm crawl:ruankaodaren -- --target \"8.8 典型信息系统架构模型\" --require-leaf",
-      "exit_code": 1,
-      "success": false
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "command": "pnpm preflight:sample -- --timestamp \"2026-05-28T05-25-27-891Z\"",
+      "exit_code": 0,
+      "success": true
+    },
+    {
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "command": "pnpm parse:ruankaodaren -- --latest-success",
+      "exit_code": 0,
+      "success": true
+    },
+    {
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "command": "pnpm audit:semantic-alignment",
+      "exit_code": 0,
+      "success": true
     }
   ],
   "failure_reasons": [
     {
-      "target_id": "phase312_database_design",
-      "failure_reason": "leaf_resolution_failed",
-      "asset_failure_reason": null
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "failure_reason": "leaf_resolution_failed",
-      "asset_failure_reason": null
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "failure_reason": "leaf_resolution_failed",
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "failure_reason": "target_mismatch_content_body",
       "asset_failure_reason": null
     }
   ],
   "final_coverage_report_path": "verification/generated/phase3_2_sample_coverage.json",
   "final_coverage_summary": {
-    "generated_at": "2026-05-27T08:14:14.940Z",
-    "total_samples": 7,
+    "generated_at": "2026-05-28T03:42:35.303Z",
+    "total_samples": 14,
     "samples": [
       {
         "file": "2026-05-26T09-40-21-903Z.json",
@@ -243,184 +238,418 @@
         "renderer_eligible": false,
         "preflight_passed": false,
         "constraint_violations": []
+      },
+      {
+        "file": "2026-05-27T14-34-52-493Z.json",
+        "title": "3.3 数据库的设计",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false,
+        "text_blocks": 1,
+        "key_terms": 7,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T14-34-52-493Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "renderer_eligible": false,
+        "preflight_passed": true,
+        "constraint_violations": []
+      },
+      {
+        "file": "2026-05-27T14-36-07-171Z.json",
+        "title": "5.1 网络概述和模型",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false,
+        "text_blocks": 1,
+        "key_terms": 7,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T14-36-07-171Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "renderer_eligible": false,
+        "preflight_passed": true,
+        "constraint_violations": []
+      },
+      {
+        "file": "2026-05-27T14-37-21-375Z.json",
+        "title": "8.8 典型信息系统架构模型",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": true,
+        "text_blocks": 15,
+        "key_terms": 9,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T14-37-21-375Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "target_body_mismatch",
+        "renderer_eligible": false,
+        "preflight_passed": false,
+        "constraint_violations": []
+      },
+      {
+        "file": "2026-05-28T02-54-15-543Z.json",
+        "title": "13.3 软件架构风格",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false,
+        "text_blocks": 1,
+        "key_terms": 3,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "renderer_eligible": false,
+        "preflight_passed": true,
+        "constraint_violations": []
+      },
+      {
+        "file": "2026-05-28T02-59-11-656Z.json",
+        "title": "13.3 软件架构风格",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false,
+        "text_blocks": 1,
+        "key_terms": 3,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-59-11-656Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "duplicate_same_title",
+        "renderer_eligible": false,
+        "preflight_passed": false,
+        "constraint_violations": []
+      },
+      {
+        "file": "2026-05-28T03-03-37-856Z.json",
+        "title": "13.3 软件架构风格",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false,
+        "text_blocks": 1,
+        "key_terms": 3,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T03-03-37-856Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "duplicate_same_title",
+        "renderer_eligible": false,
+        "preflight_passed": false,
+        "constraint_violations": []
+      },
+      {
+        "file": "2026-05-28T03-10-01-532Z.json",
+        "title": "13.3 软件架构风格",
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false,
+        "text_blocks": 1,
+        "key_terms": 3,
+        "image_refs": 0,
+        "html_fragments": 1,
+        "has_asset_manifest": true,
+        "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T03-10-01-532Z.json",
+        "asset_count": 0,
+        "downloaded_assets": 0,
+        "download_failed_assets": 0,
+        "skipped_assets": 0,
+        "manual_review_assets": 0,
+        "quarantined": true,
+        "quarantine_reason": "duplicate_same_title",
+        "renderer_eligible": false,
+        "preflight_passed": false,
+        "constraint_violations": []
       }
     ],
     "classification_distribution": {
       "MIXED_TEXT_IMAGE": 2,
-      "HTML_RICH_TEXT": 5
+      "HTML_RICH_TEXT": 12
     },
     "parser_confidence_distribution": {
       "medium": 2,
-      "high": 5
+      "high": 12
     },
     "total_image_refs": 2,
-    "total_key_terms": 39,
-    "total_text_blocks": 11,
-    "samples_requiring_manual_review": 2,
-    "samples_with_asset_manifests": 7,
+    "total_key_terms": 74,
+    "total_text_blocks": 32,
+    "samples_requiring_manual_review": 3,
+    "samples_with_asset_manifests": 14,
     "samples_without_asset_manifests": 0,
     "total_asset_manifest_assets": 2,
     "total_downloaded_assets": 2,
     "total_download_failed_assets": 0,
     "total_skipped_assets": 0,
     "total_manual_review_assets": 2,
-    "quarantined_samples": 6,
+    "quarantined_samples": 13,
     "renderer_eligible_samples": 1,
-    "preflight_passed_samples": 0,
-    "diagnostic_samples": 3,
+    "preflight_passed_samples": 3,
+    "diagnostic_samples": 20,
     "renderer_baseline_candidates": [
       {
         "file": "2026-05-26T09-40-21-903Z.json",
         "title": "1.3 指令系统CISC和RISC"
       }
     ],
-    "duplicate_actual_content_count": 6,
+    "duplicate_actual_content_count": 10,
     "constraint_violations_total": 0,
     "phase4_candidate_status": "blocked_insufficient_renderer_eligible",
     "renderer_eligible_titles": [
       "1.3 指令系统CISC和RISC"
     ],
-    "missing_renderer_eligible_count": 2
+    "missing_renderer_eligible_count": 2,
+    "renderer_readiness_classes_distribution": {
+      "renderer_ready_with_asset_refs": 1,
+      "not_ready_quarantined": 9,
+      "renderer_ready_short_card": 4
+    },
+    "content_shape_distribution": {
+      "MIXED_TEXT_IMAGE": 1,
+      "DIAGNOSTIC_ONLY": 2,
+      "SHORT_TEXT_CARD": 3,
+      "TARGET_MISMATCH": 4,
+      "STATIC_LOW_TEXT_VERIFIED": 4
+    },
+    "eligible_for_phase4_baseline_count": 5,
+    "static_low_text_verified_count": 4,
+    "renderer_policy_summary": [
+      {
+        "title": "1.3 指令系统CISC和RISC",
+        "render_as": "asset_card",
+        "allow_markdown": true
+      },
+      {
+        "title": "第3章 数据库系统",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "第5章 计算机网络",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "3.1 数据库系统常识",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "1.3 指令系统CISC和RISC",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "1.5 存储系统",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "1.4 指令的流水处理",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "3.3 数据库的设计",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "5.1 网络概述和模型",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "8.8 典型信息系统架构模型",
+        "render_as": "manual_review_card",
+        "allow_markdown": false
+      },
+      {
+        "title": "13.3 软件架构风格",
+        "render_as": "short_card",
+        "allow_markdown": true
+      },
+      {
+        "title": "13.3 软件架构风格",
+        "render_as": "short_card",
+        "allow_markdown": true
+      },
+      {
+        "title": "13.3 软件架构风格",
+        "render_as": "short_card",
+        "allow_markdown": true
+      },
+      {
+        "title": "13.3 软件架构风格",
+        "render_as": "short_card",
+        "allow_markdown": true
+      }
+    ],
+    "renderer_baseline_manifest_exists": true,
+    "unique_renderer_baseline_count": 2,
+    "canonical_baseline_titles": [
+      "1.3 指令系统CISC和RISC",
+      "13.3 软件架构风格"
+    ],
+    "duplicate_eligible_samples_excluded": 3,
+    "phase4_input_contract_ready": false
   },
   "targets": [
     {
-      "target_id": "phase312_database_design",
-      "title_hint": "3.3 数据库的设计",
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识",
       "expected_classification": "UNKNOWN",
       "status": "failed",
-      "failure_reason": "leaf_resolution_failed",
+      "failure_reason": "target_mismatch_content_body",
       "asset_failure_reason": null,
       "steps": [
         {
-          "name": "crawl",
-          "command": "pnpm crawl:ruankaodaren -- --target \"3.3 数据库的设计\" --require-leaf",
-          "exit_code": 1,
-          "success": false,
-          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 crawl:ruankaodaren D:\\learn\n> tsx scripts/crawl-ruankaodaren.ts \"--\" \"--target\" \"3.3 数据库的设计\" \"--require-leaf\"\n[crawler] starting crawler\n[crawler] using auth state: .auth/ruankaodaren.storageState.json\n[crawler] opening page (attempt 1/3)\n[crawler] waiting for render\n[crawler] current route after auth: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] context selection required: no\n[crawler] interaction harvesting started\n[crawler] interaction start url: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] interaction start title: 软考达人—专业的软考刷题题库，软考历年真题，软考模拟考试，软考考前押题。柴丁科技\n[crawler] body text length before interaction: 510\n[crawler] target resolver enabled: 3.3 数据库的设计\n[crawler] body text length after interaction: 510\n[crawler] detail content signal: yes\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n ELIFECYCLE  Command failed with exit code 1.",
-          "stderr_summary": "[crawler][warning] target leaf evaluate failed: page.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:1:82)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n[crawler][warning] target chapter evaluate failed: page.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:1:33)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n[crawler][warning] directory expand failed\n[crawler][warning] knowledge node candidate text not found\n[crawler][warning] require-leaf failed; preserving raw snapshot without detail-entry click\n[crawler][error] require-leaf failed: chapter-level target was not resolved to a leaf knowledge point",
-          "duration_ms": 8378
-        }
-      ],
-      "produced_timestamp": "2026-05-27T08-14-35-634Z",
-      "produced_metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T08-14-35-634Z.json",
-      "produced_intermediate_path": null,
-      "produced_manifest_path": null,
-      "new_sample_added": false,
-      "actual_knowledge_node_click_text": null,
-      "require_leaf": true,
-      "chapter_level_hit": false,
-      "chapter_level_rejected": false,
-      "leaf_resolution_success": false,
-      "resolved_leaf_text": null,
-      "resolved_leaf_strategy": "failed",
-      "target_resolution_trusted": false,
-      "target_resolution_failure_reason": "chapter_not_found",
-      "target_leaf_exact_match": false,
-      "actual_node_matches_requested_target": false,
-      "parse_timestamp_alignment": "unknown",
-      "classification": null,
-      "image_refs_count": null,
-      "downloaded_assets": null,
-      "manual_review_assets": null,
-      "text_blocks_count": null,
-      "total_text_length": null,
-      "content_ready": null,
-      "content_readiness_reason": null,
-      "diagnostic_sample": false,
-      "constraint_violations": [],
-      "asset_manifest_status": "not_run"
-    },
-    {
-      "target_id": "phase312_network_overview_model",
-      "title_hint": "5.1 网络概述和模型",
-      "expected_classification": "UNKNOWN",
-      "status": "failed",
-      "failure_reason": "leaf_resolution_failed",
-      "asset_failure_reason": null,
-      "steps": [
+          "name": "live_replay",
+          "command": "internal live replay check --target \"9.1 信息安全基础知识\"",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "catalog_match_found=true\nlive_replay_success=true\nmatched_leaf_title=9.1 信息安全基础知识\nvisible_chapter_count=18\nvisible_leaf_count=104",
+          "stderr_summary": "",
+          "duration_ms": 24915
+        },
         {
           "name": "crawl",
-          "command": "pnpm crawl:ruankaodaren -- --target \"5.1 网络概述和模型\" --require-leaf",
-          "exit_code": 1,
-          "success": false,
-          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 crawl:ruankaodaren D:\\learn\n> tsx scripts/crawl-ruankaodaren.ts \"--\" \"--target\" \"5.1 网络概述和模型\" \"--require-leaf\"\n[crawler] starting crawler\n[crawler] using auth state: .auth/ruankaodaren.storageState.json\n[crawler] opening page (attempt 1/3)\n[crawler] waiting for render\n[crawler] current route after auth: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] context selection required: no\n[crawler] interaction harvesting started\n[crawler] interaction start url: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] interaction start title: 软考达人—专业的软考刷题题库，软考历年真题，软考模拟考试，软考考前押题。柴丁科技\n[crawler] body text length before interaction: 510\n[crawler] target resolver enabled: 5.1 网络概述和模型\n[crawler] body text length after interaction: 510\n[crawler] detail content signal: yes\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n ELIFECYCLE  Command failed with exit code 1.",
-          "stderr_summary": "[crawler][warning] target leaf evaluate failed: page.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:1:82)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n[crawler][warning] target chapter evaluate failed: page.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:1:33)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n[crawler][warning] directory expand failed\n[crawler][warning] knowledge node candidate text not found\n[crawler][warning] require-leaf failed; preserving raw snapshot without detail-entry click\n[crawler][error] require-leaf failed: chapter-level target was not resolved to a leaf knowledge point",
-          "duration_ms": 7818
-        }
-      ],
-      "produced_timestamp": "2026-05-27T08-14-43-990Z",
-      "produced_metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T08-14-43-990Z.json",
-      "produced_intermediate_path": null,
-      "produced_manifest_path": null,
-      "new_sample_added": false,
-      "actual_knowledge_node_click_text": null,
-      "require_leaf": true,
-      "chapter_level_hit": false,
-      "chapter_level_rejected": false,
-      "leaf_resolution_success": false,
-      "resolved_leaf_text": null,
-      "resolved_leaf_strategy": "failed",
-      "target_resolution_trusted": false,
-      "target_resolution_failure_reason": "chapter_not_found",
-      "target_leaf_exact_match": false,
-      "actual_node_matches_requested_target": false,
-      "parse_timestamp_alignment": "unknown",
-      "classification": null,
-      "image_refs_count": null,
-      "downloaded_assets": null,
-      "manual_review_assets": null,
-      "text_blocks_count": null,
-      "total_text_length": null,
-      "content_ready": null,
-      "content_readiness_reason": null,
-      "diagnostic_sample": false,
-      "constraint_violations": [],
-      "asset_manifest_status": "not_run"
-    },
-    {
-      "target_id": "phase312_typical_information_system_architecture",
-      "title_hint": "8.8 典型信息系统架构模型",
-      "expected_classification": "UNKNOWN",
-      "status": "failed",
-      "failure_reason": "leaf_resolution_failed",
-      "asset_failure_reason": null,
-      "steps": [
+          "command": "pnpm crawl:ruankaodaren -- --target \"9.1 信息安全基础知识\" --require-leaf",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "[crawler] target resolver enabled: 9.1 信息安全基础知识\n[crawler] catalog resolver: 9.1 信息安全基础知识 (exact_full_title)\n[crawler] directory expand success\n[crawler] knowledge node identified (not clicked): 9.1 信息安全基础知识\n[crawler] body text length after interaction: 3315\n[crawler] detail content signal: yes\n[crawler] body text length before detail entry: 3315\n[crawler] detail entry decoy pre-select: clicked \"1.1 校验码\" to activate selected state\n[crawler] detail entry target_scoped click: \"去掌握\"\n[crawler] detail entry click success (strategy: target_scoped)\n[crawler] body text length after detail entry: 643\n[crawler] post-detail content signal: yes\n[crawler] content alignment: unknown (title: null)\n[crawler] waiting for detail content to stabilize\n[crawler] detail content stabilization: stable_rich selector=.knowInfo.ql-editor text=206\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n[crawler] crawler completed",
+          "stderr_summary": "",
+          "duration_ms": 51899
+        },
         {
-          "name": "crawl",
-          "command": "pnpm crawl:ruankaodaren -- --target \"8.8 典型信息系统架构模型\" --require-leaf",
-          "exit_code": 1,
-          "success": false,
-          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 crawl:ruankaodaren D:\\learn\n> tsx scripts/crawl-ruankaodaren.ts \"--\" \"--target\" \"8.8 典型信息系统架构模型\" \"--require-leaf\"\n[crawler] starting crawler\n[crawler] using auth state: .auth/ruankaodaren.storageState.json\n[crawler] opening page (attempt 1/3)\n[crawler] waiting for render\n[crawler] current route after auth: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] context selection required: no\n[crawler] interaction harvesting started\n[crawler] interaction start url: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] interaction start title: 软考达人—专业的软考刷题题库，软考历年真题，软考模拟考试，软考考前押题。柴丁科技\n[crawler] body text length before interaction: 510\n[crawler] target resolver enabled: 8.8 典型信息系统架构模型\n[crawler] body text length after interaction: 510\n[crawler] detail content signal: yes\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n ELIFECYCLE  Command failed with exit code 1.",
-          "stderr_summary": "[crawler][warning] target leaf evaluate failed: page.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:1:82)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n[crawler][warning] target chapter evaluate failed: page.evaluate: ReferenceError: __name is not defined\n    at eval (eval at evaluate (:302:30), <anonymous>:1:33)\n    at UtilityScript.evaluate (<anonymous>:304:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n[crawler][warning] directory expand failed\n[crawler][warning] knowledge node candidate text not found\n[crawler][warning] require-leaf failed; preserving raw snapshot without detail-entry click\n[crawler][error] require-leaf failed: chapter-level target was not resolved to a leaf knowledge point",
-          "duration_ms": 9798
+          "name": "preflight_metadata",
+          "command": "pnpm preflight:sample -- --timestamp \"2026-05-28T05-25-27-891Z\"",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 preflight:sample D:\\learn\n> tsx scripts/preflight-ruankaodaren-sample.ts \"--\" \"--timestamp\" \"2026-05-28T05-25-27-891Z\"\n[preflight] JSON written: verification/generated/phase3_8_preflight_2026-05-28T05-25-27-891Z.json\n[preflight] Markdown written: verification/generated/phase3_8_preflight_2026-05-28T05-25-27-891Z.md\n[preflight] Sample preflight complete\n  timestamp:          2026-05-28T05-25-27-891Z\n  metadata_gate:      pass\n  content_gate:       not_available\n  duplicate_gate:     unknown\n  overall:            pass\n  recommended_action: parse",
+          "stderr_summary": "",
+          "duration_ms": 681
+        },
+        {
+          "name": "parse",
+          "command": "pnpm parse:ruankaodaren -- --latest-success",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 parse:ruankaodaren D:\\learn\n> tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--latest-success\"\n[parser] auto-selected timestamp: 2026-05-28T05-25-27-891Z\n[parser] timestamp: 2026-05-28T05-25-27-891Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-28T05-25-27-891Z.json\n[parser] selected_metadata_timestamp: 2026-05-28T05-25-27-891Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-05-28T05-25-27-891Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json\n[parser] selected_reason: latest_success_auto\n[parser] selection_log: D:\\learn\\verification\\generated\\phase3_16_parser_selection_2026-05-28T05-25-27-891Z.json\n[parser] parser_diagnostics: D:\\learn\\verification\\generated\\phase3_17_parser_diagnostics_2026-05-28T05-25-27-891Z.json\n[parser] root_text_length: 206\n[parser] total_text_length: 388\n[parser] direct_text_node_count: 16\n[parser] title: 9.1 信息安全基础知识\n[parser] text_blocks: 21\n[parser] key_terms: 11\n[parser] image_refs: 0\n[parser] html_fragments: 1\n[parser] classification: HTML_RICH_TEXT\n[parser] parser_confidence: high\n[parser] requires_manual_review: true\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false",
+          "stderr_summary": "",
+          "duration_ms": 1346
+        },
+        {
+          "name": "audit_semantic",
+          "command": "pnpm audit:semantic-alignment",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 audit:semantic-alignment D:\\learn\n> tsx scripts/audit-ruankaodaren-semantic-alignment.ts\n[semantic-audit] Semantic alignment audit complete\n  total samples:             15\n  matched:                   11\n  likely matched:            3\n  mismatched:                4\n  quarantined:               13\n  duplicate actual content:  10\n  renderer eligible:         2\n  quarantine manifest:       data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json\n  JSON report:               verification/generated/phase3_7_semantic_alignment_audit.json\n  Markdown report:           verification/generated/phase3_7_semantic_alignment_audit.md",
+          "stderr_summary": "",
+          "duration_ms": 618
         }
       ],
-      "produced_timestamp": "2026-05-27T08-14-51-787Z",
-      "produced_metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T08-14-51-787Z.json",
-      "produced_intermediate_path": null,
+      "produced_timestamp": "2026-05-28T05-25-27-891Z",
+      "produced_metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-28T05-25-27-891Z.json",
+      "produced_outer_html_paths": [
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-body.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-knowInfo.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-knowInfo_ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-topicDetails.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-topicDetails_ql-editor.html"
+      ],
+      "produced_dom_text_path": "sources/ruankaodaren/raw/dom-text/2026-05-28T05-25-27-891Z.txt",
+      "produced_screenshot_path": "sources/ruankaodaren/raw/screenshots/2026-05-28T05-25-27-891Z.png",
+      "produced_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
       "produced_manifest_path": null,
-      "new_sample_added": false,
-      "actual_knowledge_node_click_text": null,
+      "latest_success_timestamp_used_by_parser": "2026-05-28T05-25-27-891Z",
+      "semantic_audit_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "semantic_audit_reason": null,
+      "new_sample_added": true,
+      "actual_knowledge_node_click_text": "9.1 信息安全基础知识",
       "require_leaf": true,
       "chapter_level_hit": false,
       "chapter_level_rejected": false,
-      "leaf_resolution_success": false,
-      "resolved_leaf_text": null,
-      "resolved_leaf_strategy": "failed",
-      "target_resolution_trusted": false,
-      "target_resolution_failure_reason": "chapter_not_found",
-      "target_leaf_exact_match": false,
-      "actual_node_matches_requested_target": false,
-      "parse_timestamp_alignment": "unknown",
-      "classification": null,
-      "image_refs_count": null,
+      "leaf_resolution_success": true,
+      "resolved_leaf_text": "9.1 信息安全基础知识",
+      "resolved_leaf_strategy": "not_required",
+      "target_resolution_trusted": true,
+      "target_resolution_failure_reason": null,
+      "target_leaf_exact_match": true,
+      "actual_node_matches_requested_target": true,
+      "require_live_replay": true,
+      "live_replay_checked": true,
+      "live_replay_result": "pass",
+      "live_replay_reject_reason": null,
+      "live_replay_matched_leaf_title": "9.1 信息安全基础知识",
+      "catalog_resolver_used": true,
+      "catalog_match_found": true,
+      "catalog_live_replay_success": true,
+      "catalog_match_strategy": "exact_full_title",
+      "live_replay_visible_chapter_count": 18,
+      "live_replay_visible_leaf_count": 104,
+      "live_replay_top_candidates": [
+        "9.1 信息安全基础知识",
+        "9.2 信息安全系统的组成框架",
+        "9.3 信息安全技术",
+        "9.4 信息安全的抗攻击技术",
+        "9.5 信息安全的保证体系与评估方法",
+        "9.6 网络安全技术",
+        "9.7 网络安全协议"
+      ],
+      "live_replay_debug_paths": null,
+      "parse_timestamp_alignment": "matched",
+      "classification": "HTML_RICH_TEXT",
+      "image_refs_count": 0,
       "downloaded_assets": null,
       "manual_review_assets": null,
-      "text_blocks_count": null,
-      "total_text_length": null,
-      "content_ready": null,
-      "content_readiness_reason": null,
-      "diagnostic_sample": false,
+      "text_blocks_count": 21,
+      "total_text_length": 388,
+      "content_ready": false,
+      "content_readiness_reason": "target_mismatch_content_body",
+      "diagnostic_sample": true,
+      "static_low_text_promotion_attempted": false,
+      "static_low_text_evidence_path": null,
+      "static_low_text_evidence_valid": false,
       "constraint_violations": [],
       "asset_manifest_status": "not_run"
     }

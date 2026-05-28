@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-05-27T16:04:19.513Z",
+  "phase": "3.17",
+  "source_report": "verification/generated/phase3_16_detail_binding_audit.json",
+  "sample_count": 3,
+  "items": [
+    {
+      "title": "3.3 数据库的设计",
+      "timestamp": "2026-05-27T14-34-52-493Z",
+      "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-knowInfo_ql-editor.html",
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-34-52-493Z.json",
+      "outer_html_text_length": 77,
+      "intermediate_text_length": 64,
+      "text_loss_ratio": 0.1688,
+      "direct_root_text_detected": false,
+      "direct_text_node_count": 0,
+      "inline_text_detected": true,
+      "root_text_block_present": false,
+      "parser_loss_status": "ok",
+      "recommended_action": "keep_quarantined"
+    },
+    {
+      "title": "5.1 网络概述和模型",
+      "timestamp": "2026-05-27T14-36-07-171Z",
+      "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo_ql-editor.html",
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-36-07-171Z.json",
+      "outer_html_text_length": 51,
+      "intermediate_text_length": 44,
+      "text_loss_ratio": 0.1373,
+      "direct_root_text_detected": false,
+      "direct_text_node_count": 0,
+      "inline_text_detected": true,
+      "root_text_block_present": false,
+      "parser_loss_status": "ok",
+      "recommended_action": "keep_quarantined"
+    },
+    {
+      "title": "8.8 典型信息系统架构模型",
+      "timestamp": "2026-05-27T14-37-21-375Z",
+      "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo_ql-editor.html",
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-37-21-375Z.json",
+      "outer_html_text_length": 148,
+      "intermediate_text_length": 128,
+      "text_loss_ratio": 0.1351,
+      "direct_root_text_detected": true,
+      "direct_text_node_count": 9,
+      "inline_text_detected": true,
+      "root_text_block_present": true,
+      "parser_loss_status": "ok",
+      "recommended_action": "keep_quarantined"
+    }
+  ],
+  "constraints": {
+    "no_crawl": true,
+    "no_acquisition": true,
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_full_site_crawl": true,
+    "phase4_not_entered": true
+  }
+}

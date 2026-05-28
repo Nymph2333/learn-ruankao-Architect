@@ -102,3 +102,5 @@ If the shared explorer finds no leaves:
 
 - Catalog must also reflect `leaf_count = 0`.
 - Catalog and replay must not use two separate versions of DOM truth.
+
+Phase 3.15 uses live-replay-verified exact leaf targets for controlled renderer baseline acquisition.

@@ -1,0 +1,328 @@
+{
+  "generated_at": "2026-05-27T16:04:29.462Z",
+  "phase": "3.16",
+  "source_report": "verification/generated/phase3_15_live_replay_verified_acquisition_run.json",
+  "target_count": 3,
+  "status_distribution": {
+    "weak_text_unknown": 1,
+    "semantic_audit_false_positive": 1,
+    "unknown": 1
+  },
+  "traces": [
+    {
+      "target_title": "3.3 数据库的设计",
+      "crawl_timestamp": "2026-05-27T14-34-52-493Z",
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T14-34-52-493Z.json",
+      "outer_html_paths": [
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-body.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-knowInfo.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-knowInfo_ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-topicDetails.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-topicDetails_ql-editor.html"
+      ],
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-34-52-493Z.json",
+      "metadata": {
+        "requested_target_text": "3.3 数据库的设计",
+        "knowledge_node_click_text": "3.3 数据库的设计",
+        "resolved_target_text": "3.3 数据库的设计",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468124184663",
+        "target_resolution_trusted": true,
+        "catalog_live_replay_success": true,
+        "detail_entry_route_changed": true,
+        "detail_entry_strategy": "target_scoped",
+        "detail_content_text_preview": "需求分析：即分析数据存储的要求，产出物有数据流图、数据字典、需求说明书。获得用户对系统的三个要求：信息要求、处理要求、系统要求。",
+        "detail_content_text_length": 64
+      },
+      "raw_outer_html": {
+        "knowInfo_ql_editor_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-knowInfo_ql-editor.html",
+        "text_preview": "需求分析： 即分析数据存储的要求，产出物有 数据流图 、 数据字典 、 需求说明书 。获得用户对系统的三个要求： 信息要求 、 处理要求 、 系统要求 。",
+        "text_length": 77,
+        "contains_target_number": false,
+        "contains_target_keywords": false,
+        "matched_target_keywords": [],
+        "contains_other_known_sample_tokens": []
+      },
+      "intermediate": {
+        "title": "3.3 数据库的设计",
+        "source_timestamp": "2026-05-27T14-34-52-493Z",
+        "text_preview": "需求分析：即分析数据存储的要求，产出物有数据流图、数据字典、需求说明书。获得用户对系统的三个要求：信息要求、处理要求、系统要求。",
+        "text_length": 64,
+        "key_terms": [
+          "数据流图",
+          "数据字典",
+          "需求说明书",
+          "信息要求",
+          "处理要求",
+          "系统要求",
+          "需求分析："
+        ],
+        "image_refs": [],
+        "classification": "HTML_RICH_TEXT",
+        "raw_paths": {
+          "metadata": "sources/ruankaodaren/raw/metadata/2026-05-27T14-34-52-493Z.json",
+          "outer_html": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-knowInfo_ql-editor.html",
+          "screenshot": "sources/ruankaodaren/raw/screenshots/2026-05-27T14-34-52-493Z.png",
+          "dom_text": "sources/ruankaodaren/raw/dom-text/2026-05-27T14-34-52-493Z.txt",
+          "containers": "sources/ruankaodaren/raw/containers/2026-05-27T14-34-52-493Z.json"
+        }
+      },
+      "semantic_audit": {
+        "alignment": "matched",
+        "body_alignment": "insufficient_text",
+        "expected_tokens": [
+          "3.3",
+          "数据库的设计",
+          "数据库的",
+          "数据库"
+        ],
+        "matched_expected_tokens": [],
+        "conflicting_tokens": [],
+        "text_preview_used": "需求分析：即分析数据存储的要求，产出物有数据流图、数据字典、需求说明书。获得用户对系统的三个要求：信息要求、处理要求、系统要求。 数据流图 数据字典 需求说明书 信息要求 处理要求 系统要求 需求分析： 需求分析：即分析数据存储的要求，产出物有数据流图、数据字典、需求说明书。获得用户对系统的三个要求：信息要求、处理要求、系统要求。",
+        "image_refs_surrounding_text_used": [],
+        "html_fragment_text_used": "需求分析： 即分析数据存储的要求，产出物有 数据流图 、 数据字典 、 需求说明书 。获得用户对系统的三个要求： 信息要求 、 处理要求 、 系统要求 。",
+        "detected_body_signals": [
+          "存储"
+        ],
+        "quarantine_reason": "low_text",
+        "renderer_eligible": false
+      },
+      "screenshot_debug": {
+        "screenshot_path": "sources/ruankaodaren/raw/screenshots/2026-05-27T14-34-52-493Z.png",
+        "screenshot_exists": true,
+        "before_detail_screenshot_path": "sources/ruankaodaren/raw/screenshots/debug/2026-05-27T14-34-52-493Z-before-detail-entry.png",
+        "before_detail_screenshot_exists": true,
+        "after_detail_screenshot_path": "sources/ruankaodaren/raw/screenshots/debug/2026-05-27T14-34-52-493Z-after-detail-entry.png",
+        "after_detail_screenshot_exists": true
+      },
+      "timestamp_integrity": {
+        "metadata_timestamp": "2026-05-27T14-34-52-493Z",
+        "intermediate_source_timestamp": "2026-05-27T14-34-52-493Z",
+        "metadata_matches_intermediate": true,
+        "parser_selected_timestamp": "2026-05-27T14-34-52-493Z",
+        "parser_timestamp_matches_crawl": true
+      },
+      "binding_status": "weak_text_unknown",
+      "evidence": [
+        "detail body is short (77 chars) and has no image_refs"
+      ],
+      "recommended_fix": "Do not count this sample as renderer baseline; either choose a richer leaf or add a detail-body completeness gate before parse."
+    },
+    {
+      "target_title": "5.1 网络概述和模型",
+      "crawl_timestamp": "2026-05-27T14-36-07-171Z",
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T14-36-07-171Z.json",
+      "outer_html_paths": [
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-body.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo_ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-topicDetails.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-topicDetails_ql-editor.html"
+      ],
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-36-07-171Z.json",
+      "metadata": {
+        "requested_target_text": "5.1 网络概述和模型",
+        "knowledge_node_click_text": "5.1 网络概述和模型",
+        "resolved_target_text": "5.1 网络概述和模型",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468128379004",
+        "target_resolution_trusted": true,
+        "catalog_live_replay_success": true,
+        "detail_entry_route_changed": true,
+        "detail_entry_strategy": "target_scoped",
+        "detail_content_text_preview": "计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。",
+        "detail_content_text_length": 44
+      },
+      "raw_outer_html": {
+        "knowInfo_ql_editor_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo_ql-editor.html",
+        "text_preview": "计算机网络是计算机技术与通信技术相结合的产物，它实现了 远程通信 、 远程信息处理 和 资源共 享 。",
+        "text_length": 51,
+        "contains_target_number": false,
+        "contains_target_keywords": true,
+        "matched_target_keywords": [
+          "网络"
+        ],
+        "contains_other_known_sample_tokens": []
+      },
+      "intermediate": {
+        "title": "5.1 网络概述和模型",
+        "source_timestamp": "2026-05-27T14-36-07-171Z",
+        "text_preview": "计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。",
+        "text_length": 44,
+        "key_terms": [
+          "远程通信",
+          "远程信息处理",
+          "资源共",
+          "享",
+          "计算机网络是计算机技术与通信技术相结合的产物，它实现了",
+          "、",
+          "和"
+        ],
+        "image_refs": [],
+        "classification": "HTML_RICH_TEXT",
+        "raw_paths": {
+          "metadata": "sources/ruankaodaren/raw/metadata/2026-05-27T14-36-07-171Z.json",
+          "outer_html": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo_ql-editor.html",
+          "screenshot": "sources/ruankaodaren/raw/screenshots/2026-05-27T14-36-07-171Z.png",
+          "dom_text": "sources/ruankaodaren/raw/dom-text/2026-05-27T14-36-07-171Z.txt",
+          "containers": "sources/ruankaodaren/raw/containers/2026-05-27T14-36-07-171Z.json"
+        }
+      },
+      "semantic_audit": {
+        "alignment": "matched",
+        "body_alignment": "matched",
+        "expected_tokens": [
+          "5.1",
+          "网络概述和模型",
+          "网络概述和",
+          "网络概述",
+          "网络"
+        ],
+        "matched_expected_tokens": [
+          "网络"
+        ],
+        "conflicting_tokens": [],
+        "text_preview_used": "计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。 远程通信 远程信息处理 资源共 享 计算机网络是计算机技术与通信技术相结合的产物，它实现了 、 和 计算机网络是计算机技术与通信技术相结合的产物，它实现了远程通信、远程信息处理和资源共享。",
+        "image_refs_surrounding_text_used": [],
+        "html_fragment_text_used": "计算机网络是计算机技术与通信技术相结合的产物，它实现了 远程通信 、 远程信息处理 和 资源共 享 。",
+        "detected_body_signals": [
+          "网络"
+        ],
+        "quarantine_reason": "low_text",
+        "renderer_eligible": false
+      },
+      "screenshot_debug": {
+        "screenshot_path": "sources/ruankaodaren/raw/screenshots/2026-05-27T14-36-07-171Z.png",
+        "screenshot_exists": true,
+        "before_detail_screenshot_path": "sources/ruankaodaren/raw/screenshots/debug/2026-05-27T14-36-07-171Z-before-detail-entry.png",
+        "before_detail_screenshot_exists": true,
+        "after_detail_screenshot_path": "sources/ruankaodaren/raw/screenshots/debug/2026-05-27T14-36-07-171Z-after-detail-entry.png",
+        "after_detail_screenshot_exists": true
+      },
+      "timestamp_integrity": {
+        "metadata_timestamp": "2026-05-27T14-36-07-171Z",
+        "intermediate_source_timestamp": "2026-05-27T14-36-07-171Z",
+        "metadata_matches_intermediate": true,
+        "parser_selected_timestamp": "2026-05-27T14-36-07-171Z",
+        "parser_timestamp_matches_crawl": true
+      },
+      "binding_status": "semantic_audit_false_positive",
+      "evidence": [
+        "raw outerHTML contains target keyword evidence but semantic audit still rejects renderer eligibility"
+      ],
+      "recommended_fix": "Improve semantic token evidence to recognize decisive target terms without weakening quarantine for unrelated content."
+    },
+    {
+      "target_title": "8.8 典型信息系统架构模型",
+      "crawl_timestamp": "2026-05-27T14-37-21-375Z",
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-27T14-37-21-375Z.json",
+      "outer_html_paths": [
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-body.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo_ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-topicDetails.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-topicDetails_ql-editor.html"
+      ],
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-27T14-37-21-375Z.json",
+      "metadata": {
+        "requested_target_text": "8.8 典型信息系统架构模型",
+        "knowledge_node_click_text": "8.8 典型信息系统架构模型",
+        "resolved_target_text": "8.8 典型信息系统架构模型",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468132573284",
+        "target_resolution_trusted": true,
+        "catalog_live_replay_success": true,
+        "detail_entry_route_changed": true,
+        "detail_entry_strategy": "target_scoped",
+        "detail_content_text_preview": "政府信息化和电子政府：电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即利用信息技术和其他相关技术，将其管理和服务职能进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现公务、政务、商务、事务的一体化管理与运行。",
+        "detail_content_text_length": 131
+      },
+      "raw_outer_html": {
+        "knowInfo_ql_editor_path": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo_ql-editor.html",
+        "text_preview": "政府信息化和电子政府： 电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即 利用信息技术 和 其他相关技术 ，将其 管理 和 服务职能 进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现 公务 、 政务 、 商务 、 事务 的一体化管理与运行。",
+        "text_length": 148,
+        "contains_target_number": false,
+        "contains_target_keywords": false,
+        "matched_target_keywords": [],
+        "contains_other_known_sample_tokens": []
+      },
+      "intermediate": {
+        "title": "8.8 典型信息系统架构模型",
+        "source_timestamp": "2026-05-27T14-37-21-375Z",
+        "text_preview": "政府信息化和电子政府： 电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即 利用信息技术 和 其他相关技术 ，将其 管理 服务职能 进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现 公务 、 政务 商务 事务 的一体化管理与运行。",
+        "text_length": 128,
+        "key_terms": [
+          "利用信息技术",
+          "其他相关技术",
+          "管理",
+          "服务职能",
+          "公务",
+          "政务",
+          "商务",
+          "事务",
+          "政府信息化和电子政府："
+        ],
+        "image_refs": [],
+        "classification": "HTML_RICH_TEXT",
+        "raw_paths": {
+          "metadata": "sources/ruankaodaren/raw/metadata/2026-05-27T14-37-21-375Z.json",
+          "outer_html": "sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo_ql-editor.html",
+          "screenshot": "sources/ruankaodaren/raw/screenshots/2026-05-27T14-37-21-375Z.png",
+          "dom_text": "sources/ruankaodaren/raw/dom-text/2026-05-27T14-37-21-375Z.txt",
+          "containers": "sources/ruankaodaren/raw/containers/2026-05-27T14-37-21-375Z.json"
+        }
+      },
+      "semantic_audit": {
+        "alignment": "matched",
+        "body_alignment": "mismatched",
+        "expected_tokens": [
+          "8.8",
+          "典型信息系统架构模型",
+          "典型信息系统架构",
+          "架构",
+          "信息系统"
+        ],
+        "matched_expected_tokens": [],
+        "conflicting_tokens": [
+          "网络"
+        ],
+        "text_preview_used": "政府信息化和电子政府： 电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即 利用信息技术 和 其他相关技术 ，将其 管理 服务职能 进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现 公务 、 政务 商务 事务 的一体化管理与运行。 利用信息技术 其他相关技术 管理 服务职能 公务 政务 商务 事务 政府信息化和电子政府： 政府信息化和电子政府：电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即利用信息技术和其他相关技术，将其管理和服务职能进行集成，在...",
+        "image_refs_surrounding_text_used": [],
+        "html_fragment_text_used": "政府信息化和电子政府： 电子政务实质上是对现有的、工业时代形成的政府形态的一种改造，即 利用信息技术 和 其他相关技术 ，将其 管理 和 服务职能 进行集成，在网络上实现政府组织结构和工作流程优化重组，超越时间、空间与部门分隔的制约，实现 公务 、 政务 、 商务 、 事务 的一体化管理与运行。",
+        "detected_body_signals": [
+          "网络"
+        ],
+        "quarantine_reason": "target_body_mismatch",
+        "renderer_eligible": false
+      },
+      "screenshot_debug": {
+        "screenshot_path": "sources/ruankaodaren/raw/screenshots/2026-05-27T14-37-21-375Z.png",
+        "screenshot_exists": true,
+        "before_detail_screenshot_path": "sources/ruankaodaren/raw/screenshots/debug/2026-05-27T14-37-21-375Z-before-detail-entry.png",
+        "before_detail_screenshot_exists": true,
+        "after_detail_screenshot_path": "sources/ruankaodaren/raw/screenshots/debug/2026-05-27T14-37-21-375Z-after-detail-entry.png",
+        "after_detail_screenshot_exists": true
+      },
+      "timestamp_integrity": {
+        "metadata_timestamp": "2026-05-27T14-37-21-375Z",
+        "intermediate_source_timestamp": "2026-05-27T14-37-21-375Z",
+        "metadata_matches_intermediate": true,
+        "parser_selected_timestamp": "2026-05-27T14-37-21-375Z",
+        "parser_timestamp_matches_crawl": true
+      },
+      "binding_status": "unknown",
+      "evidence": [
+        "no decisive binding evidence found"
+      ],
+      "recommended_fix": "Collect missing trace evidence before acquisition continues."
+    }
+  ],
+  "constraints": {
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_full_site_crawl": true,
+    "phase4_not_entered": true
+  }
+}

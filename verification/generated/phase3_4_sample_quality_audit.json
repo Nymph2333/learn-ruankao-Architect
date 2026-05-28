@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-27T14:23:58.693Z",
-  "sample_count": 7,
+  "generated_at": "2026-05-28T05:27:03.277Z",
+  "sample_count": 15,
   "samples": [
     {
       "identity": {
@@ -431,32 +431,536 @@
         "renderer_eligible": false
       },
       "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T14-34-52-493Z",
+        "title": "3.3 数据库的设计",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468124184663",
+        "target_node_text": "3.3 数据库的设计",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 7,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 64,
+        "longest_text_block_length": 64,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T14-34-52-493Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: low_text"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T14-36-07-171Z",
+        "title": "5.1 网络概述和模型",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468128379004",
+        "target_node_text": "5.1 网络概述和模型",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 7,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 44,
+        "longest_text_block_length": 44,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T14-36-07-171Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: low_text"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-27T14-37-21-375Z",
+        "title": "8.8 典型信息系统架构模型",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468132573284",
+        "target_node_text": "8.8 典型信息系统架构模型",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": true
+      },
+      "content_volume": {
+        "text_blocks_count": 15,
+        "key_terms_count": 9,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 128,
+        "longest_text_block_length": 45,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-27T14-37-21-375Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: target_body_mismatch"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "target_body_mismatch",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-28T02-54-15-543Z",
+        "title": "13.3 软件架构风格",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+        "target_node_text": "13.3 软件架构风格",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 3,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 61,
+        "longest_text_block_length": 61,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: low_text"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "low_text",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-28T02-59-11-656Z",
+        "title": "13.3 软件架构风格",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+        "target_node_text": "13.3 软件架构风格",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 3,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 61,
+        "longest_text_block_length": 61,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-59-11-656Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: duplicate_same_title"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "duplicate_same_title",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-28T03-03-37-856Z",
+        "title": "13.3 软件架构风格",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+        "target_node_text": "13.3 软件架构风格",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 3,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 61,
+        "longest_text_block_length": 61,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T03-03-37-856Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: duplicate_same_title"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "duplicate_same_title",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-28T03-10-01-532Z",
+        "title": "13.3 软件架构风格",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468136767675",
+        "target_node_text": "13.3 软件架构风格",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": false
+      },
+      "content_volume": {
+        "text_blocks_count": 1,
+        "key_terms_count": 3,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 61,
+        "longest_text_block_length": 61,
+        "risks": [
+          "total text length < 80 and image_refs = 0"
+        ]
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": true,
+        "manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T03-10-01-532Z.json",
+        "image_refs_count": 0,
+        "manifest_asset_count": 0,
+        "asset_count_matches_image_refs": true,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_quarantined",
+        "reasons": [
+          "quarantined: duplicate_same_title"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": true,
+        "quarantine_reason": "duplicate_same_title",
+        "excluded_from_renderer_baseline": true
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": false
+      },
+      "constraint_violations": []
+    },
+    {
+      "identity": {
+        "timestamp": "2026-05-28T05-25-27-891Z",
+        "title": "9.1 信息安全基础知识",
+        "final_url": "https://ruankaodaren.com/exam/#/konwledgeInfo?id=1821374468132573339",
+        "target_node_text": "9.1 信息安全基础知识",
+        "detail_entry_strategy": "target_scoped",
+        "detail_entry_route_changed": true,
+        "classification": "HTML_RICH_TEXT",
+        "parser_confidence": "high",
+        "requires_manual_review": true
+      },
+      "content_volume": {
+        "text_blocks_count": 21,
+        "key_terms_count": 11,
+        "image_refs_count": 0,
+        "html_fragments_count": 1,
+        "total_text_length": 388,
+        "longest_text_block_length": 206,
+        "risks": []
+      },
+      "target_alignment": {
+        "title_vs_target": "exact",
+        "content_mentions_title_signal": false,
+        "final_url_contains_konwledgeInfo": true,
+        "detail_strategy_allowed": true,
+        "chapter_level_sample": false,
+        "high_risk": true,
+        "risks": [
+          "content body does not contain a meaningful title signal"
+        ]
+      },
+      "content_shape": "leaf_knowledge_point",
+      "asset_integrity": {
+        "manifest_present": false,
+        "manifest_path": null,
+        "image_refs_count": 0,
+        "manifest_asset_count": null,
+        "asset_count_matches_image_refs": null,
+        "downloaded_assets_count": 0,
+        "downloaded_assets_exist": true,
+        "image_refs_require_manual_review": true,
+        "risks": []
+      },
+      "renderer_readiness": {
+        "status": "not_ready_target_mismatch",
+        "reasons": [
+          "content body does not contain a meaningful title signal"
+        ],
+        "renderer_policy": null
+      },
+      "quarantine": {
+        "quarantined": false,
+        "quarantine_reason": null,
+        "excluded_from_renderer_baseline": false
+      },
+      "semantic_audit": {
+        "available": true,
+        "renderer_eligible": true
+      },
+      "constraint_violations": []
     }
   ],
   "summary": {
-    "leaf_knowledge_point_count": 5,
+    "leaf_knowledge_point_count": 13,
     "chapter_overview_count": 2,
     "mixed_count": 0,
     "unknown_count": 0,
     "ready_count": 0,
     "ready_with_asset_refs_count": 1,
-    "not_ready_count": 6,
+    "not_ready_count": 14,
     "readiness_distribution": {
       "ready_with_asset_refs": 1,
-      "not_ready_quarantined": 6
+      "not_ready_quarantined": 13,
+      "not_ready_target_mismatch": 1
     },
     "constraint_violations_total": 0,
-    "quarantined_count": 6,
+    "quarantined_count": 13,
     "renderer_eligible_leaf_count": 1
   },
   "overall_gate": {
-    "phase4_renderer_allowed": false,
-    "reason": "Renderer design gate blocked because controlled samples do not yet provide enough leaf-level renderer baselines.",
-    "required_before_phase4": [
-      "acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)",
-      "validate at least 3 unique renderer-ready leaf titles",
-      "improve target selection for chapter-level hints",
-      "avoid using chapter overview as renderer baseline"
-    ]
+    "phase4_renderer_allowed": true,
+    "reason": "Renderer design gate passed (Phase 3.23 baseline manifest): sufficient unique titles.",
+    "required_before_phase4": []
   }
 }

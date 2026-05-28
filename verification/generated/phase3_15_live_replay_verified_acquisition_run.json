@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-05-28T05:26:21.590Z",
+  "phase": "3.15",
+  "candidate_list": [
+    {
+      "target_id": "phase322_software_architecture_style_static_low_text",
+      "title_hint": "13.3 软件架构风格"
+    },
+    {
+      "target_id": "phase315_database_design",
+      "title_hint": "3.3 数据库的设计"
+    },
+    {
+      "target_id": "phase315_network_overview_model",
+      "title_hint": "5.1 网络概述和模型"
+    },
+    {
+      "target_id": "phase315_typical_information_system_architecture",
+      "title_hint": "8.8 典型信息系统架构模型"
+    },
+    {
+      "target_id": "phase315_information_security_basics",
+      "title_hint": "9.1 信息安全基础知识"
+    }
+  ],
+  "acquisition_target_list": [
+    {
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识"
+    }
+  ],
+  "live_replay_checked_count": 1,
+  "live_replay_pass_count": 1,
+  "live_replay_fail_count": 0,
+  "acquisition_attempt_count": 1,
+  "preflight_pass_count": 1,
+  "preflight_fail_count": 0,
+  "semantic_pass_count": 1,
+  "semantic_fail_count": 0,
+  "renderer_eligible_added_count": 1,
+  "renderer_eligible_added_titles": [
+    "9.1 信息安全基础知识"
+  ],
+  "final_renderer_eligible_count": 1,
+  "phase4_renderer_allowed": false,
+  "required_before_phase4": [
+    "need at least 3 unique renderer-ready titles (have 2/3)"
+  ],
+  "per_target_results": [
+    {
+      "target_id": "phase324_9_1_信息安全基础知识",
+      "title_hint": "9.1 信息安全基础知识",
+      "commands": [
+        {
+          "name": "live_replay",
+          "command": "internal live replay check --target \"9.1 信息安全基础知识\"",
+          "exit_code": 0,
+          "success": true
+        },
+        {
+          "name": "crawl",
+          "command": "pnpm crawl:ruankaodaren -- --target \"9.1 信息安全基础知识\" --require-leaf",
+          "exit_code": 0,
+          "success": true
+        },
+        {
+          "name": "preflight_metadata",
+          "command": "pnpm preflight:sample -- --timestamp \"2026-05-28T05-25-27-891Z\"",
+          "exit_code": 0,
+          "success": true
+        },
+        {
+          "name": "parse",
+          "command": "pnpm parse:ruankaodaren -- --latest-success",
+          "exit_code": 0,
+          "success": true
+        },
+        {
+          "name": "audit_semantic",
+          "command": "pnpm audit:semantic-alignment",
+          "exit_code": 0,
+          "success": true
+        }
+      ],
+      "live_replay_result": "pass",
+      "live_replay_checked": true,
+      "live_replay_reject_reason": null,
+      "live_replay_matched_leaf_title": "9.1 信息安全基础知识",
+      "live_replay_visible_chapter_count": 18,
+      "live_replay_visible_leaf_count": 104,
+      "catalog_match_found": true,
+      "catalog_live_replay_success": true,
+      "catalog_match_strategy": "exact_full_title",
+      "preflight_result": "pass",
+      "parse_result": "pass",
+      "semantic_audit_result": "pass",
+      "asset_capture_result": "not_reached",
+      "renderer_eligibility": "eligible",
+      "renderer_eligible": true,
+      "crawl_timestamp": "2026-05-28T05-25-27-891Z",
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-05-28T05-25-27-891Z.json",
+      "outer_html_paths": [
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-body.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-knowInfo.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-knowInfo_ql-editor.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-topicDetails.html",
+        "sources/ruankaodaren/raw/outer-html/2026-05-28T05-25-27-891Z-topicDetails_ql-editor.html"
+      ],
+      "dom_text_path": "sources/ruankaodaren/raw/dom-text/2026-05-28T05-25-27-891Z.txt",
+      "screenshot_path": "sources/ruankaodaren/raw/screenshots/2026-05-28T05-25-27-891Z.png",
+      "produced_timestamp": "2026-05-28T05-25-27-891Z",
+      "produced_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "produced_manifest_path": null,
+      "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "manifest_path": null,
+      "latest_success_timestamp_used_by_parser": "2026-05-28T05-25-27-891Z",
+      "semantic_audit_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "semantic_audit_reason": null,
+      "reject_reason": "target_mismatch_content_body"
+    }
+  ],
+  "constraints": {
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_full_site_crawl": true,
+    "phase4_not_entered": true
+  }
+}

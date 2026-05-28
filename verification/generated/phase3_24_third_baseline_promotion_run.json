@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-05-28T05:26:26.510Z",
+  "attempted_candidates": [
+    "9.1 信息安全基础知识"
+  ],
+  "discovery_results": [
+    {
+      "title": "9.1 信息安全基础知识",
+      "discovery_command": "pnpm discover:detail-interactions -- --target \"9.1 信息安全基础知识\"",
+      "discovery_report_path": "verification/generated/phase3_20_detail_interaction_discovery_9_1_信息安全基础知识.json",
+      "discovery_result": "pass",
+      "content_access_pattern": "alternate_container_found",
+      "promotion_decision": "promote",
+      "promotion_reason": "rich text verified: alternate_container_max_text_length=214",
+      "reject_reason": null,
+      "config_target_id": "phase324_9_1_信息安全基础知识",
+      "acquisition_command": "pnpm run:sample-acquisition",
+      "acquisition_result": "pass",
+      "post_audit_commands": [
+        {
+          "command": "pnpm audit:renderer-readiness",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 audit:renderer-readiness D:\\learn\n> tsx scripts/audit-ruankaodaren-renderer-readiness.ts\n[audit:renderer-readiness] Loaded 2 discovery report(s)\n[audit:renderer-readiness] Renderer readiness audit complete\n  total_evaluated:               15\n  static_low_text_verified:      4\n  eligible_for_phase4_baseline:  6\n  eligible_titles:               1.3 指令系统CISC和RISC, 13.3 软件架构风格, 13.3 软件架构风格, 13.3 软件架构风格, 13.3 软件架构风格, 9.1 信息安全基础知识\n  phase4_gate_allowed:           true\n  content_shape_distribution:\n    MIXED_TEXT_IMAGE: 1\n    DIAGNOSTIC_ONLY: 2\n    SHORT_TEXT_CARD: 3\n    TARGET_MISMATCH: 4\n    STATIC_LOW_TEXT_VERIFIED: 4\n    HTML_RICH_TEXT: 1\n  readiness_class_distribution:\n    renderer_ready_with_asset_refs: 1\n    not_ready_quarantined: 9\n    renderer_ready_short_card: 4\n    renderer_ready_text: 1\n  JSON: verification/generated/phase3_21_renderer_readiness_audit.json\n  MD:   verification/generated/phase3_21_renderer_readiness_audit.md",
+          "stderr_summary": "",
+          "duration_ms": 735
+        },
+        {
+          "command": "pnpm audit:semantic-alignment",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 audit:semantic-alignment D:\\learn\n> tsx scripts/audit-ruankaodaren-semantic-alignment.ts\n[semantic-audit] Semantic alignment audit complete\n  total samples:             15\n  matched:                   11\n  likely matched:            3\n  mismatched:                4\n  quarantined:               13\n  duplicate actual content:  10\n  renderer eligible:         2\n  quarantine manifest:       data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json\n  JSON report:               verification/generated/phase3_7_semantic_alignment_audit.json\n  Markdown report:           verification/generated/phase3_7_semantic_alignment_audit.md",
+          "stderr_summary": "",
+          "duration_ms": 593
+        },
+        {
+          "command": "pnpm build:renderer-baseline",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 build:renderer-baseline D:\\learn\n> tsx scripts/build-ruankaodaren-renderer-baseline.ts\n[build:renderer-baseline] Baseline manifest built\n  baseline_count:             3\n  unique_title_count:         3\n  canonical_titles:           1.3 指令系统CISC和RISC, 13.3 软件架构风格, 9.1 信息安全基础知识\n  duplicate_paths_total:      3\n  excluded_items:             12\n  phase4_input_contract_ready: true\n  JSON: verification/generated/phase3_23_renderer_baseline_manifest.json\n  MD:   verification/generated/phase3_23_renderer_baseline_manifest.md",
+          "stderr_summary": "",
+          "duration_ms": 671
+        },
+        {
+          "command": "pnpm audit:sample-quality",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 audit:sample-quality D:\\learn\n> tsx scripts/audit-ruankaodaren-sample-quality.ts\n[audit] Phase 3.21 readiness audit loaded: 15 item(s)\n[audit] Sample quality audit complete\n  sample count:              15\n  leaf_knowledge_point:      13\n  chapter_overview:          2\n  ready:                     0\n  ready_with_asset_refs:     1\n  not_ready:                 14\n  quarantined:               13\n  renderer_eligible_leaf:    1\n  phase4_renderer_allowed:   true\n  required_before_phase4:    (none)\n  JSON report:               verification/generated/phase3_4_sample_quality_audit.json\n  Markdown report:           verification/generated/phase3_4_sample_quality_audit.md",
+          "stderr_summary": "",
+          "duration_ms": 607
+        },
+        {
+          "command": "pnpm report:sample-coverage",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "      classification: HTML_RICH_TEXT  confidence: high\n      text_blocks: 1  key_terms: 3  image_refs: 0 [manifest ✓]\n      semantic: quarantined=true renderer_eligible=false reason=duplicate_same_title\n      assets: manifest_count=0 downloaded=0 failed=0 skipped=0 manual_review=0\n    2026-05-28T03-03-37-856Z.json\n      title:          13.3 软件架构风格\n      classification: HTML_RICH_TEXT  confidence: high\n      text_blocks: 1  key_terms: 3  image_refs: 0 [manifest ✓]\n      semantic: quarantined=true renderer_eligible=false reason=duplicate_same_title\n      assets: manifest_count=0 downloaded=0 failed=0 skipped=0 manual_review=0\n    2026-05-28T03-10-01-532Z.json\n      title:          13.3 软件架构风格\n      classification: HTML_RICH_TEXT  confidence: high\n      text_blocks: 1  key_terms: 3  image_refs: 0 [manifest ✓]\n      semantic: quarantined=true renderer_eligible=false reason=duplicate_same_title\n      assets: manifest_count=0 downloaded=0 failed=0 skipped=0 manual_review=0\n    2026-05-28T05-25-27-891Z.json\n      title:          9.1 信息安全基础知识\n      classification: HTML_RICH_TEXT  confidence: high\n      text_blocks: 21  key_terms: 11  image_refs: 0 [no manifest]\n      semantic: quarantined=false renderer_eligible=true\n      assets: manifest_count=0 downloaded=0 failed=0 skipped=0 manual_review=0\n[report] JSON written: verification/generated/phase3_2_sample_coverage.json\n[report] Markdown written: verification/generated/phase3_2_sample_coverage.md\n[report] Done.",
+          "stderr_summary": "",
+          "duration_ms": 632
+        },
+        {
+          "command": "pnpm validate:intermediate",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "  constraints:    ocr_used=false  encrypted_xhr_decrypted=false  image_table_reconstructed=false  markdown_generated=false\n[PASS] D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-28T03-03-37-856Z.json\n  title:          13.3 软件架构风格\n  classification: HTML_RICH_TEXT\n  text_blocks:    1\n  key_terms:      3\n  image_refs:     0\n  constraints:    ocr_used=false  encrypted_xhr_decrypted=false  image_table_reconstructed=false  markdown_generated=false\n[PASS] D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-28T03-10-01-532Z.json\n  title:          13.3 软件架构风格\n  classification: HTML_RICH_TEXT\n  text_blocks:    1\n  key_terms:      3\n  image_refs:     0\n  constraints:    ocr_used=false  encrypted_xhr_decrypted=false  image_table_reconstructed=false  markdown_generated=false\n[PASS] D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-28T05-25-27-891Z.json\n  title:          9.1 信息安全基础知识\n  classification: HTML_RICH_TEXT\n  text_blocks:    21\n  key_terms:      11\n  image_refs:     0\n  constraints:    ocr_used=false  encrypted_xhr_decrypted=false  image_table_reconstructed=false  markdown_generated=false\nValidated: 15 file(s). Failures: 0/15\n[validate] All files passed schema and invariant checks.\n[validate] Semantic alignment is not checked here; run pnpm audit:semantic-alignment.",
+          "stderr_summary": "",
+          "duration_ms": 846
+        },
+        {
+          "command": "pnpm validate:assets",
+          "exit_code": 0,
+          "success": true,
+          "stdout_summary": "  failed:          0\n  constraints:     ocr_used=false  image_table_reconstructed=false  markdown_generated=false  encrypted_xhr_decrypted=false\n[PASS] sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-59-11-656Z.json\n  source_title:    13.3 软件架构风格\n  source_timestamp: 2026-05-28T02-59-11-656Z\n  asset_count:     0\n  downloaded:      0\n  failed:          0\n  constraints:     ocr_used=false  image_table_reconstructed=false  markdown_generated=false  encrypted_xhr_decrypted=false\n[PASS] sources/ruankaodaren/raw/assets/manifests/2026-05-28T03-03-37-856Z.json\n  source_title:    13.3 软件架构风格\n  source_timestamp: 2026-05-28T03-03-37-856Z\n  asset_count:     0\n  downloaded:      0\n  failed:          0\n  constraints:     ocr_used=false  image_table_reconstructed=false  markdown_generated=false  encrypted_xhr_decrypted=false\n[PASS] sources/ruankaodaren/raw/assets/manifests/2026-05-28T03-10-01-532Z.json\n  source_title:    13.3 软件架构风格\n  source_timestamp: 2026-05-28T03-10-01-532Z\n  asset_count:     0\n  downloaded:      0\n  failed:          0\n  constraints:     ocr_used=false  image_table_reconstructed=false  markdown_generated=false  encrypted_xhr_decrypted=false\nValidated: 14 manifest(s). Failures: 0/14\n[validate:assets] All manifests passed schema and invariant checks.",
+          "stderr_summary": "",
+          "duration_ms": 757
+        }
+      ],
+      "renderer_eligibility": true
+    }
+  ],
+  "promotion_attempted": true,
+  "promoted_title": "9.1 信息安全基础知识",
+  "promotion_result": "success",
+  "final_unique_title_count": 3,
+  "canonical_baseline_titles": [
+    "1.3 指令系统CISC和RISC",
+    "13.3 软件架构风格",
+    "9.1 信息安全基础知识"
+  ],
+  "phase4_input_contract_ready": true,
+  "phase4_renderer_allowed": true,
+  "required_before_phase4": []
+}

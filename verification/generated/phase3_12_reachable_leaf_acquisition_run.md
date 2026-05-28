@@ -1,18 +1,18 @@
 # Phase 3.12 Reachable-leaf Acquisition Run
 
-Generated at: 2026-05-27T08:15:00.766Z
+Generated at: 2026-05-28T05:26:21.587Z
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Attempted targets | 3 |
-| Exact leaf targets | 3 |
-| Preflight pass | 0 |
+| Attempted targets | 1 |
+| Exact leaf targets | 1 |
+| Preflight pass | 1 |
 | Preflight fail | 0 |
-| Semantic pass | 0 |
+| Semantic pass | 1 |
 | Semantic fail | 0 |
-| Renderer eligible added | 0 |
+| Renderer eligible added | 1 |
 | Final renderer eligible count | 1 |
 | Phase 4 renderer allowed | false |
 
@@ -20,28 +20,21 @@ Generated at: 2026-05-27T08:15:00.766Z
 
 | Target | Hint | Preflight | Parse | Semantic Audit | Asset Capture | Renderer Eligible | Reject Reason |
 |---|---|---|---|---|---|---|---|
-| phase312_database_design | 3.3 数据库的设计 | not_reached | not_reached | not_reached | not_reached | no | leaf_resolution_failed |
-| phase312_network_overview_model | 5.1 网络概述和模型 | not_reached | not_reached | not_reached | not_reached | no | leaf_resolution_failed |
-| phase312_typical_information_system_architecture | 8.8 典型信息系统架构模型 | not_reached | not_reached | not_reached | not_reached | no | leaf_resolution_failed |
+| phase324_9_1_信息安全基础知识 | 9.1 信息安全基础知识 | pass | pass | pass | not_reached | yes | target_mismatch_content_body |
 
 ## Renderer Eligible Added
 
-- None added in this run.
+- 9.1 信息安全基础知识
 
 ## Rejected Targets
 
-- phase312_database_design: leaf_resolution_failed
-- phase312_network_overview_model: leaf_resolution_failed
-- phase312_typical_information_system_architecture: leaf_resolution_failed
+- None.
 
 ## Phase 4 Gate
 
 - **phase4_renderer_allowed**: false
 - **required_before_phase4**:
-  - acquire 2 more renderer-eligible non-quarantined leaf-level sample(s) (have 1/3)
-  - validate at least 3 unique renderer-ready leaf titles
-  - improve target selection for chapter-level hints
-  - avoid using chapter overview as renderer baseline
+  - need at least 3 unique renderer-ready titles (have 2/3)
 
 ## Constraints
 

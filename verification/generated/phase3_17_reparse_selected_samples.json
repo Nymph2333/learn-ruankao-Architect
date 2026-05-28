@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-05-27T16:04:13.427Z",
+  "phase": "3.17",
+  "source_report": "verification/generated/phase3_16_detail_binding_audit.json",
+  "reparsed_count": 3,
+  "failed_count": 0,
+  "results": [
+    {
+      "title": "3.3 数据库的设计",
+      "timestamp": "2026-05-27T14-34-52-493Z",
+      "command": "pnpm parse:ruankaodaren -- --timestamp \"2026-05-27T14-34-52-493Z\"",
+      "exit_code": 0,
+      "success": true,
+      "backup_path": "data/intermediate/ruankaodaren/diagnostics/reparse-backups/2026-05-27T14-34-52-493Z.json",
+      "before": {
+        "exists": true,
+        "text_blocks": 1,
+        "total_text_length": 64,
+        "classification": "HTML_RICH_TEXT"
+      },
+      "after": {
+        "exists": true,
+        "text_blocks": 1,
+        "total_text_length": 64,
+        "classification": "HTML_RICH_TEXT"
+      },
+      "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 parse:ruankaodaren D:\\learn\n> tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--timestamp\" \"2026-05-27T14-34-52-493Z\"\n\n[parser] timestamp: 2026-05-27T14-34-52-493Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-27T14-34-52-493Z.json\n[parser] selected_metadata_timestamp: 2026-05-27T14-34-52-493Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-05-27T14-34-52-493Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-05-27T14-34-52-493Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-05-27T14-34-52-493Z.json\n[parser] selected_reason: timestamp_strict\n[parser] selection_log: D:\\learn\\verification\\generated\\phase3_16_parser_selection_2026-05-27T14-34-52-493Z.json\n[parser] parser_diagnostics: D:\\learn\\verification\\generated\\phase3_17_parser_diagnostics_2026-05-27T14-34-52-493Z.json\n[parser] root_text_length: 64\n[parser] total_text_length: 64\n[parser] direct_text_node_count: 0\n[parser] title: 3.3 数据库的设计\n[parser] text_blocks: 1\n[parser] key_terms: 7\n[parser] image_refs: 0\n[parser] html_fragments: 1\n[parser] classification: HTML_RICH_TEXT\n[parser] parser_confidence: high\n[parser] requires_manual_review: false\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false",
+      "stderr_summary": ""
+    },
+    {
+      "title": "5.1 网络概述和模型",
+      "timestamp": "2026-05-27T14-36-07-171Z",
+      "command": "pnpm parse:ruankaodaren -- --timestamp \"2026-05-27T14-36-07-171Z\"",
+      "exit_code": 0,
+      "success": true,
+      "backup_path": "data/intermediate/ruankaodaren/diagnostics/reparse-backups/2026-05-27T14-36-07-171Z.json",
+      "before": {
+        "exists": true,
+        "text_blocks": 1,
+        "total_text_length": 44,
+        "classification": "HTML_RICH_TEXT"
+      },
+      "after": {
+        "exists": true,
+        "text_blocks": 1,
+        "total_text_length": 44,
+        "classification": "HTML_RICH_TEXT"
+      },
+      "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 parse:ruankaodaren D:\\learn\n> tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--timestamp\" \"2026-05-27T14-36-07-171Z\"\n\n[parser] timestamp: 2026-05-27T14-36-07-171Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-27T14-36-07-171Z.json\n[parser] selected_metadata_timestamp: 2026-05-27T14-36-07-171Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-05-27T14-36-07-171Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-05-27T14-36-07-171Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-05-27T14-36-07-171Z.json\n[parser] selected_reason: timestamp_strict\n[parser] selection_log: D:\\learn\\verification\\generated\\phase3_16_parser_selection_2026-05-27T14-36-07-171Z.json\n[parser] parser_diagnostics: D:\\learn\\verification\\generated\\phase3_17_parser_diagnostics_2026-05-27T14-36-07-171Z.json\n[parser] root_text_length: 44\n[parser] total_text_length: 44\n[parser] direct_text_node_count: 0\n[parser] title: 5.1 网络概述和模型\n[parser] text_blocks: 1\n[parser] key_terms: 7\n[parser] image_refs: 0\n[parser] html_fragments: 1\n[parser] classification: HTML_RICH_TEXT\n[parser] parser_confidence: high\n[parser] requires_manual_review: false\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false",
+      "stderr_summary": ""
+    },
+    {
+      "title": "8.8 典型信息系统架构模型",
+      "timestamp": "2026-05-27T14-37-21-375Z",
+      "command": "pnpm parse:ruankaodaren -- --timestamp \"2026-05-27T14-37-21-375Z\"",
+      "exit_code": 0,
+      "success": true,
+      "backup_path": "data/intermediate/ruankaodaren/diagnostics/reparse-backups/2026-05-27T14-37-21-375Z.json",
+      "before": {
+        "exists": true,
+        "text_blocks": 1,
+        "total_text_length": 11,
+        "classification": "HTML_RICH_TEXT"
+      },
+      "after": {
+        "exists": true,
+        "text_blocks": 15,
+        "total_text_length": 128,
+        "classification": "HTML_RICH_TEXT"
+      },
+      "stdout_summary": "> ruankao-architect-knowledge-base@0.1.0 parse:ruankaodaren D:\\learn\n> tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--timestamp\" \"2026-05-27T14-37-21-375Z\"\n\n[parser] timestamp: 2026-05-27T14-37-21-375Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: D:\\learn\\data\\intermediate\\ruankaodaren\\samples\\2026-05-27T14-37-21-375Z.json\n[parser] selected_metadata_timestamp: 2026-05-27T14-37-21-375Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-05-27T14-37-21-375Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-05-27T14-37-21-375Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-05-27T14-37-21-375Z.json\n[parser] selected_reason: timestamp_strict\n[parser] selection_log: D:\\learn\\verification\\generated\\phase3_16_parser_selection_2026-05-27T14-37-21-375Z.json\n[parser] parser_diagnostics: D:\\learn\\verification\\generated\\phase3_17_parser_diagnostics_2026-05-27T14-37-21-375Z.json\n[parser] root_text_length: 131\n[parser] total_text_length: 128\n[parser] direct_text_node_count: 9\n[parser] title: 8.8 典型信息系统架构模型\n[parser] text_blocks: 15\n[parser] key_terms: 9\n[parser] image_refs: 0\n[parser] html_fragments: 1\n[parser] classification: HTML_RICH_TEXT\n[parser] parser_confidence: high\n[parser] requires_manual_review: true\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false",
+      "stderr_summary": ""
+    }
+  ],
+  "constraints": {
+    "no_crawl": true,
+    "no_acquisition": true,
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_full_site_crawl": true,
+    "phase4_not_entered": true
+  }
+}

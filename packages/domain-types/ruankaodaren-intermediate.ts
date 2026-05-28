@@ -14,7 +14,7 @@ export type ContentSourceClassification =
 
 export type ParserConfidence = "high" | "medium" | "low";
 
-export type TextBlockType = "paragraph" | "heading" | "list_item" | "inline" | "unknown";
+export type TextBlockType = "paragraph" | "heading" | "list_item" | "inline" | "root_text" | "unknown";
 
 export type KeyTermKind = "underline_placeholder" | "strong" | "emphasis";
 
@@ -80,6 +80,7 @@ export interface RuankaoHtmlFragment {
   source_selector: string;
   outer_html: string;
   text_length: number;
+  contains_direct_text?: boolean;
   contains_image: boolean;
   contains_table: boolean;
 }

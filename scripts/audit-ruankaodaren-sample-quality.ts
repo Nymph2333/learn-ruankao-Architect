@@ -22,6 +22,8 @@ const quarantineManifestPath = resolve(
   "data/intermediate/ruankaodaren/quarantine/quarantine-manifest.json"
 );
 const semanticAuditPath = resolve(repoRoot, "verification/generated/phase3_7_semantic_alignment_audit.json");
+const readinessAuditPath = resolve(repoRoot, "verification/generated/phase3_21_renderer_readiness_audit.json");
+const baselineManifestPath = resolve(repoRoot, "verification/generated/phase3_23_renderer_baseline_manifest.json");
 
 type ContentShape = "leaf_knowledge_point" | "chapter_overview" | "mixed" | "unknown";
 type TargetAlignment = "exact" | "related" | "mismatch" | "missing";
@@ -177,6 +179,40 @@ function loadSemanticAuditItems(): Map<string, SemanticAuditItem> {
   }
 
   return itemsByTimestamp;
+}
+
+interface ReadinessAuditItem {
+  timestamp: string;
+  eligible_for_phase4_baseline: boolean;
+  readiness_class: string;
+  content_shape: string;
+  renderer_policy?: {
+    preserve_asset_refs: boolean;
+    render_as: string;
+    allow_markdown_generation_later: boolean;
+  } | null;
+}
+
+interface ReadinessAuditReport {
+  items?: ReadinessAuditItem[];
+}
+
+/**
+ * Load Phase 3.21 renderer readiness audit if it exists.
+ * Returns null if the audit file has not been generated yet.
+ */
+function loadReadinessAuditItems(): Map<string, ReadinessAuditItem> | null {
+  if (!existsSync(readinessAuditPath)) return null;
+  try {
+    const report = readJson<ReadinessAuditReport>(readinessAuditPath);
+    const map = new Map<string, ReadinessAuditItem>();
+    for (const item of report.items ?? []) {
+      map.set(item.timestamp, item);
+    }
+    return map;
+  } catch {
+    return null;
+  }
 }
 
 function normalizeText(text: string | null | undefined): string {
@@ -574,7 +610,129 @@ function countBy<T extends string>(values: T[]): Record<T, number> {
   return result;
 }
 
-function buildGate(samples: SampleAudit[]): AuditReport["overall_gate"] {
+interface BaselineManifestShape {
+  unique_title_count: number;
+  phase4_input_contract_ready: boolean;
+  required_before_phase4: string[];
+  baseline_items: Array<{
+    canonical_title: string;
+    renderer_policy?: { preserve_asset_refs?: boolean } | null;
+    content_shape: string;
+    constraints?: { ocr_used: boolean; encrypted_xhr_decrypted: boolean; image_table_reconstructed: boolean };
+  }>;
+}
+
+function loadBaselineManifest(): BaselineManifestShape | null {
+  if (!existsSync(baselineManifestPath)) return null;
+  try {
+    return readJson<BaselineManifestShape>(baselineManifestPath);
+  } catch {
+    return null;
+  }
+}
+
+function buildGate(
+  samples: SampleAudit[],
+  readinessAuditItems: Map<string, ReadinessAuditItem> | null
+): AuditReport["overall_gate"] {
+  // Phase 3.23: if unique-title baseline manifest exists, use it as authoritative gate
+  const baselineManifest = loadBaselineManifest();
+  if (baselineManifest !== null) {
+    const uniqueTitleCount = baselineManifest.unique_title_count;
+    const contractReady = baselineManifest.phase4_input_contract_ready;
+    const constraintViolationsTotal = samples.reduce(
+      (sum, sample) => sum + sample.constraint_violations.length,
+      0
+    );
+    const mixedWithoutAssetPolicy = baselineManifest.baseline_items.filter(
+      (item) =>
+        (item.content_shape === "MIXED_TEXT_IMAGE" || item.content_shape === "IMAGE_ASSET_CARD") &&
+        item.renderer_policy?.preserve_asset_refs !== true
+    );
+    const allHavePolicy = baselineManifest.baseline_items.every((item) => item.renderer_policy !== null);
+
+    const required: string[] = [...(baselineManifest.required_before_phase4 ?? [])];
+    if (constraintViolationsTotal > 0) required.push("fix constraint violations before renderer design");
+    if (!allHavePolicy) required.push("define renderer_policy for every baseline item");
+    if (mixedWithoutAssetPolicy.length > 0) {
+      required.push("MIXED_TEXT_IMAGE / IMAGE_ASSET_CARD items must have preserve_asset_refs = true");
+    }
+
+    const allowed =
+      uniqueTitleCount >= 3 &&
+      contractReady &&
+      constraintViolationsTotal === 0 &&
+      allHavePolicy &&
+      mixedWithoutAssetPolicy.length === 0;
+
+    return {
+      phase4_renderer_allowed: allowed,
+      reason: allowed
+        ? "Renderer design gate passed (Phase 3.23 baseline manifest): sufficient unique titles."
+        : `Renderer design gate blocked (Phase 3.23 baseline manifest): unique_title_count=${uniqueTitleCount}/3, phase4_input_contract_ready=${contractReady}.`,
+      required_before_phase4: [...new Set(required)],
+    };
+  }
+
+  // Phase 3.21 fallback: if readiness audit exists, use eligible_for_phase4_baseline from it
+  if (readinessAuditItems !== null) {
+    console.warn("[audit] WARNING: Phase 3.23 baseline manifest not found — using Phase 3.21 readiness audit gate");
+    const eligibleItems = Array.from(readinessAuditItems.values()).filter(
+      (item) => item.eligible_for_phase4_baseline
+    );
+    const uniqueEligibleTitles = new Set(
+      eligibleItems
+        .map((item) => {
+          const sample = samples.find((s) => s.identity.timestamp === item.timestamp);
+          return sample?.identity.title ?? null;
+        })
+        .filter((t): t is string => t !== null)
+    );
+    const constraintViolationsTotal = samples.reduce(
+      (sum, sample) => sum + sample.constraint_violations.length,
+      0
+    );
+    const allEligibleHavePolicy = eligibleItems.every((item) => item.renderer_policy !== null);
+    const mixedWithoutAssetPolicy = eligibleItems.filter(
+      (item) =>
+        item.content_shape === "MIXED_TEXT_IMAGE" &&
+        item.renderer_policy?.preserve_asset_refs !== true
+    );
+
+    const required: string[] = [];
+    if (eligibleItems.length < 3) {
+      required.push(
+        `need at least 3 phase4-eligible samples per readiness audit (have ${eligibleItems.length}/3)`
+      );
+    }
+    if (uniqueEligibleTitles.size < 3) {
+      required.push(`need at least 3 unique eligible titles (have ${uniqueEligibleTitles.size}/3)`);
+    }
+    if (constraintViolationsTotal > 0) required.push("fix constraint violations before renderer design");
+    if (!allEligibleHavePolicy) required.push("define renderer_policy for every eligible sample");
+    if (mixedWithoutAssetPolicy.length > 0) {
+      required.push("MIXED_TEXT_IMAGE samples must have preserve_asset_refs = true");
+    }
+
+    const allowed =
+      eligibleItems.length >= 3 &&
+      uniqueEligibleTitles.size >= 3 &&
+      constraintViolationsTotal === 0 &&
+      allEligibleHavePolicy &&
+      mixedWithoutAssetPolicy.length === 0;
+
+    return {
+      phase4_renderer_allowed: allowed,
+      reason: allowed
+        ? "Renderer design gate passed (Phase 3.21 readiness audit): sufficient eligible samples."
+        : "Renderer design gate blocked (Phase 3.21 readiness audit): not enough eligible baseline samples.",
+      required_before_phase4: [...new Set(required)],
+    };
+  }
+
+  // Fallback: old gate logic (no readiness audit present)
+  console.warn("[audit] WARNING: renderer readiness audit missing — using legacy gate logic");
+
   const readySamples = samples.filter(
     (sample) =>
       sample.content_shape === "leaf_knowledge_point" &&
@@ -587,15 +745,10 @@ function buildGate(samples: SampleAudit[]): AuditReport["overall_gate"] {
   const uniqueReadyLeafTitleCount = new Set(
     rendererEligibleLeafSamples.map((sample) => sample.identity.title).filter((title): title is string => Boolean(title))
   ).size;
-  const leafSampleCount = samples.filter((sample) => sample.content_shape === "leaf_knowledge_point").length;
   const constraintViolationsTotal = samples.reduce(
     (sum, sample) => sum + sample.constraint_violations.length,
     0
   );
-  const targetMismatchCount = samples.filter(
-    (sample) => sample.renderer_readiness.status === "not_ready_target_mismatch"
-  ).length;
-  const quarantinedCount = samples.filter((sample) => sample.quarantine.quarantined).length;
   const allReadySamplesHavePolicy = readySamples.every(
     (sample) => sample.renderer_readiness.renderer_policy !== null
   );
@@ -634,7 +787,7 @@ function buildGate(samples: SampleAudit[]): AuditReport["overall_gate"] {
   };
 }
 
-function buildReport(samples: SampleAudit[]): AuditReport {
+function buildReport(samples: SampleAudit[], readinessAuditItems: Map<string, ReadinessAuditItem> | null): AuditReport {
   const readinessDistribution = countBy(samples.map((sample) => sample.renderer_readiness.status));
   const rendererEligibleLeafCount = samples.filter(
     (sample) =>
@@ -668,7 +821,7 @@ function buildReport(samples: SampleAudit[]): AuditReport {
     sample_count: samples.length,
     samples,
     summary,
-    overall_gate: buildGate(samples),
+    overall_gate: buildGate(samples, readinessAuditItems),
   };
 }
 
@@ -760,8 +913,14 @@ function main(): void {
 
   const quarantineItems = loadQuarantineItems();
   const semanticAuditItems = loadSemanticAuditItems();
+  const readinessAuditItems = loadReadinessAuditItems();
+  if (readinessAuditItems === null) {
+    console.warn("[audit] WARNING: renderer readiness audit missing — run `pnpm audit:renderer-readiness` first for Phase 3.21 gate");
+  } else {
+    console.log(`[audit] Phase 3.21 readiness audit loaded: ${readinessAuditItems.size} item(s)`);
+  }
   const samples = sampleFiles.map((fileName) => auditSample(fileName, quarantineItems, semanticAuditItems));
-  const report = buildReport(samples);
+  const report = buildReport(samples, readinessAuditItems);
   mkdirSync(generatedDir, { recursive: true });
 
   const jsonPath = resolve(generatedDir, "phase3_4_sample_quality_audit.json");

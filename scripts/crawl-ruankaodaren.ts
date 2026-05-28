@@ -7,7 +7,9 @@ import { chromium, type BrowserContextOptions, type Page, type Response } from "
 import {
   captureReplayDebugSnapshot,
   replayCatalogLeaf,
+  waitForStableDetailContent,
   type ReplayDebugPaths,
+  type StabilizationResult,
   type VisibleLeaf,
 } from "./lib/ruankaodaren-dom-explorer.js";
 import {
@@ -2559,6 +2561,13 @@ async function main(): Promise<void> {
         allowGlobalFallback
       );
 
+    let detailStabilization: StabilizationResult | null = null;
+    if (detailEntry.routeChanged) {
+      log("waiting for detail content to stabilize");
+      detailStabilization = await waitForStableDetailContent(page);
+      log(`detail content stabilization: ${detailStabilization.status} selector=${detailStabilization.selected_selector ?? "none"} text=${detailStabilization.text_length}`);
+    }
+
     log("saving html");
     const html = await page.content();
     const htmlPath = resolve(htmlDir, `${timestamp}.html`);
@@ -2722,6 +2731,14 @@ async function main(): Promise<void> {
       detail_content_detected_title: detailEntry.contentDetectedTitle,
       detail_content_text_length: detailEntry.contentTextLength,
       detail_content_text_preview: detailEntry.contentTextPreview,
+      detail_content_stabilization_attempted: detailEntry.routeChanged,
+      detail_content_stabilization_status: detailStabilization?.status ?? null,
+      detail_content_stabilization_selector: detailStabilization?.selected_selector ?? null,
+      detail_content_stabilization_text_length: detailStabilization?.text_length ?? 0,
+      detail_content_stabilization_outer_html_length: detailStabilization?.outer_html_length ?? 0,
+      detail_content_stabilization_img_count: detailStabilization?.img_count ?? 0,
+      detail_content_stabilization_waited_ms: detailStabilization?.waited_ms ?? 0,
+      detail_content_stabilization_rounds: detailStabilization?.rounds ?? [],
       outer_html_paths: containerSnapshot.outerHtmlPaths.map(toRepoRelativePath),
       network_timeline_path: toRepoRelativePath(networkTimelinePath),
       network_event_count: networkTimeline.length,

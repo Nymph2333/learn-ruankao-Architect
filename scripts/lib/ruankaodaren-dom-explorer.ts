@@ -657,3 +657,223 @@ export async function captureReplayDebugSnapshot(
     candidate_ranking: toRepoPath(candidatePath),
   };
 }
+
+// ©¤©¤ Phase 3.19: Detail Content Stabilization ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤
+
+export interface StabilizationRound {
+  round: number;
+  selector: string;
+  exists: boolean;
+  text_length: number;
+  normalized_text_hash: string;
+  outer_html_length: number;
+  img_count: number;
+  paragraph_count: number;
+  current_url: string;
+  timestamp: string;
+}
+
+export interface StabilizationResult {
+  status:
+    | "stable_rich"
+    | "stable_with_assets"
+    | "stable_but_low_text"
+    | "timeout_no_container"
+    | "timeout_unstable";
+  selected_selector: string | null;
+  text_length: number;
+  outer_html_length: number;
+  img_count: number;
+  paragraph_count: number;
+  rounds: StabilizationRound[];
+  waited_ms: number;
+}
+
+export interface StabilizationOptions {
+  minTextLength?: number;
+  stableRounds?: number;
+  pollIntervalMs?: number;
+  timeoutMs?: number;
+  selectors?: string[];
+}
+
+function simpleTextHash(text: string): string {
+  let h = 0;
+  for (let i = 0; i < text.length; i++) {
+    h = Math.imul(31, h) + text.charCodeAt(i);
+    h |= 0;
+  }
+  return (h >>> 0).toString(16);
+}
+
+export async function waitForStableDetailContent(
+  page: Page,
+  options: StabilizationOptions = {}
+): Promise<StabilizationResult> {
+  const {
+    minTextLength = 120,
+    stableRounds = 3,
+    pollIntervalMs = 1000,
+    timeoutMs = 15000,
+    selectors = [
+      ".knowInfo.ql-editor",
+      ".knowInfo",
+      ".ql-editor",
+      ".topicDetails",
+      ".topicDetails .ql-editor",
+      ".questionInfo",
+      ".questionContent",
+    ],
+  } = options;
+
+  const startMs = Date.now();
+  const allRounds: StabilizationRound[] = [];
+  let roundNumber = 0;
+
+  // Per-selector: track consecutive stable readings
+  const selectorStableCount = new Map<string, number>();
+  const selectorLastSnap = new Map<
+    string,
+    { text_length: number; img_count: number; outer_html_length: number }
+  >();
+
+  while (Date.now() - startMs < timeoutMs) {
+    roundNumber++;
+
+    for (const selector of selectors) {
+      const data = await page
+        .evaluate((sel: string) => {
+          const el = document.querySelector(sel) as HTMLElement | null;
+          if (!el) return null;
+          const rect = el.getBoundingClientRect();
+          if (rect.width <= 0 && rect.height <= 0) return null;
+          const text = (el.innerText ?? el.textContent ?? "")
+            .replace(/\s+/g, " ")
+            .trim();
+          const outerHtml = el.outerHTML;
+          const imgs = el.querySelectorAll("img").length;
+          const paragraphs = el.querySelectorAll("p, li").length;
+          return {
+            text,
+            outer_html_length: outerHtml.length,
+            img_count: imgs,
+            paragraph_count: paragraphs,
+          };
+        }, selector)
+        .catch(() => null);
+
+      const textHash = data ? simpleTextHash(data.text) : "";
+      const round: StabilizationRound = {
+        round: roundNumber,
+        selector,
+        exists: data !== null,
+        text_length: data ? data.text.length : 0,
+        normalized_text_hash: textHash,
+        outer_html_length: data ? data.outer_html_length : 0,
+        img_count: data ? data.img_count : 0,
+        paragraph_count: data ? data.paragraph_count : 0,
+        current_url: page.url(),
+        timestamp: new Date().toISOString(),
+      };
+      allRounds.push(round);
+
+      if (!data || data.text.length === 0) {
+        selectorStableCount.set(selector, 0);
+        selectorLastSnap.delete(selector);
+        continue;
+      }
+
+      const last = selectorLastSnap.get(selector);
+      const stableThisRound =
+        last !== undefined &&
+        Math.abs(data.text.length - last.text_length) <= 5 &&
+        data.img_count === last.img_count &&
+        Math.abs(data.outer_html_length - last.outer_html_length) <= 50;
+
+      selectorLastSnap.set(selector, {
+        text_length: data.text.length,
+        img_count: data.img_count,
+        outer_html_length: data.outer_html_length,
+      });
+
+      if (stableThisRound) {
+        selectorStableCount.set(selector, (selectorStableCount.get(selector) ?? 0) + 1);
+      } else {
+        selectorStableCount.set(selector, 0);
+      }
+
+      const stableCount = selectorStableCount.get(selector) ?? 0;
+      if (stableCount >= stableRounds - 1) {
+        const waited_ms = Date.now() - startMs;
+        if (data.text.length >= minTextLength) {
+          return {
+            status: "stable_rich",
+            selected_selector: selector,
+            text_length: data.text.length,
+            outer_html_length: data.outer_html_length,
+            img_count: data.img_count,
+            paragraph_count: data.paragraph_count,
+            rounds: allRounds,
+            waited_ms,
+          };
+        }
+        if (data.img_count >= 1 && data.text.length >= 40) {
+          return {
+            status: "stable_with_assets",
+            selected_selector: selector,
+            text_length: data.text.length,
+            outer_html_length: data.outer_html_length,
+            img_count: data.img_count,
+            paragraph_count: data.paragraph_count,
+            rounds: allRounds,
+            waited_ms,
+          };
+        }
+        if (data.text.length > 0) {
+          return {
+            status: "stable_but_low_text",
+            selected_selector: selector,
+            text_length: data.text.length,
+            outer_html_length: data.outer_html_length,
+            img_count: data.img_count,
+            paragraph_count: data.paragraph_count,
+            rounds: allRounds,
+            waited_ms,
+          };
+        }
+      }
+    }
+
+    await page.waitForTimeout(pollIntervalMs);
+  }
+
+  const waited_ms = Date.now() - startMs;
+  const anyContainer = allRounds.some((r) => r.exists && r.text_length > 0);
+  if (!anyContainer) {
+    return {
+      status: "timeout_no_container",
+      selected_selector: null,
+      text_length: 0,
+      outer_html_length: 0,
+      img_count: 0,
+      paragraph_count: 0,
+      rounds: allRounds,
+      waited_ms,
+    };
+  }
+
+  const best = allRounds
+    .filter((r) => r.exists && r.text_length > 0)
+    .sort((a, b) => b.text_length - a.text_length)[0];
+
+  return {
+    status: "timeout_unstable",
+    selected_selector: best?.selector ?? null,
+    text_length: best?.text_length ?? 0,
+    outer_html_length: best?.outer_html_length ?? 0,
+    img_count: best?.img_count ?? 0,
+    paragraph_count: best?.paragraph_count ?? 0,
+    rounds: allRounds,
+    waited_ms,
+  };
+}

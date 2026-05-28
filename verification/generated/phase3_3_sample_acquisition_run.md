@@ -1,68 +1,64 @@
 # Phase 3.3 Sample Acquisition Run
 
-Generated at: 2026-05-27T08:15:00.761Z
+Generated at: 2026-05-28T05:26:21.580Z
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Attempted targets | 3 |
+| Attempted targets | 1 |
 | Successful samples | 0 |
-| Successful new samples | 0 |
-| Failed targets | 3 |
+| Successful new samples | 1 |
+| Failed targets | 1 |
 | Content-ready success | 0 |
 | Low-text rejected | 0 |
-| Diagnostic samples | 0 |
+| Diagnostic samples | 1 |
 | Chapter-level rejected | 0 |
-| Leaf resolution success | 0 |
-| Leaf resolution failed | 3 |
-| Target resolution trusted | 0 |
-| Target resolution failed | 3 |
-| Exact leaf match | 0 |
-| Final coverage total samples | 7 |
+| Leaf resolution success | 1 |
+| Leaf resolution failed | 0 |
+| Target resolution trusted | 1 |
+| Target resolution failed | 0 |
+| Exact leaf match | 1 |
+| Final coverage total samples | 14 |
 | Final coverage image_refs | 2 |
-| Samples with asset manifests | 7 |
+| Samples with asset manifests | 14 |
 | Constraint violations | 0 |
 
 ## Target Results
 
 | Target | Hint | Status | Actual title | Resolved leaf | Trusted | Exact leaf | Content-ready | Text length | Classification | image_refs | Asset status | New sample |
 |---|---|---|---|---|---|---|---|---:|---|---:|---|---|
-| phase312_database_design | 3.3 数据库的设计 | failed |  |  | no | no |  |  |  |  | not_run | no |
-| phase312_network_overview_model | 5.1 网络概述和模型 | failed |  |  | no | no |  |  |  |  | not_run | no |
-| phase312_typical_information_system_architecture | 8.8 典型信息系统架构模型 | failed |  |  | no | no |  |  |  |  | not_run | no |
+| phase324_9_1_信息安全基础知识 | 9.1 信息安全基础知识 | failed | 9.1 信息安全基础知识 | 9.1 信息安全基础知识 | yes | yes | no | 388 | HTML_RICH_TEXT | 0 | not_run | yes |
 
 ## Classification Distribution
 
 ```json
-{}
+{
+  "HTML_RICH_TEXT": 1
+}
 ```
 
 ## Image Refs Distribution
 
 ```json
-{}
+{
+  "0": 1
+}
 ```
 
 ## Failures
 
-- phase312_database_design: leaf_resolution_failed
-- phase312_network_overview_model: leaf_resolution_failed
-- phase312_typical_information_system_architecture: leaf_resolution_failed
+- phase324_9_1_信息安全基础知识: target_mismatch_content_body
 
 ## Commands Executed
 
-### phase312_database_design
+### phase324_9_1_信息安全基础知识
 
-- `pnpm crawl:ruankaodaren -- --target "3.3 数据库的设计" --require-leaf` -> exit 1
-
-### phase312_network_overview_model
-
-- `pnpm crawl:ruankaodaren -- --target "5.1 网络概述和模型" --require-leaf` -> exit 1
-
-### phase312_typical_information_system_architecture
-
-- `pnpm crawl:ruankaodaren -- --target "8.8 典型信息系统架构模型" --require-leaf` -> exit 1
+- `internal live replay check --target "9.1 信息安全基础知识"` -> exit 0
+- `pnpm crawl:ruankaodaren -- --target "9.1 信息安全基础知识" --require-leaf` -> exit 0
+- `pnpm preflight:sample -- --timestamp "2026-05-28T05-25-27-891Z"` -> exit 0
+- `pnpm parse:ruankaodaren -- --latest-success` -> exit 0
+- `pnpm audit:semantic-alignment` -> exit 0
 
 ## Constraints
 
