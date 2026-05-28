@@ -1,0 +1,136 @@
+{
+  "contract_version": "phase3.25",
+  "source_name": "ruankaodaren",
+  "created_at": "2026-05-28T05:53:11.101Z",
+  "phase4_allowed": true,
+  "renderer_input_policy": {
+    "allowed_inputs": [
+      "renderer_baseline_manifest",
+      "intermediate_json",
+      "asset_manifest",
+      "asset_files"
+    ],
+    "forbidden_inputs": [
+      "raw_html_direct_read",
+      "raw_xhr_direct_read",
+      "web_requests",
+      "ocr",
+      "encrypted_xhr_decryption",
+      "image_table_reconstruction",
+      "content_invention"
+    ],
+    "baseline_unit": "unique_title",
+    "manual_review_required_for_asset_cards": true
+  },
+  "baseline_manifest_path": "verification/generated/phase3_23_renderer_baseline_manifest.json",
+  "baseline_items": [
+    {
+      "canonical_title": "1.3 指令系统CISC和RISC",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-26T09-40-21-903Z.json",
+      "timestamp": "2026-05-26T09-40-21-903Z",
+      "readiness_class": "renderer_ready_with_asset_refs",
+      "content_shape": "MIXED_TEXT_IMAGE",
+      "renderer_policy": {
+        "render_as": "asset_card",
+        "preserve_asset_refs": true,
+        "allow_markdown_generation_later": true,
+        "notes": [
+          "asset refs must be preserved as links",
+          "no OCR on image content",
+          "no image table reconstruction"
+        ]
+      },
+      "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
+      "manual_review_required": true,
+      "required_renderer_sections": [
+        "Core Concept / 核心概念",
+        "Architectural Topology & Visualization / 架构拓扑与可视化",
+        "Deterministic Constraints / 决定论约束",
+        "Ruankao Alignment / 软考考点映射",
+        "Case Study Answer Pattern / 案例分析答题模式",
+        "Paper Usage / 论文可复用方式",
+        "Source Reference / 来源引用"
+      ],
+      "constraints": {
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false,
+        "markdown_generated": false
+      }
+    },
+    {
+      "canonical_title": "13.3 软件架构风格",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-54-15-543Z.json",
+      "timestamp": "2026-05-28T02-54-15-543Z",
+      "readiness_class": "renderer_ready_short_card",
+      "content_shape": "STATIC_LOW_TEXT_VERIFIED",
+      "renderer_policy": {
+        "render_as": "short_card",
+        "preserve_asset_refs": false,
+        "allow_markdown_generation_later": true,
+        "notes": [
+          "content is genuinely short — do not inflate or pad",
+          "Phase 3.20 discovery confirmed static_low_text pattern",
+          "manual human review recommended before publishing"
+        ]
+      },
+      "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json",
+      "manual_review_required": true,
+      "required_renderer_sections": [
+        "Core Concept / 核心概念",
+        "Architectural Topology & Visualization / 架构拓扑与可视化",
+        "Deterministic Constraints / 决定论约束",
+        "Ruankao Alignment / 软考考点映射",
+        "Case Study Answer Pattern / 案例分析答题模式",
+        "Paper Usage / 论文可复用方式",
+        "Source Reference / 来源引用"
+      ],
+      "constraints": {
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false,
+        "markdown_generated": false
+      }
+    },
+    {
+      "canonical_title": "9.1 信息安全基础知识",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "timestamp": "2026-05-28T05-25-27-891Z",
+      "readiness_class": "renderer_ready_text",
+      "content_shape": "HTML_RICH_TEXT",
+      "renderer_policy": {
+        "render_as": "concept_card",
+        "preserve_asset_refs": false,
+        "allow_markdown_generation_later": true,
+        "notes": [
+          "standard concept card rendering",
+          "do not rewrite exam content"
+        ]
+      },
+      "asset_manifest_path": null,
+      "manual_review_required": true,
+      "required_renderer_sections": [
+        "Core Concept / 核心概念",
+        "Architectural Topology & Visualization / 架构拓扑与可视化",
+        "Deterministic Constraints / 决定论约束",
+        "Ruankao Alignment / 软考考点映射",
+        "Case Study Answer Pattern / 案例分析答题模式",
+        "Paper Usage / 论文可复用方式",
+        "Source Reference / 来源引用"
+      ],
+      "constraints": {
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false,
+        "markdown_generated": false
+      }
+    }
+  ],
+  "phase4_entry_conditions": {
+    "unique_baseline_titles_min": 3,
+    "unique_baseline_titles_actual": 3,
+    "renderer_baseline_manifest_ready": true,
+    "all_items_have_renderer_policy": true,
+    "all_constraints_safe": true
+  }
+}

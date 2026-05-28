@@ -81,6 +81,8 @@ Ideal success:
 
 Even if the ideal condition is reached, Phase 4 implementation must not start in this phase.
 
+Phase 3.25 freezes the renderer input contract before any Phase 4 renderer implementation.
+
 ## 8. Failure Handling
 
 If discovery is not qualified:
@@ -94,4 +96,3 @@ If acquisition fails:
 If semantic alignment fails:
 - Quarantine or keep diagnostic evidence.
 - Do not count it as a baseline.
-

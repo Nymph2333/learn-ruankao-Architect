@@ -31,6 +31,10 @@
     "probe:secondary-interactions": "tsx scripts/probe-ruankaodaren-secondary-interactions.ts",
     "audit:renderer-readiness": "tsx scripts/audit-ruankaodaren-renderer-readiness.ts",
     "build:renderer-baseline": "tsx scripts/build-ruankaodaren-renderer-baseline.ts",
+    "build:renderer-input-contract": "tsx scripts/build-ruankaodaren-renderer-input-contract.ts",
+    "validate:renderer-input-contract": "tsx scripts/validate-ruankaodaren-renderer-input-contract.ts",
+    "render:dry-run": "tsx scripts/render-ruankaodaren-markdown-dry-run.ts",
+    "validate:render-dry-run": "tsx scripts/validate-ruankaodaren-render-dry-run.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"

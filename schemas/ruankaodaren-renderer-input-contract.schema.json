@@ -1,0 +1,263 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-renderer-input-contract.schema.json",
+  "title": "RuankaoRendererInputContract",
+  "description": "Phase 3.25 renderer input contract. Freezes the Phase 4 renderer boundary without implementing a renderer or generating Markdown.",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "source_name",
+    "created_at",
+    "phase4_allowed",
+    "renderer_input_policy",
+    "baseline_manifest_path",
+    "baseline_items",
+    "phase4_entry_conditions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "phase3.25"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "phase4_allowed": {
+      "type": "boolean"
+    },
+    "renderer_input_policy": {
+      "$ref": "#/$defs/RuankaoRendererInputPolicy"
+    },
+    "baseline_manifest_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseline_items": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "#/$defs/RuankaoRendererInputItem"
+      }
+    },
+    "phase4_entry_conditions": {
+      "$ref": "#/$defs/RuankaoPhase4EntryConditions"
+    }
+  },
+  "$defs": {
+    "RuankaoRendererInputPolicy": {
+      "type": "object",
+      "required": [
+        "allowed_inputs",
+        "forbidden_inputs",
+        "baseline_unit",
+        "manual_review_required_for_asset_cards"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_inputs": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "string",
+            "enum": [
+              "renderer_baseline_manifest",
+              "intermediate_json",
+              "asset_manifest",
+              "asset_files"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "forbidden_inputs": {
+          "type": "array",
+          "minItems": 7,
+          "items": {
+            "type": "string",
+            "enum": [
+              "raw_html_direct_read",
+              "raw_xhr_direct_read",
+              "web_requests",
+              "ocr",
+              "encrypted_xhr_decryption",
+              "image_table_reconstruction",
+              "content_invention"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "baseline_unit": {
+          "type": "string",
+          "const": "unique_title"
+        },
+        "manual_review_required_for_asset_cards": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "RuankaoRendererInputItem": {
+      "type": "object",
+      "required": [
+        "canonical_title",
+        "canonical_sample_path",
+        "timestamp",
+        "readiness_class",
+        "content_shape",
+        "renderer_policy",
+        "asset_manifest_path",
+        "manual_review_required",
+        "required_renderer_sections",
+        "constraints"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "canonical_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_sample_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "minLength": 1
+        },
+        "readiness_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_shape": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renderer_policy": {
+          "$ref": "#/$defs/RuankaoRendererPolicy"
+        },
+        "asset_manifest_path": {
+          "type": ["string", "null"]
+        },
+        "manual_review_required": {
+          "type": "boolean"
+        },
+        "required_renderer_sections": {
+          "type": "array",
+          "minItems": 7,
+          "items": {
+            "type": "string",
+            "enum": [
+              "Core Concept / 核心概念",
+              "Architectural Topology & Visualization / 架构拓扑与可视化",
+              "Deterministic Constraints / 决定论约束",
+              "Ruankao Alignment / 软考考点映射",
+              "Case Study Answer Pattern / 案例分析答题模式",
+              "Paper Usage / 论文可复用方式",
+              "Source Reference / 来源引用"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "constraints": {
+          "$ref": "#/$defs/RuankaoRendererConstraints"
+        }
+      }
+    },
+    "RuankaoRendererPolicy": {
+      "type": "object",
+      "required": [
+        "render_as",
+        "preserve_asset_refs",
+        "allow_markdown_generation_later",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "short_card",
+            "asset_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "preserve_asset_refs": {
+          "type": "boolean"
+        },
+        "allow_markdown_generation_later": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "RuankaoRendererConstraints": {
+      "type": "object",
+      "required": [
+        "ocr_used",
+        "encrypted_xhr_decrypted",
+        "image_table_reconstructed",
+        "markdown_generated"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ocr_used": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "encrypted_xhr_decrypted": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "image_table_reconstructed": {
+          "type": "boolean",
+          "enum": [false]
+        },
+        "markdown_generated": {
+          "type": "boolean",
+          "enum": [false]
+        }
+      }
+    },
+    "RuankaoPhase4EntryConditions": {
+      "type": "object",
+      "required": [
+        "unique_baseline_titles_min",
+        "unique_baseline_titles_actual",
+        "renderer_baseline_manifest_ready",
+        "all_items_have_renderer_policy",
+        "all_constraints_safe"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "unique_baseline_titles_min": {
+          "type": "integer",
+          "minimum": 3
+        },
+        "unique_baseline_titles_actual": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "renderer_baseline_manifest_ready": {
+          "type": "boolean"
+        },
+        "all_items_have_renderer_policy": {
+          "type": "boolean"
+        },
+        "all_constraints_safe": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

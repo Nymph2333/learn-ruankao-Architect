@@ -1,0 +1,30 @@
+{
+  "title": "1.3 指令系统CISC和RISC",
+  "render_as": "asset_card",
+  "input_contract_path": "verification/generated/phase3_25_renderer_input_contract.json",
+  "intermediate_path": "data/intermediate/ruankaodaren/samples/2026-05-26T09-40-21-903Z.json",
+  "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
+  "output_markdown_path": "verification/generated/phase4_0_dry_run_1.3_指令系统CISC和RISC.md",
+  "allowed_inputs_used": [
+    "intermediate_json",
+    "asset_manifest"
+  ],
+  "forbidden_inputs_touched": [],
+  "sections_rendered": [
+    "Core Concept / 核心概念",
+    "Architectural Topology & Visualization / 架构拓扑与可视化",
+    "Deterministic Constraints / 决定论约束",
+    "Ruankao Alignment / 软考考点映射",
+    "Case Study Answer Pattern / 案例分析答题模式",
+    "Paper Usage / 论文可复用方式",
+    "Source Reference / 来源引用"
+  ],
+  "asset_refs_preserved": true,
+  "ocr_used": false,
+  "image_table_reconstructed": false,
+  "content_invented": false,
+  "raw_html_read": false,
+  "raw_xhr_read": false,
+  "web_requests_used": false,
+  "markdown_generated_to_docs": false
+}

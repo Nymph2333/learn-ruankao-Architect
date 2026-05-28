@@ -33,10 +33,14 @@ const requiredDirectories = [
   "data/intermediate/ruankaodaren/quarantine",
   "data/intermediate/ruankaodaren/diagnostics",
   "data/intermediate/ruankaodaren/probes",
+  "rendered",
+  "rendered/ruankaodaren",
+  "rendered/ruankaodaren/dry-runs",
   "schemas",
   "packages/domain-types",
   "docs",
   "templates",
+  "templates/renderer",
   "scripts",
   "verification",
   "verification/generated",
@@ -129,12 +133,24 @@ const requiredFiles = [
   "scripts/build-ruankaodaren-renderer-baseline.ts",
   "verification/phase3_23_unique_renderer_baseline_manifest_check.md",
   "scripts/run-ruankaodaren-third-baseline-promotion.ts",
-  "verification/phase3_24_third_unique_renderer_baseline_promotion_check.md"
+  "verification/phase3_24_third_unique_renderer_baseline_promotion_check.md",
+  "schemas/ruankaodaren-renderer-input-contract.schema.json",
+  "packages/domain-types/ruankaodaren-renderer-input-contract.ts",
+  "scripts/build-ruankaodaren-renderer-input-contract.ts",
+  "scripts/validate-ruankaodaren-renderer-input-contract.ts",
+  "verification/phase3_25_renderer_input_contract_freeze_check.md",
+  "templates/renderer/concept-card-renderer.md",
+  "templates/renderer/short-card-renderer.md",
+  "templates/renderer/asset-card-renderer.md",
+  "templates/renderer/manual-review-card-renderer.md",
+  "scripts/render-ruankaodaren-markdown-dry-run.ts",
+  "scripts/validate-ruankaodaren-render-dry-run.ts",
+  "verification/phase4_0_markdown_renderer_scaffold_check.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "run:third-baseline-promotion"],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",
     "## 1. Core Concept / 核心概念",
