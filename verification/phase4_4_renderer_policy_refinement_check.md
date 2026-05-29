@@ -75,3 +75,5 @@ If any boundary violation appears:
 If readability warnings remain:
 - Keep `pass_with_warnings`.
 - Continue template refinement rather than expanding render scope.
+
+Phase 4.5 creates a human review signoff package and controlled expansion plan before any renderer expansion.

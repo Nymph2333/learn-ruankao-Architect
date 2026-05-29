@@ -1,0 +1,73 @@
+{
+  "review_schema_version": "phase4.5",
+  "source_name": "ruankaodaren",
+  "created_at": "2026-05-29T05:12:23.929Z",
+  "review_scope": "baseline_official_docs",
+  "auto_approval": false,
+  "source_reports": {
+    "human_review_checklist": "verification/generated/phase4_3_human_review_checklist.json",
+    "quality_audit": "verification/generated/phase4_3_render_quality_audit.json",
+    "renderer_policy_refinement_report": "verification/generated/phase4_4_renderer_policy_refinement_report.json"
+  },
+  "items": [
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "official_doc_path": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+      "render_as": "asset_card",
+      "review_status": "pending_review",
+      "reviewer": null,
+      "reviewed_at": null,
+      "required_checks": {
+        "content_correctness_checked": false,
+        "source_reference_checked": false,
+        "asset_review_checked": false,
+        "ruankao_alignment_checked": false,
+        "case_study_pattern_checked": false,
+        "paper_usage_checked": false,
+        "renderer_boundary_checked": false
+      },
+      "manual_notes": [],
+      "release_decision": "not_ready"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "official_doc_path": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+      "render_as": "short_card",
+      "review_status": "pending_review",
+      "reviewer": null,
+      "reviewed_at": null,
+      "required_checks": {
+        "content_correctness_checked": false,
+        "source_reference_checked": false,
+        "asset_review_checked": false,
+        "ruankao_alignment_checked": false,
+        "case_study_pattern_checked": false,
+        "paper_usage_checked": false,
+        "renderer_boundary_checked": false
+      },
+      "manual_notes": [],
+      "release_decision": "not_ready"
+    },
+    {
+      "title": "9.1 信息安全基础知识",
+      "official_doc_path": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+      "render_as": "concept_card",
+      "review_status": "pending_review",
+      "reviewer": null,
+      "reviewed_at": null,
+      "required_checks": {
+        "content_correctness_checked": false,
+        "source_reference_checked": false,
+        "asset_review_checked": false,
+        "ruankao_alignment_checked": false,
+        "case_study_pattern_checked": false,
+        "paper_usage_checked": false,
+        "renderer_boundary_checked": false
+      },
+      "manual_notes": [],
+      "release_decision": "not_ready"
+    }
+  ],
+  "overall_status": "pending_review",
+  "phase4_6_expansion_allowed": false
+}

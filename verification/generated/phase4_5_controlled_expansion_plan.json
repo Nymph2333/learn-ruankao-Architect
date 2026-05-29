@@ -1,0 +1,78 @@
+{
+  "phase": "4.5",
+  "created_at": "2026-05-29T05:12:47.367Z",
+  "source_name": "ruankaodaren",
+  "current_status": {
+    "official_baseline_docs": 3,
+    "human_review_overall_status": "pending_review",
+    "expansion_allowed": false,
+    "boundary_violation_count": 0
+  },
+  "source_reports": {
+    "human_review_status": "reviews/ruankaodaren/baseline/human-review-status.json",
+    "renderer_input_contract": "verification/generated/phase3_25_renderer_input_contract.json",
+    "renderer_baseline_manifest": "verification/generated/phase3_23_renderer_baseline_manifest.json",
+    "render_quality_audit": "verification/generated/phase4_3_render_quality_audit.json",
+    "renderer_policy_refinement_report": "verification/generated/phase4_4_renderer_policy_refinement_report.json"
+  },
+  "phase4_6_entry_conditions": [
+    {
+      "condition": "All three baseline items are accepted or accepted_with_notes by a human reviewer.",
+      "required": true,
+      "current_status": "not_met"
+    },
+    {
+      "condition": "Every required human review check is true.",
+      "required": true,
+      "current_status": "not_met"
+    },
+    {
+      "condition": "No renderer boundary violations exist.",
+      "required": true,
+      "current_status": "met"
+    },
+    {
+      "condition": "Baseline renderer validation still passes.",
+      "required": true,
+      "current_status": "met"
+    },
+    {
+      "condition": "Renderer input contract remains valid and constraints-safe.",
+      "required": true,
+      "current_status": "met"
+    },
+    {
+      "condition": "Forbidden input policy remains unchanged.",
+      "required": true,
+      "current_status": "met"
+    }
+  ],
+  "phase4_6_expansion_scope_proposal": {
+    "mode": "controlled_expansion_dry_run",
+    "additional_reachable_leaf_nodes_min": 3,
+    "additional_reachable_leaf_nodes_max": 5,
+    "requirements": [
+      "Each new node must come from a reachable leaf catalog or an equivalent validated reachable-leaf source.",
+      "Each new node must enter the renderer baseline manifest before official rendering.",
+      "Each new node must have an explicit renderer_policy.",
+      "Each new node must pass render dry-run before official rendering.",
+      "Each new node must preserve the Phase 3.25 forbidden-input policy."
+    ],
+    "prohibited_scope": [
+      "No full-library rendering.",
+      "No rendering outside a controlled 3-5 node expansion.",
+      "No rendering of nodes that are not in a renderer baseline manifest."
+    ]
+  },
+  "explicit_prohibitions": [
+    "no full-site rendering",
+    "no OCR",
+    "no raw HTML direct read",
+    "no raw XHR direct read",
+    "no web requests",
+    "no image table reconstruction",
+    "no encrypted XHR decryption",
+    "no content invention"
+  ],
+  "recommended_next_phase": "manual_human_review"
+}

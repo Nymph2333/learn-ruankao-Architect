@@ -43,6 +43,10 @@
     "build:human-review-checklist": "tsx scripts/build-ruankaodaren-human-review-checklist.ts",
     "validate:render-quality-audit": "tsx scripts/validate-ruankaodaren-render-quality-audit.ts",
     "report:renderer-policy-refinement": "tsx scripts/report-ruankaodaren-renderer-policy-refinement.ts",
+    "build:human-review-status": "tsx scripts/build-ruankaodaren-human-review-status.ts",
+    "validate:human-review-status": "tsx scripts/validate-ruankaodaren-human-review-status.ts",
+    "build:controlled-expansion-plan": "tsx scripts/build-ruankaodaren-controlled-expansion-plan.ts",
+    "validate:controlled-expansion-plan": "tsx scripts/validate-ruankaodaren-controlled-expansion-plan.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"

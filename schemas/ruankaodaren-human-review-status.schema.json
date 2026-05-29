@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-human-review-status.schema.json",
+  "title": "RuankaoHumanReviewStatus",
+  "description": "Phase 4.5 human review signoff status for ruankaodaren official baseline Markdown documents.",
+  "type": "object",
+  "required": [
+    "review_schema_version",
+    "source_name",
+    "created_at",
+    "review_scope",
+    "auto_approval",
+    "source_reports",
+    "items",
+    "overall_status",
+    "phase4_6_expansion_allowed"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "review_schema_version": {
+      "type": "string",
+      "const": "phase4.5"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "review_scope": {
+      "type": "string",
+      "const": "baseline_official_docs"
+    },
+    "auto_approval": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_reports": {
+      "type": "object",
+      "required": [
+        "human_review_checklist",
+        "quality_audit",
+        "renderer_policy_refinement_report"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "human_review_checklist": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quality_audit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renderer_policy_refinement_report": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "#/$defs/RuankaoHumanReviewItem"
+      }
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": [
+        "pending_review",
+        "accepted",
+        "accepted_with_notes",
+        "needs_revision",
+        "rejected"
+      ]
+    },
+    "phase4_6_expansion_allowed": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "RuankaoHumanReviewItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "official_doc_path",
+        "render_as",
+        "review_status",
+        "reviewer",
+        "reviewed_at",
+        "required_checks",
+        "manual_notes",
+        "release_decision"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "official_doc_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "asset_card",
+            "short_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "pending_review",
+            "accepted",
+            "accepted_with_notes",
+            "needs_revision",
+            "rejected"
+          ]
+        },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "required_checks": {
+          "$ref": "#/$defs/RuankaoHumanReviewRequiredChecks"
+        },
+        "manual_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "release_decision": {
+          "type": "string",
+          "enum": [
+            "not_ready",
+            "accept",
+            "accept_with_manual_notes",
+            "revise_renderer_template",
+            "reject_from_batch_baseline"
+          ]
+        }
+      }
+    },
+    "RuankaoHumanReviewRequiredChecks": {
+      "type": "object",
+      "required": [
+        "content_correctness_checked",
+        "source_reference_checked",
+        "asset_review_checked",
+        "ruankao_alignment_checked",
+        "case_study_pattern_checked",
+        "paper_usage_checked",
+        "renderer_boundary_checked"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "content_correctness_checked": {
+          "type": "boolean"
+        },
+        "source_reference_checked": {
+          "type": "boolean"
+        },
+        "asset_review_checked": {
+          "type": "boolean"
+        },
+        "ruankao_alignment_checked": {
+          "type": "boolean"
+        },
+        "case_study_pattern_checked": {
+          "type": "boolean"
+        },
+        "paper_usage_checked": {
+          "type": "boolean"
+        },
+        "renderer_boundary_checked": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
