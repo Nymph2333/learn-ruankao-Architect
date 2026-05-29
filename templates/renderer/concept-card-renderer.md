@@ -36,3 +36,28 @@ Boundary:
 ## Source Reference / 来源引用
 
 {{source_reference}}
+
+## Human Review Checklist / 人工复核清单
+
+- [ ] 内容是否与正式教材一致。
+- [ ] 是否需要补充定义 / 特点 / 优缺点。
+- [ ] 是否需要补充案例分析答题点。
+- [ ] 是否需要补充论文可用表达。
+- [ ] 是否需要复核图片资产。
+- [ ] 是否确认 renderer 未补写缺失内容。
+
+Concept-card specific review:
+- [ ] 只基于 intermediate `text_blocks` / `key_terms` 做保守组织。
+- [ ] 不引入未来源支持的考点判断。
+- [ ] 不生成未来源支持的考试结论。
+- [ ] 不生成可直接套用论文段落。
+
+## Renderer Boundary / 渲染边界
+
+- 未 OCR。
+- 未解密 `encrypt=1`。
+- 未还原图片表格。
+- 未读取 raw HTML。
+- 未读取 raw XHR。
+- 未访问网页。
+- 未补写缺失内容。

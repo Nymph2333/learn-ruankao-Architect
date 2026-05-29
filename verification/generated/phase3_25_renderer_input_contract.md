@@ -1,6 +1,6 @@
 # Phase 3.25 Renderer Input Contract
 
-Generated at: 2026-05-28T05:53:11.101Z
+Generated at: 2026-05-28T10:12:20.171Z
 
 ## Summary
 

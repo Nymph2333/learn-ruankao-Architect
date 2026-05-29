@@ -39,6 +39,8 @@ const requiredDirectories = [
   "schemas",
   "packages/domain-types",
   "docs",
+  "docs/ruankaodaren",
+  "docs/ruankaodaren/baseline",
   "templates",
   "templates/renderer",
   "scripts",
@@ -145,12 +147,24 @@ const requiredFiles = [
   "templates/renderer/manual-review-card-renderer.md",
   "scripts/render-ruankaodaren-markdown-dry-run.ts",
   "scripts/validate-ruankaodaren-render-dry-run.ts",
-  "verification/phase4_0_markdown_renderer_scaffold_check.md"
+  "verification/phase4_0_markdown_renderer_scaffold_check.md",
+  "scripts/render-ruankaodaren-single-baseline.ts",
+  "scripts/validate-ruankaodaren-single-baseline-render.ts",
+  "verification/phase4_1_single_baseline_official_render_check.md",
+  "scripts/render-ruankaodaren-baseline-set.ts",
+  "scripts/validate-ruankaodaren-baseline-set-render.ts",
+  "verification/phase4_2_three_baseline_official_render_check.md",
+  "scripts/audit-ruankaodaren-render-quality.ts",
+  "scripts/build-ruankaodaren-human-review-checklist.ts",
+  "scripts/validate-ruankaodaren-render-quality-audit.ts",
+  "verification/phase4_3_renderer_quality_audit_check.md",
+  "scripts/report-ruankaodaren-renderer-policy-refinement.ts",
+  "verification/phase4_4_renderer_policy_refinement_check.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "run:third-baseline-promotion"],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",
     "## 1. Core Concept / 核心概念",

@@ -82,3 +82,5 @@ If the sample lacks intermediate JSON:
 If the asset manifest is missing:
 - Preserve an asset reference warning.
 - Do not describe image contents.
+
+Phase 4.1 promotes the validated dry-run asset_card renderer to a single official baseline Markdown render.
