@@ -47,6 +47,7 @@
     "validate:human-review-status": "tsx scripts/validate-ruankaodaren-human-review-status.ts",
     "build:controlled-expansion-plan": "tsx scripts/build-ruankaodaren-controlled-expansion-plan.ts",
     "validate:controlled-expansion-plan": "tsx scripts/validate-ruankaodaren-controlled-expansion-plan.ts",
+    "validate:dual-layer-contract": "tsx scripts/validate-ruankaodaren-dual-layer-contract.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"

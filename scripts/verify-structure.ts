@@ -162,17 +162,30 @@ const requiredFiles = [
   "scripts/report-ruankaodaren-renderer-policy-refinement.ts",
   "verification/phase4_4_renderer_policy_refinement_check.md",
   "schemas/ruankaodaren-human-review-status.schema.json",
+  "schemas/ruankaodaren-dual-layer-document.schema.json",
   "packages/domain-types/ruankaodaren-human-review-status.ts",
+  "packages/domain-types/ruankaodaren-dual-layer-document.ts",
   "scripts/build-ruankaodaren-human-review-status.ts",
   "scripts/validate-ruankaodaren-human-review-status.ts",
   "scripts/build-ruankaodaren-controlled-expansion-plan.ts",
   "scripts/validate-ruankaodaren-controlled-expansion-plan.ts",
-  "verification/phase4_5_human_review_signoff_and_controlled_expansion_plan_check.md"
+  "scripts/validate-ruankaodaren-dual-layer-contract.ts",
+  "verification/phase4_5_human_review_signoff_and_controlled_expansion_plan_check.md",
+  "verification/phase5_0_source_ai_dual_layer_contract_check.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "run:third-baseline-promotion"],
+  "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
+    "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
+    "## 4. Source Layer Policy",
+    "## 5. AI Learning Layer Policy",
+    "## 6. Source Artifact Retention Policy",
+    "## 7. Taxonomy Correction Policy",
+    "## 8. Forbidden Actions",
+    "Phase 5.1 Source Packet Builder and Taxonomy Recheck"
+  ],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",
     "## 1. Core Concept / 核心概念",

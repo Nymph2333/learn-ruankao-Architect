@@ -1,0 +1,436 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-dual-layer-document.schema.json",
+  "title": "RuankaoDualLayerDocument",
+  "description": "Phase 5.0 source + AI learning dual-layer document contract. This schema defines boundaries only; it does not generate AI learning content.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_name",
+    "title",
+    "node_id",
+    "taxonomy",
+    "source_layer",
+    "ai_learning_layer",
+    "review"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "phase5.0"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "taxonomy": {
+      "$ref": "#/$defs/RuankaoTaxonomyInfo"
+    },
+    "source_layer": {
+      "$ref": "#/$defs/RuankaoSourceLayer"
+    },
+    "ai_learning_layer": {
+      "$ref": "#/$defs/RuankaoAiLearningLayer"
+    },
+    "review": {
+      "$ref": "#/$defs/RuankaoDualLayerReview"
+    }
+  },
+  "$defs": {
+    "RuankaoTaxonomyChild": {
+      "type": "object",
+      "required": [
+        "title",
+        "node_id",
+        "taxonomy_suspect"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node_id": {
+          "type": ["string", "null"]
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RuankaoTaxonomyInfo": {
+      "type": "object",
+      "required": [
+        "chapter",
+        "section",
+        "parent_title",
+        "is_parent_node",
+        "taxonomy_suspect",
+        "children"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "chapter": {
+          "type": "string"
+        },
+        "section": {
+          "type": "string"
+        },
+        "parent_title": {
+          "type": ["string", "null"]
+        },
+        "is_parent_node": {
+          "type": "boolean"
+        },
+        "taxonomy_suspect": {
+          "type": "boolean",
+          "description": "Must be true when catalog leaf status conflicts with observed taxonomy or multi-card behavior."
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuankaoTaxonomyChild"
+          }
+        }
+      }
+    },
+    "RuankaoSourceTextBlock": {
+      "type": "object",
+      "required": [
+        "order",
+        "text",
+        "source_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string"
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "RuankaoSourceKeyTerm": {
+      "type": "object",
+      "required": [
+        "order",
+        "text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "RuankaoAssetRef": {
+      "type": "object",
+      "required": [
+        "order",
+        "saved_path",
+        "manual_review_required"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "original_url": {
+          "type": ["string", "null"]
+        },
+        "saved_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": ["string", "null"]
+        },
+        "content_type": {
+          "type": ["string", "null"]
+        },
+        "width": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "height": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "manual_review_required": {
+          "type": "boolean"
+        },
+        "manual_review_reason": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "RuankaoSourcePaths": {
+      "type": "object",
+      "required": [
+        "intermediate_json",
+        "asset_manifest",
+        "official_markdown"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "intermediate_json": {
+          "type": ["string", "null"]
+        },
+        "asset_manifest": {
+          "type": ["string", "null"]
+        },
+        "official_markdown": {
+          "type": ["string", "null"]
+        },
+        "source_packet": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "RuankaoSourceIntegrity": {
+      "type": "object",
+      "required": [
+        "source_timestamp",
+        "content_hash",
+        "parser_version",
+        "source_available"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_timestamp": {
+          "type": ["string", "null"]
+        },
+        "content_hash": {
+          "type": ["string", "null"]
+        },
+        "parser_version": {
+          "type": ["string", "null"]
+        },
+        "source_available": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RuankaoSourceConstraints": {
+      "type": "object",
+      "required": [
+        "ocr_used",
+        "encrypted_xhr_decrypted",
+        "image_table_reconstructed",
+        "raw_html_used_by_renderer",
+        "raw_xhr_used_by_renderer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ocr_used": {
+          "type": "boolean",
+          "const": false
+        },
+        "encrypted_xhr_decrypted": {
+          "type": "boolean",
+          "const": false
+        },
+        "image_table_reconstructed": {
+          "type": "boolean",
+          "const": false
+        },
+        "raw_html_used_by_renderer": {
+          "type": "boolean",
+          "const": false
+        },
+        "raw_xhr_used_by_renderer": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoSourceLayer": {
+      "type": "object",
+      "required": [
+        "source_content_type",
+        "source_text_blocks",
+        "source_key_terms",
+        "asset_refs",
+        "source_paths",
+        "source_integrity",
+        "constraints"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_content_type": {
+          "type": "string",
+          "enum": [
+            "text",
+            "image_asset",
+            "mixed",
+            "short_text",
+            "unknown"
+          ]
+        },
+        "source_text_blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuankaoSourceTextBlock"
+          }
+        },
+        "source_key_terms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuankaoSourceKeyTerm"
+          }
+        },
+        "asset_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuankaoAssetRef"
+          }
+        },
+        "source_paths": {
+          "$ref": "#/$defs/RuankaoSourcePaths"
+        },
+        "source_integrity": {
+          "$ref": "#/$defs/RuankaoSourceIntegrity"
+        },
+        "constraints": {
+          "$ref": "#/$defs/RuankaoSourceConstraints"
+        }
+      }
+    },
+    "RuankaoAiSourceDependency": {
+      "type": "object",
+      "required": [
+        "must_reference_source_layer",
+        "must_not_modify_source_layer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "must_reference_source_layer": {
+          "type": "boolean",
+          "const": true
+        },
+        "must_not_modify_source_layer": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "RuankaoAiLearningLayer": {
+      "type": "object",
+      "required": [
+        "ai_generated",
+        "generation_status",
+        "allowed_sections",
+        "source_dependency",
+        "review_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ai_generated": {
+          "type": "boolean",
+          "const": true
+        },
+        "generation_status": {
+          "type": "string",
+          "enum": [
+            "not_generated",
+            "draft",
+            "generated",
+            "reviewed"
+          ],
+          "default": "not_generated"
+        },
+        "allowed_sections": {
+          "type": "array",
+          "minItems": 6,
+          "items": {
+            "type": "string",
+            "enum": [
+              "AI Explanation / AI解析",
+              "Architecture Mapping / 架构师考点映射",
+              "Case Study Pattern / 案例答题模式",
+              "Paper Usage / 论文表达",
+              "Misconceptions / 易错点",
+              "Memory Hooks / 记忆钩子"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "source_dependency": {
+          "$ref": "#/$defs/RuankaoAiSourceDependency"
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "pending_review",
+            "reviewed",
+            "approved",
+            "rejected"
+          ],
+          "default": "pending_review"
+        }
+      }
+    },
+    "RuankaoDualLayerReview": {
+      "type": "object",
+      "required": [
+        "source_fidelity_review",
+        "ai_pedagogy_review",
+        "release_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_fidelity_review": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "passed",
+            "failed"
+          ],
+          "default": "pending"
+        },
+        "ai_pedagogy_review": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "passed",
+            "failed"
+          ],
+          "default": "pending"
+        },
+        "release_status": {
+          "type": "string",
+          "enum": [
+            "not_ready",
+            "ready",
+            "rejected"
+          ],
+          "default": "not_ready"
+        }
+      }
+    }
+  }
+}
