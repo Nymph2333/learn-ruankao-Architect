@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { chromium, type BrowserContextOptions, type Page, type Response } from "playwright";
 import {
   captureReplayDebugSnapshot,
+  clickMatchedLeafDetailEntry,
   replayCatalogLeaf,
   waitForStableDetailContent,
   type ReplayDebugPaths,
@@ -78,14 +79,18 @@ function parseCrawlerArgs(): {
   requestedTarget: string | null;
   targetSource: "cli" | "default";
   requireLeaf: boolean;
+  requireLiveReplay: boolean;
+  noXhrBody: boolean;
 } {
   const args = process.argv.slice(2);
   const idx = args.indexOf("--target");
   const requireLeaf = args.includes("--require-leaf");
+  const requireLiveReplay = args.includes("--require-live-replay");
+  const noXhrBody = args.includes("--no-xhr-body");
   if (idx !== -1 && args[idx + 1]) {
-    return { requestedTarget: args[idx + 1], targetSource: "cli", requireLeaf };
+    return { requestedTarget: args[idx + 1], targetSource: "cli", requireLeaf, requireLiveReplay, noXhrBody };
   }
-  return { requestedTarget: null, targetSource: "default", requireLeaf };
+  return { requestedTarget: null, targetSource: "default", requireLeaf, requireLiveReplay, noXhrBody };
 }
 
 const CRAWLER_ARGS = parseCrawlerArgs();
@@ -251,7 +256,15 @@ type InteractionHarvestResult = {
 type DetailEntryScopedClickResult = {
   success: boolean;
   text: string | null;
-  strategy: "target_scoped" | "nearby_sibling" | "global_fallback" | "failed";
+  strategy:
+    | "target_scoped"
+    | "nearby_sibling"
+    | "global_fallback"
+    | "matched_leaf_action"
+    | "matched_leaf_action_retry"
+    | "matched_leaf_direct"
+    | "matched_leaf_after_select_action"
+    | "failed";
   scopeFound: boolean;
   scopeTextLength: number;
   scopeTextPreview: string;
@@ -270,7 +283,15 @@ type DetailEntryResult = {
   beforeScreenshotPath: string;
   afterScreenshotPath: string;
   postDetailContentSignalFromPage: boolean;
-  strategy: "target_scoped" | "nearby_sibling" | "global_fallback" | "failed";
+  strategy:
+    | "target_scoped"
+    | "nearby_sibling"
+    | "global_fallback"
+    | "matched_leaf_action"
+    | "matched_leaf_action_retry"
+    | "matched_leaf_direct"
+    | "matched_leaf_after_select_action"
+    | "failed";
   scopeFound: boolean;
   scopeTextLength: number;
   scopeTextPreview: string;
@@ -279,6 +300,8 @@ type DetailEntryResult = {
   contentDetectedTitle: string | null;
   contentTextLength: number;
   contentTextPreview: string;
+  loginDialogDetected: boolean;
+  failureReason: string | null;
 };
 
 type NetworkTimelineEntry = {
@@ -1041,12 +1064,25 @@ async function harvestDetailEntry(
 
   log(`body text length before detail entry: ${bodyTextLengthBefore}`);
 
-  const clickResult = await clickDetailEntryScopedOrFallback(page, knowledgeNodeClickText, allowGlobalFallback);
+  const matchedLeafResult = knowledgeNodeClickText && !allowGlobalFallback
+    ? await clickMatchedLeafDetailEntry(page, knowledgeNodeClickText)
+    : null;
+  const clickResult = matchedLeafResult
+    ? {
+        success: matchedLeafResult.success,
+        text: matchedLeafResult.text,
+        strategy: matchedLeafResult.success ? matchedLeafResult.strategy : "failed",
+        scopeFound: matchedLeafResult.scope_found,
+        scopeTextLength: matchedLeafResult.scope_text_length,
+        scopeTextPreview: matchedLeafResult.scope_text_preview,
+        clickIndex: matchedLeafResult.click_attempts.length - 1,
+      }
+    : await clickDetailEntryScopedOrFallback(page, knowledgeNodeClickText, allowGlobalFallback);
 
   if (clickResult.success) {
     log(`detail entry click success (strategy: ${clickResult.strategy})`);
   } else {
-    warn("detail entry click failed");
+    warn(matchedLeafResult?.failure_reason ?? "detail entry click failed");
   }
 
   await scrollPageAndContentContainers(page);
@@ -1060,6 +1096,7 @@ async function harvestDetailEntry(
   const bodyTextLengthAfter = bodyTextAfter.length;
   const urlAfter = page.url();
   const routeChanged = urlAfter !== urlBefore;
+  const detailRouteEntered = urlAfter.includes("konwledgeInfo");
   const postDetailContentSignalFromPage = hasDetailContentSignal(bodyTextAfter);
 
   // Alignment detection: use .knowInfo.ql-editor if available, else body text
@@ -1078,7 +1115,7 @@ async function harvestDetailEntry(
 
   return {
     attempted: true,
-    success: clickResult.success && (routeChanged || bodyTextLengthAfter > bodyTextLengthBefore),
+    success: clickResult.success && routeChanged && detailRouteEntered,
     text: clickResult.text,
     urlBefore,
     urlAfter,
@@ -1096,7 +1133,11 @@ async function harvestDetailEntry(
     contentTargetAlignment: alignmentResult.alignment,
     contentDetectedTitle: alignmentResult.detectedTitle,
     contentTextLength: alignmentResult.textLength,
-    contentTextPreview: alignmentResult.textPreview
+    contentTextPreview: alignmentResult.textPreview,
+    loginDialogDetected: matchedLeafResult?.login_dialog_detected ?? false,
+    failureReason: clickResult.success && !detailRouteEntered
+      ? "detail entry click did not enter konwledgeInfo route"
+      : matchedLeafResult?.failure_reason ?? null
   };
 }
 
@@ -1129,7 +1170,9 @@ async function buildSkippedDetailEntry(page: Page, timestamp: string): Promise<D
     contentTargetAlignment: "unknown",
     contentDetectedTitle: null,
     contentTextLength: bodyText.length,
-    contentTextPreview: bodyText.slice(0, 200)
+    contentTextPreview: bodyText.slice(0, 200),
+    loginDialogDetected: false,
+    failureReason: "detail entry skipped because leaf requirement failed"
   };
 }
 
@@ -2419,6 +2462,24 @@ async function main(): Promise<void> {
         return;
       }
 
+      networkTimeline.push({
+        type: "response",
+        timestamp: new Date().toISOString(),
+        method: request.method(),
+        url: response.url(),
+        status: response.status(),
+        resource_type: resourceType,
+        content_type: response.headers()["content-type"] ?? ""
+      });
+
+      if (hasAnySignal(response.url(), KNOWLEDGE_API_SIGNALS)) {
+        knowledgeApiSeen = true;
+      }
+
+      if (CRAWLER_ARGS.noXhrBody) {
+        return;
+      }
+
       const currentIndex = xhrIndex;
       xhrIndex += 1;
 
@@ -2500,16 +2561,6 @@ async function main(): Promise<void> {
 
       xhrTasks.push(task);
 
-      // Record response in network timeline
-      networkTimeline.push({
-        type: "response",
-        timestamp: new Date().toISOString(),
-        method: request.method(),
-        url: response.url(),
-        status: response.status(),
-        resource_type: resourceType,
-        content_type: response.headers()["content-type"] ?? ""
-      });
     });
 
     // Console log listener
@@ -2538,13 +2589,16 @@ async function main(): Promise<void> {
       CRAWLER_ARGS.requireLeaf
     );
     const requestedTargetIsFullLeaf = parseTargetSection(CRAWLER_ARGS.requestedTarget) !== null;
+    const liveReplayRequirementFailed =
+      CRAWLER_ARGS.requireLiveReplay && interactionHarvest.catalogLiveReplaySuccess !== true;
     const leafRequirementFailed =
       CRAWLER_ARGS.requireLeaf &&
       (
         !interactionHarvest.knowledgeNodeClickText ||
         !isLeafLevelText(interactionHarvest.knowledgeNodeClickText) ||
         (interactionHarvest.chapterLevelHit && !interactionHarvest.leafResolutionSuccess) ||
-        (requestedTargetIsFullLeaf && !interactionHarvest.targetResolutionTrusted)
+        (requestedTargetIsFullLeaf && !interactionHarvest.targetResolutionTrusted) ||
+        liveReplayRequirementFailed
       );
 
     if (leafRequirementFailed) {
@@ -2626,6 +2680,19 @@ async function main(): Promise<void> {
       hasDetailContentSignal(containerSnapshot.text) ||
       hasDetailContentSignal(accessibilitySnapshot.text) ||
       xhrDetailContentSignal;
+    const finalUrl = page.url();
+    const outerHtmlRepoPaths = containerSnapshot.outerHtmlPaths.map(toRepoRelativePath);
+    const knowInfoOuterHtmlPath = outerHtmlRepoPaths.find((path) => path.includes("knowInfo_ql-editor")) ?? null;
+    const parserContractFailureReasons = [
+      finalUrl.includes("konwledgeInfo") ? "" : "final_url does not include konwledgeInfo",
+	      detailEntry.routeChanged ? "" : "detail_entry_route_changed is not true",
+	      detailEntry.success ? "" : "detail_entry_success is not true",
+	      detailEntry.loginDialogDetected ? "detail_entry_login_dialog_detected is true" : "",
+	      interactionHarvest.knowledgeNodeClickText ? "" : "knowledge_node_click_text is missing",
+      interactionHarvest.resolvedTargetText ? "" : "resolved_target_text is missing",
+      knowInfoOuterHtmlPath ? "" : "knowInfo_outer_html_path is missing",
+    ].filter((reason) => reason.length > 0);
+    const parserContractReady = parserContractFailureReasons.length === 0;
 
     log(`knowledge api seen: ${knowledgeApiSeen ? "yes" : "no"}`);
     log(`knowledge content signal: ${knowledgeContentSignal ? "yes" : "no"}`);
@@ -2640,9 +2707,10 @@ async function main(): Promise<void> {
       html_path: toRepoRelativePath(htmlPath),
       screenshot_path: toRepoRelativePath(screenshotPath),
       xhr_count: xhrArtifacts.length,
+      xhr_body_capture_disabled: CRAWLER_ARGS.noXhrBody,
       xhr_paths: xhrArtifacts.map((artifact) => artifact.path),
       page_title: pageTitle,
-      final_url: page.url(),
+      final_url: finalUrl,
       login_required_signal: loginSignals.loginRequired,
       login_required_terms_detected: loginSignals.matchedTerms,
       auth_state_used: authStateUsed,
@@ -2670,7 +2738,9 @@ async function main(): Promise<void> {
       detail_entry_text: detailEntry.text,
       detail_entry_url_before: detailEntry.urlBefore,
       detail_entry_url_after: detailEntry.urlAfter,
-      detail_entry_route_changed: detailEntry.routeChanged,
+	      detail_entry_route_changed: detailEntry.routeChanged,
+	      detail_entry_login_dialog_detected: detailEntry.loginDialogDetected,
+	      detail_entry_failure_reason: detailEntry.failureReason,
       body_text_length_before_detail_entry: detailEntry.bodyTextLengthBefore,
       body_text_length_after_detail_entry: detailEntry.bodyTextLengthAfter,
       container_text_path: toRepoRelativePath(containerSnapshot.path),
@@ -2683,6 +2753,7 @@ async function main(): Promise<void> {
       requested_target_text: CRAWLER_ARGS.requestedTarget,
       target_source: CRAWLER_ARGS.targetSource,
       require_leaf: CRAWLER_ARGS.requireLeaf,
+      require_live_replay: CRAWLER_ARGS.requireLiveReplay,
       target_resolver_enabled: interactionHarvest.targetResolverEnabled,
       target_section_number: interactionHarvest.targetSectionNumber,
       target_chapter_number: interactionHarvest.targetChapterNumber,
@@ -2739,7 +2810,10 @@ async function main(): Promise<void> {
       detail_content_stabilization_img_count: detailStabilization?.img_count ?? 0,
       detail_content_stabilization_waited_ms: detailStabilization?.waited_ms ?? 0,
       detail_content_stabilization_rounds: detailStabilization?.rounds ?? [],
-      outer_html_paths: containerSnapshot.outerHtmlPaths.map(toRepoRelativePath),
+      outer_html_paths: outerHtmlRepoPaths,
+      knowInfo_outer_html_path: knowInfoOuterHtmlPath,
+      parser_contract_ready: parserContractReady,
+      parser_contract_failure_reason: parserContractFailureReasons.join("; ") || null,
       network_timeline_path: toRepoRelativePath(networkTimelinePath),
       network_event_count: networkTimeline.length,
       console_log_path: toRepoRelativePath(consoleLogPath),
@@ -2796,6 +2870,9 @@ async function main(): Promise<void> {
 
     if (leafRequirementFailed) {
       throw new Error("require-leaf failed: chapter-level target was not resolved to a leaf knowledge point");
+    }
+    if (CRAWLER_ARGS.requireLeaf && requestedTargetIsFullLeaf && !parserContractReady) {
+      throw new Error(`parser contract not ready: ${parserContractFailureReasons.join("; ")}`);
     }
 
     log("crawler completed");

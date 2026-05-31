@@ -20,6 +20,7 @@
     "preflight:sample": "tsx scripts/preflight-ruankaodaren-sample.ts",
     "test:catalog-resolver": "tsx scripts/test-ruankaodaren-catalog-resolver.ts",
     "test:live-replay": "tsx scripts/test-ruankaodaren-live-replay.ts",
+    "test:baseline-detail-entry": "tsx scripts/test-ruankaodaren-baseline-detail-entry.ts",
     "test:detail-stabilization": "tsx scripts/test-ruankaodaren-detail-stabilization.ts",
     "diagnose:target-reachability": "tsx scripts/diagnose-ruankaodaren-target-reachability.ts",
     "catalog:reachable-leaves": "tsx scripts/catalog-ruankaodaren-reachable-leaves.ts",
@@ -48,6 +49,10 @@
     "build:controlled-expansion-plan": "tsx scripts/build-ruankaodaren-controlled-expansion-plan.ts",
     "validate:controlled-expansion-plan": "tsx scripts/validate-ruankaodaren-controlled-expansion-plan.ts",
     "validate:dual-layer-contract": "tsx scripts/validate-ruankaodaren-dual-layer-contract.ts",
+    "build:source-packets": "tsx scripts/build-ruankaodaren-source-packets.ts",
+    "validate:source-packets": "tsx scripts/validate-ruankaodaren-source-packets.ts",
+    "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
+    "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
     "verify": "tsx scripts/verify-structure.ts",
     "typecheck": "tsc --noEmit"

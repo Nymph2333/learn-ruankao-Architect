@@ -36,6 +36,9 @@ const requiredDirectories = [
   "rendered",
   "rendered/ruankaodaren",
   "rendered/ruankaodaren/dry-runs",
+  "source-packets",
+  "source-packets/ruankaodaren",
+  "source-packets/ruankaodaren/baseline",
   "schemas",
   "packages/domain-types",
   "docs",
@@ -106,6 +109,7 @@ const requiredFiles = [
   "scripts/lib/ruankaodaren-dom-explorer.ts",
   "scripts/test-ruankaodaren-catalog-resolver.ts",
   "scripts/test-ruankaodaren-live-replay.ts",
+  "scripts/test-ruankaodaren-baseline-detail-entry.ts",
   "scripts/diagnose-ruankaodaren-target-reachability.ts",
   "scripts/catalog-ruankaodaren-reachable-leaves.ts",
   "scripts/list-ruankaodaren-leaf-candidates.ts",
@@ -163,20 +167,29 @@ const requiredFiles = [
   "verification/phase4_4_renderer_policy_refinement_check.md",
   "schemas/ruankaodaren-human-review-status.schema.json",
   "schemas/ruankaodaren-dual-layer-document.schema.json",
+  "schemas/ruankaodaren-source-packet.schema.json",
   "packages/domain-types/ruankaodaren-human-review-status.ts",
   "packages/domain-types/ruankaodaren-dual-layer-document.ts",
+  "packages/domain-types/ruankaodaren-source-packet.ts",
   "scripts/build-ruankaodaren-human-review-status.ts",
   "scripts/validate-ruankaodaren-human-review-status.ts",
   "scripts/build-ruankaodaren-controlled-expansion-plan.ts",
   "scripts/validate-ruankaodaren-controlled-expansion-plan.ts",
   "scripts/validate-ruankaodaren-dual-layer-contract.ts",
+  "scripts/build-ruankaodaren-source-packets.ts",
+  "scripts/validate-ruankaodaren-source-packets.ts",
+  "scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
+  "scripts/recheck-ruankaodaren-taxonomy.ts",
   "verification/phase4_5_human_review_signoff_and_controlled_expansion_plan_check.md",
-  "verification/phase5_0_source_ai_dual_layer_contract_check.md"
+  "verification/phase5_0_source_ai_dual_layer_contract_check.md",
+  "verification/phase5_1_source_packet_builder_and_taxonomy_recheck.md",
+  "verification/phase5_2_source_artifact_recovery_and_taxonomy_live_recheck.md",
+  "verification/phase5_3_baseline_detail_entry_recovery_contract_repair.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
   "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
     "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
     "## 4. Source Layer Policy",
@@ -185,6 +198,33 @@ const requiredContent: Record<string, string[]> = {
     "## 7. Taxonomy Correction Policy",
     "## 8. Forbidden Actions",
     "Phase 5.1 Source Packet Builder and Taxonomy Recheck"
+  ],
+  "verification/phase5_1_source_packet_builder_and_taxonomy_recheck.md": [
+    "# Phase 5.1 Source Packet Builder and Taxonomy Recheck",
+    "## 4. Source Packet Policy",
+    "## 5. Taxonomy Recheck Policy",
+    "pnpm build:source-packets",
+    "pnpm validate:source-packets",
+    "pnpm recheck:taxonomy"
+  ],
+  "verification/phase5_2_source_artifact_recovery_and_taxonomy_live_recheck.md": [
+    "# Phase 5.2 Source Artifact Recovery and Taxonomy Live Recheck",
+    "## 3. Recovery Report",
+    "## 4. Source Packet Refresh",
+    "## 5. Taxonomy Live Recheck",
+    "pnpm exec playwright install chromium",
+    "pnpm recover:baseline-source-artifacts",
+    "phase5_2_ai_generation_allowed",
+    "No AI learning content generation"
+  ],
+  "verification/phase5_3_baseline_detail_entry_recovery_contract_repair.md": [
+    "# Phase 5.3 Baseline Detail-entry Recovery Contract Repair",
+    "## 1. Background",
+    "## 2. Objective",
+    "## 4. Parser Contract Requirements",
+    "## 5. Detail Entry Binding Policy",
+    "pnpm test:baseline-detail-entry",
+    "No raw XHR direct read"
   ],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",

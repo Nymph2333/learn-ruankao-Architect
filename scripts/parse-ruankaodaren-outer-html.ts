@@ -62,8 +62,13 @@ interface CrawlerMetadata {
   captured_at?: string;
   detail_entry_strategy?: string;
   detail_entry_route_changed?: boolean;
+  detail_entry_login_dialog_detected?: boolean;
+  detail_entry_success?: boolean;
   knowledge_node_click_text?: string;
   outer_html_paths?: string[];
+  knowInfo_outer_html_path?: string | null;
+  parser_contract_ready?: boolean;
+  parser_contract_failure_reason?: string | null;
   dom_text_path?: string;
   screenshot_path?: string;
   container_text_path?: string;
@@ -75,16 +80,35 @@ function loadMetadata(metaDir: string, filename: string): CrawlerMetadata {
 }
 
 function isSuccessfulMetadata(meta: CrawlerMetadata): boolean {
-  return (
-    typeof meta.final_url === "string" &&
-    meta.final_url.includes("konwledgeInfo") &&
-    meta.detail_entry_strategy === "target_scoped" &&
-    meta.detail_entry_route_changed === true &&
-    typeof meta.knowledge_node_click_text === "string" &&
-    meta.knowledge_node_click_text.length > 0 &&
-    Array.isArray(meta.outer_html_paths) &&
-    meta.outer_html_paths.some((p) => p.includes("knowInfo_ql-editor"))
-  );
+  return metadataContractFailures(meta).length === 0;
+}
+
+function metadataContractFailures(meta: CrawlerMetadata): string[] {
+  if (meta.parser_contract_ready === true) return [];
+  if (typeof meta.parser_contract_failure_reason === "string" && meta.parser_contract_failure_reason.length > 0) {
+    return meta.parser_contract_failure_reason.split(";").map((reason) => reason.trim()).filter(Boolean);
+  }
+  const failures: string[] = [];
+  if (typeof meta.final_url !== "string" || !meta.final_url.includes("konwledgeInfo")) {
+    failures.push("final_url does not include konwledgeInfo");
+  }
+  if (meta.detail_entry_strategy !== "target_scoped" &&
+    !String(meta.detail_entry_strategy ?? "").startsWith("matched_leaf_")) {
+    failures.push("detail_entry_strategy is not a matched leaf / target scoped strategy");
+  }
+  if (meta.detail_entry_route_changed !== true) failures.push("detail_entry_route_changed is not true");
+  if (meta.detail_entry_success !== true) failures.push("detail_entry_success is not true");
+  if (meta.detail_entry_login_dialog_detected === true) {
+    failures.push("detail_entry_login_dialog_detected is true");
+  }
+  if (typeof meta.knowledge_node_click_text !== "string" || meta.knowledge_node_click_text.length === 0) {
+    failures.push("knowledge_node_click_text is missing");
+  }
+  if (!meta.knowInfo_outer_html_path &&
+    (!Array.isArray(meta.outer_html_paths) || !meta.outer_html_paths.some((p) => p.includes("knowInfo_ql-editor")))) {
+    failures.push("knowInfo_ql-editor outerHTML path is missing");
+  }
+  return failures;
 }
 
 interface MetadataSelection {
@@ -125,9 +149,13 @@ function findLatestSuccessfulMetadata(
     const meta = loadMetadata(metaDir, fname);
     if (!isSuccessfulMetadata(meta)) {
       console.error(`[parser] ERROR: metadata at ${timestamp} does not satisfy success criteria`);
-      console.error("[parser] Required: final_url contains konwledgeInfo, detail_entry_strategy=target_scoped,");
+      console.error("[parser] Strict --timestamp mode does not fallback to latest successful metadata.");
+      for (const failure of metadataContractFailures(meta)) {
+        console.error(`[parser]   - ${failure}`);
+      }
+      console.error("[parser] Required: final_url contains konwledgeInfo, detail_entry_success=true,");
       console.error("[parser]          detail_entry_route_changed=true, knowledge_node_click_text set,");
-      console.error("[parser]          outer_html_paths contains knowInfo_ql-editor");
+      console.error("[parser]          knowInfo_outer_html_path or outer_html_paths contains knowInfo_ql-editor.");
       process.exit(1);
     }
     return {
@@ -163,6 +191,7 @@ function findLatestSuccessfulMetadata(
 // ---------------------------------------------------------------------------
 
 function findOuterHtmlRelPath(meta: CrawlerMetadata): string {
+  if (meta.knowInfo_outer_html_path) return meta.knowInfo_outer_html_path;
   const paths = meta.outer_html_paths ?? [];
   const p = paths.find((p) => p.includes("knowInfo_ql-editor"));
   if (!p) {

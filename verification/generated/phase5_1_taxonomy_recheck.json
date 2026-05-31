@@ -1,0 +1,81 @@
+{
+  "target": "13.3 软件架构风格",
+  "existing_catalog_path": "verification/generated/phase3_11_reachable_leaf_catalog.json",
+  "existing_catalog_status": "target_present_as_catalog_leaf;children_not_confirmed;multi_card_signal_present",
+  "catalog_search_keywords": [
+    "13.3 软件架构风格",
+    "13.3 软件架构",
+    "软件架构风格",
+    "13.3.1",
+    "13.3.1 软件系统结构风格",
+    "13.3.1 软件体系结构风格",
+    "13.3.2",
+    "13.3.2 基本架构风格",
+    "13.3.3",
+    "13.3.3 层次结构风格",
+    "13.3.4",
+    "13.3.4 面向服务的架构 SOA",
+    "软件系统结构风格",
+    "软件体系结构风格",
+    "基本架构风格",
+    "层次结构风格",
+    "面向服务的架构",
+    "SOA"
+  ],
+  "catalog_matches": [
+    {
+      "title": "13.1 软件架构的概念",
+      "source": "existing_catalog",
+      "keyword_matches": [
+        "13.3 软件架构风格",
+        "13.3 软件架构",
+        "软件架构风格"
+      ],
+      "raw_text_preview": "13.1 软件架构的概念 掌握程度 0 / 24 去掌握 13.2 基于架构的软件开发方法 掌握程度 0 / 5 去掌握 13.3 软件架构风格 掌握程度 0 / 59 13.4 软件架构复用 掌握程度 0 / 4 去掌握 13.5 特定领域软件架构DSSA 掌握程度 0 / 8 去掌握 13.6 系统质量属性与架构评估 掌握程度 0 / 19 13.7 中间件技术 掌握程度 0 / 12 去掌握"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "source": "existing_catalog",
+      "keyword_matches": [
+        "13.3 软件架构风格",
+        "13.3 软件架构",
+        "软件架构风格"
+      ],
+      "raw_text_preview": "13.3 软件架构风格 掌握程度 0 / 59"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "source": "existing_catalog",
+      "keyword_matches": [
+        "13.3 软件架构风格",
+        "13.3 软件架构",
+        "软件架构风格"
+      ],
+      "raw_text_preview": null
+    }
+  ],
+  "live_recheck_attempted": true,
+  "live_recheck_success": true,
+  "live_recheck_failed": false,
+  "live_recheck_failure_reason": "no safe expandable 13.3 catalog control found",
+  "live_visible_leaf_count": 104,
+  "taxonomy_result": {
+    "is_parent_node": false,
+    "is_leaf_node": true,
+    "is_multi_card_sequence": true,
+    "taxonomy_suspect": true,
+    "children_found": []
+  },
+  "recommended_action": "model_as_multi_card_sequence",
+  "constraints": {
+    "no_detail_page_entered": true,
+    "no_parse": true,
+    "no_intermediate_generated": true,
+    "no_official_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_raw_xhr_read": true,
+    "phase4_6_not_entered": true
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "packet_schema_version": "phase5.1",
+  "source_name": "ruankaodaren",
+  "created_at": "2026-05-31T05:44:19.825Z",
+  "scope": "baseline_official_docs",
+  "items": [
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "render_as": "asset_card",
+      "official_markdown_path": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+      "renderer_input_contract_path": "verification/generated/phase3_25_renderer_input_contract.json",
+      "baseline_manifest_path": "verification/generated/phase3_23_renderer_baseline_manifest.json",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-26T09-40-21-903Z.json",
+      "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
+      "effective_intermediate_path": null,
+      "recovered_intermediate_path": null,
+      "effective_asset_manifest_path": null,
+      "recovered_asset_manifest_path": null,
+      "asset_files": [],
+      "source_availability": {
+        "official_markdown_exists": true,
+        "intermediate_json_exists": false,
+        "asset_manifest_exists": false,
+        "asset_files_exist": false,
+        "source_packet_complete": false
+      },
+      "missing_artifacts": [
+        "data/intermediate/ruankaodaren/samples/2026-05-26T09-40-21-903Z.json",
+        "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
+        "asset_files: none discoverable from missing asset manifest"
+      ],
+      "source_layer_status": "intermediate_missing",
+      "ai_learning_layer_status": "not_generated",
+      "constraints": {
+        "official_markdown_used_as_source_of_truth": false,
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false,
+        "raw_xhr_used": false,
+        "content_invented": false
+      },
+      "recommended_action": "rebuild_source_artifact",
+      "recovery_status": "failed",
+      "taxonomy_suspect": false,
+      "taxonomy_notes": [],
+      "source_packet_recovered_at": null
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "render_as": "short_card",
+      "official_markdown_path": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+      "renderer_input_contract_path": "verification/generated/phase3_25_renderer_input_contract.json",
+      "baseline_manifest_path": "verification/generated/phase3_23_renderer_baseline_manifest.json",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-54-15-543Z.json",
+      "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json",
+      "effective_intermediate_path": null,
+      "recovered_intermediate_path": null,
+      "effective_asset_manifest_path": null,
+      "recovered_asset_manifest_path": null,
+      "asset_files": [],
+      "source_availability": {
+        "official_markdown_exists": true,
+        "intermediate_json_exists": false,
+        "asset_manifest_exists": false,
+        "asset_files_exist": false,
+        "source_packet_complete": false
+      },
+      "missing_artifacts": [
+        "data/intermediate/ruankaodaren/samples/2026-05-28T02-54-15-543Z.json",
+        "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json"
+      ],
+      "source_layer_status": "intermediate_missing",
+      "ai_learning_layer_status": "not_generated",
+      "constraints": {
+        "official_markdown_used_as_source_of_truth": false,
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false,
+        "raw_xhr_used": false,
+        "content_invented": false
+      },
+      "recommended_action": "manual_review_required",
+      "recovery_status": "failed",
+      "taxonomy_suspect": true,
+      "taxonomy_notes": [
+        "13.3 remains taxonomy_suspect until live taxonomy recheck confirms whether it is a parent node or a multi-card sequence."
+      ],
+      "source_packet_recovered_at": null
+    },
+    {
+      "title": "9.1 信息安全基础知识",
+      "render_as": "concept_card",
+      "official_markdown_path": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+      "renderer_input_contract_path": "verification/generated/phase3_25_renderer_input_contract.json",
+      "baseline_manifest_path": "verification/generated/phase3_23_renderer_baseline_manifest.json",
+      "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
+      "asset_manifest_path": null,
+      "effective_intermediate_path": null,
+      "recovered_intermediate_path": null,
+      "effective_asset_manifest_path": null,
+      "recovered_asset_manifest_path": null,
+      "asset_files": [],
+      "source_availability": {
+        "official_markdown_exists": true,
+        "intermediate_json_exists": false,
+        "asset_manifest_exists": false,
+        "asset_files_exist": false,
+        "source_packet_complete": false
+      },
+      "missing_artifacts": [
+        "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json"
+      ],
+      "source_layer_status": "intermediate_missing",
+      "ai_learning_layer_status": "not_generated",
+      "constraints": {
+        "official_markdown_used_as_source_of_truth": false,
+        "ocr_used": false,
+        "encrypted_xhr_decrypted": false,
+        "image_table_reconstructed": false,
+        "raw_xhr_used": false,
+        "content_invented": false
+      },
+      "recommended_action": "rebuild_source_artifact",
+      "recovery_status": "failed",
+      "taxonomy_suspect": false,
+      "taxonomy_notes": [],
+      "source_packet_recovered_at": null
+    }
+  ],
+  "overall_source_packet_status": "incomplete",
+  "phase5_2_ai_generation_allowed": false
+}

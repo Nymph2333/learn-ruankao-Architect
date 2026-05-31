@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-05-31T05:41:43.387Z",
+  "title": "1.3 指令系统CISC和RISC",
+  "auth_state_present": false,
+  "catalog_match_found": true,
+  "live_replay_success": true,
+  "leaf_match_title": "1.3 指令系统CISC和RISC",
+  "detail_entry_attempted": true,
+  "detail_entry_success": false,
+  "detail_entry_text": "去掌握",
+  "detail_entry_click_attempts": [
+    "matched_leaf_action:clicked",
+    "matched_leaf_action_retry:not_visible",
+    "matched_leaf_direct:not_visible",
+    "matched_leaf_after_select_action:not_visible"
+  ],
+  "login_dialog_detected": true,
+  "detail_entry_route_changed": false,
+  "detail_entry_failure_reason": "detail entry opened login dialog; authenticated storage state is missing or expired",
+  "final_url": "https://ruankaodaren.com/exam/#/knowlegde",
+  "final_url_contains_konwledgeInfo": false,
+  "stabilization_status": null,
+  "knowInfo_outer_html_found": false,
+  "knowInfo_outer_html_selector": null,
+  "knowInfo_outer_html_text_length": 0,
+  "knowInfo_outer_html_length": 0,
+  "metadata_compatible_with_parser": false,
+  "recommended_action": "provide_authenticated_storage_state",
+  "constraints": {
+    "no_parse": true,
+    "no_asset_capture": true,
+    "no_ai_learning_content": true,
+    "no_official_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_raw_xhr_direct_read": true,
+    "phase4_6_not_entered": true
+  }
+}

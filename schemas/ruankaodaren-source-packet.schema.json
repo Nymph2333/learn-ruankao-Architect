@@ -1,0 +1,262 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-source-packet.schema.json",
+  "title": "RuankaoSourcePacket",
+  "description": "Phase 5.1 source packet audit manifest. It records availability of source artifacts without rebuilding, OCR, raw XHR reads, or AI learning generation.",
+  "type": "object",
+  "required": [
+    "packet_schema_version",
+    "source_name",
+    "created_at",
+    "scope",
+    "items",
+    "overall_source_packet_status",
+    "phase5_2_ai_generation_allowed"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "packet_schema_version": {
+      "type": "string",
+      "const": "phase5.1"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope": {
+      "type": "string",
+      "const": "baseline_official_docs"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/RuankaoSourcePacketItem"
+      }
+    },
+    "overall_source_packet_status": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "incomplete"
+      ]
+    },
+    "phase5_2_ai_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "$defs": {
+    "RuankaoSourceAvailability": {
+      "type": "object",
+      "required": [
+        "official_markdown_exists",
+        "intermediate_json_exists",
+        "asset_manifest_exists",
+        "asset_files_exist",
+        "source_packet_complete"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "official_markdown_exists": {
+          "type": "boolean"
+        },
+        "intermediate_json_exists": {
+          "type": "boolean"
+        },
+        "asset_manifest_exists": {
+          "type": "boolean"
+        },
+        "asset_files_exist": {
+          "type": "boolean"
+        },
+        "source_packet_complete": {
+          "type": "boolean"
+        }
+      }
+    },
+    "RuankaoSourcePacketConstraints": {
+      "type": "object",
+      "required": [
+        "official_markdown_used_as_source_of_truth",
+        "ocr_used",
+        "encrypted_xhr_decrypted",
+        "image_table_reconstructed",
+        "raw_xhr_used",
+        "content_invented"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "official_markdown_used_as_source_of_truth": {
+          "type": "boolean",
+          "const": false
+        },
+        "ocr_used": {
+          "type": "boolean",
+          "const": false
+        },
+        "encrypted_xhr_decrypted": {
+          "type": "boolean",
+          "const": false
+        },
+        "image_table_reconstructed": {
+          "type": "boolean",
+          "const": false
+        },
+        "raw_xhr_used": {
+          "type": "boolean",
+          "const": false
+        },
+        "content_invented": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoSourcePacketItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "render_as",
+        "official_markdown_path",
+        "renderer_input_contract_path",
+        "baseline_manifest_path",
+        "canonical_sample_path",
+        "asset_manifest_path",
+        "effective_intermediate_path",
+        "recovered_intermediate_path",
+        "effective_asset_manifest_path",
+        "recovered_asset_manifest_path",
+        "asset_files",
+        "source_availability",
+        "missing_artifacts",
+        "source_layer_status",
+        "ai_learning_layer_status",
+        "constraints",
+        "recommended_action",
+        "recovery_status",
+        "taxonomy_suspect",
+        "taxonomy_notes",
+        "source_packet_recovered_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "short_card",
+            "asset_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "official_markdown_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renderer_input_contract_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "baseline_manifest_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_sample_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset_manifest_path": {
+          "type": ["string", "null"]
+        },
+        "effective_intermediate_path": {
+          "type": ["string", "null"]
+        },
+        "recovered_intermediate_path": {
+          "type": ["string", "null"]
+        },
+        "effective_asset_manifest_path": {
+          "type": ["string", "null"]
+        },
+        "recovered_asset_manifest_path": {
+          "type": ["string", "null"]
+        },
+        "asset_files": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_availability": {
+          "$ref": "#/$defs/RuankaoSourceAvailability"
+        },
+        "missing_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_layer_status": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "incomplete",
+            "markdown_only",
+            "asset_missing",
+            "intermediate_missing"
+          ]
+        },
+        "ai_learning_layer_status": {
+          "type": "string",
+          "const": "not_generated"
+        },
+        "constraints": {
+          "$ref": "#/$defs/RuankaoSourcePacketConstraints"
+        },
+        "recommended_action": {
+          "type": "string",
+          "enum": [
+            "rebuild_source_artifact",
+            "reacquire_source",
+            "accept_source_packet",
+            "manual_review_required"
+          ]
+        },
+        "recovery_status": {
+          "type": "string",
+          "enum": [
+            "not_attempted",
+            "already_exists",
+            "recovered",
+            "partially_recovered",
+            "failed"
+          ]
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        },
+        "taxonomy_notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_packet_recovered_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

@@ -119,3 +119,5 @@ The recommended next phase is:
 `Phase 5.1 Source Packet Builder and Taxonomy Recheck`
 
 Phase 5.1 should come before Phase 4.6. It should verify or rebuild source packets, check whether `13.3.1` through `13.3.4` exist in the live taxonomy, and only then decide which nodes are safe inputs for AI learning-layer generation.
+
+Phase 5.1 builds auditable source packets and rechecks the 13.3 taxonomy before any AI learning generation.

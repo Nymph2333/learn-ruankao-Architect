@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-05-30T18:52:18.675Z",
+  "target": "9.1 信息安全基础知识",
+  "catalog_path": "verification/generated/phase3_11_reachable_leaf_catalog.json",
+  "catalog_loaded": true,
+  "catalog_leaf_count": 104,
+  "catalog_match_found": true,
+  "catalog_match_strategy": "exact_full_title",
+  "catalog_leaf_title": "9.1 信息安全基础知识",
+  "catalog_chapter_title": "第9章 系统安全",
+  "live_replay_success": true,
+  "matched_leaf_title": "9.1 信息安全基础知识",
+  "matched_strategy": "exact_full_title",
+  "visible_chapter_count": 18,
+  "visible_leaf_count": 104,
+  "failure_type": null,
+  "failure_reason": null,
+  "debug_paths": null,
+  "constraints": {
+    "no_detail_page_entered": true,
+    "no_parse": true,
+    "no_intermediate_generated": true,
+    "no_markdown_generated": true,
+    "no_ocr": true,
+    "no_encrypt1_decrypted": true,
+    "no_image_table_reconstructed": true,
+    "no_full_site_crawl": true,
+    "phase4_not_entered": true
+  }
+}

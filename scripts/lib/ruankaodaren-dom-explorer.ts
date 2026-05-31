@@ -90,6 +90,38 @@ export interface ReplayDebugPaths {
   candidate_ranking: string;
 }
 
+export interface MatchedLeafDetailEntryResult {
+  attempted: true;
+  success: boolean;
+  text: string | null;
+  strategy:
+    | "matched_leaf_action"
+    | "matched_leaf_action_retry"
+    | "matched_leaf_direct"
+    | "matched_leaf_after_select_action"
+    | "failed";
+  url_before: string;
+  final_url: string;
+  route_changed: boolean;
+  final_url_contains_konwledgeInfo: boolean;
+  leaf_match_title: string | null;
+  scope_found: boolean;
+  scope_text_length: number;
+  scope_text_preview: string;
+  click_attempts: string[];
+  login_dialog_detected: boolean;
+  failure_reason: string | null;
+}
+
+export interface KnowInfoOuterHtmlSnapshot {
+  found: boolean;
+  selector: string | null;
+  text_length: number;
+  outer_html_length: number;
+  img_count: number;
+  outer_html: string | null;
+}
+
 function toRepoPath(absPath: string): string {
   return relative(repoRoot, absPath).replace(/\\/g, "/");
 }
@@ -99,6 +131,319 @@ function safeTargetName(target: string): string {
     .replace(/\s+/g, "_")
     .replace(/[^A-Za-z0-9_.\-\u4e00-\u9fff]+/g, "_")
     .slice(0, 80);
+}
+
+async function waitForKonwledgeInfoRoute(page: Page, timeoutMs = 6_000): Promise<boolean> {
+  if (page.url().includes("konwledgeInfo")) return true;
+  await page
+    .waitForFunction(() => window.location.href.includes("konwledgeInfo"), null, { timeout: timeoutMs })
+    .catch(() => undefined);
+  return page.url().includes("konwledgeInfo");
+}
+
+async function markMatchedLeafDetailTarget(page: Page, leafTitle: string): Promise<{
+  found: boolean;
+  leafText: string | null;
+  actionText: string | null;
+  scopeText: string;
+  scopeTextLength: number;
+}> {
+  await ensureEvaluateHelper(page);
+  return page
+    .evaluate((targetTitle) => {
+      const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+      const actionLabels = ["ÂéªÊéåÊè°", "Â≠¶‰π†", "ÂéªÂ≠¶‰π†", "ËøõÂÖ•Â≠¶‰π†", "ÂºÄÂßãÂ≠¶‰π†", "Êü•ÁúãËØ¶ÊÉÖ", "Êü•ÁúãÁü•ËØÜÁÇπ"];
+      const clearMarks = () => {
+        document
+          .querySelectorAll("[data-pw-baseline-detail-leaf='1'], [data-pw-baseline-detail-action='1'], [data-pw-baseline-detail-scope='1']")
+          .forEach((node) => {
+            node.removeAttribute("data-pw-baseline-detail-leaf");
+            node.removeAttribute("data-pw-baseline-detail-action");
+            node.removeAttribute("data-pw-baseline-detail-scope");
+          });
+      };
+      const visible = (el: Element) => {
+        const rect = el.getBoundingClientRect();
+        const style = window.getComputedStyle(el);
+        return rect.width > 0 && rect.height > 0 && style.display !== "none" && style.visibility !== "hidden";
+      };
+      clearMarks();
+
+      const leafNodes = Array.from(document.querySelectorAll<HTMLElement>("*")).filter(
+        (el) => el.children.length === 0 && visible(el) && normalize(el.textContent || "") === targetTitle
+      );
+      let fallbackLeaf: HTMLElement | null = null;
+      let fallbackScopeText = "";
+      let fallbackScopeTextLength = 0;
+
+      for (const leafNode of leafNodes) {
+        fallbackLeaf = fallbackLeaf ?? leafNode;
+        let container: HTMLElement | null = leafNode.parentElement;
+        for (let depth = 0; depth < 12 && container; depth += 1) {
+          const scopeText = normalize(container.innerText || container.textContent || "");
+          if (!scopeText.includes(targetTitle)) {
+            container = container.parentElement;
+            continue;
+          }
+          if (!fallbackScopeText) {
+            fallbackScopeText = scopeText.slice(0, 300);
+            fallbackScopeTextLength = scopeText.length;
+          }
+          if (scopeText.length > 1800 && depth > 1) {
+            container = container.parentElement;
+            continue;
+          }
+
+          const actionNode =
+            Array.from(container.querySelectorAll<HTMLElement>("a, button, span, div, [role='button']")).find((candidate) => {
+              if (candidate === leafNode || candidate.contains(leafNode)) return false;
+              if (!visible(candidate)) return false;
+              const text = normalize(candidate.innerText || candidate.textContent || "");
+              if (!actionLabels.includes(text)) return false;
+              return candidate.children.length === 0 || candidate.getAttribute("role") === "button";
+            }) ?? null;
+
+          if (!actionNode) {
+            container = container.parentElement;
+            continue;
+          }
+
+          leafNode.setAttribute("data-pw-baseline-detail-leaf", "1");
+          container.setAttribute("data-pw-baseline-detail-scope", "1");
+          actionNode.setAttribute("data-pw-baseline-detail-action", "1");
+          return {
+            found: true,
+            leafText: normalize(leafNode.textContent || ""),
+            actionText: normalize(actionNode.innerText || actionNode.textContent || ""),
+            scopeText: scopeText.slice(0, 300),
+            scopeTextLength: scopeText.length,
+          };
+        }
+      }
+
+      if (fallbackLeaf) {
+        fallbackLeaf.setAttribute("data-pw-baseline-detail-leaf", "1");
+        return {
+          found: true,
+          leafText: normalize(fallbackLeaf.textContent || ""),
+          actionText: null,
+          scopeText: fallbackScopeText,
+          scopeTextLength: fallbackScopeTextLength,
+        };
+      }
+
+      return {
+        found: false,
+        leafText: null,
+        actionText: null,
+        scopeText: "",
+        scopeTextLength: 0,
+      };
+    }, leafTitle)
+    .catch(() => ({
+      found: false,
+      leafText: null,
+      actionText: null,
+      scopeText: "",
+      scopeTextLength: 0,
+    }));
+}
+
+async function clickMarkedLocator(page: Page, selector: string): Promise<boolean> {
+  const locator = page.locator(selector).first();
+  const visible = await locator.isVisible({ timeout: 1_000 }).catch(() => false);
+  if (!visible) return false;
+  await locator.scrollIntoViewIfNeeded({ timeout: 3_000 }).catch(() => undefined);
+  try {
+    await locator.click({ timeout: 5_000 });
+    await page.waitForTimeout(1_000);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function detectVisibleLoginDialog(page: Page): Promise<boolean> {
+  return page
+    .evaluate(() => {
+      const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+      const loginSignals = ["ÂæÆ‰ø°Êâ´Á†ÅÂÆâÂÖ®ÁôªÂΩï", "ÊâãÊú∫Âè∑ÁôªÂΩï", "Ëé∑ÂèñÂ∞èÁ®ãÂ∫è", "ËÄÅÁî®Êà∑ÊâãÊú∫Âè∑ÁôªÂΩï"];
+      return Array.from(document.querySelectorAll<HTMLElement>(".el-dialog__wrapper, [role='dialog']")).some((el) => {
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden") return false;
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return false;
+        const text = normalize(el.innerText || el.textContent || "");
+        return loginSignals.some((signal) => text.includes(signal));
+      });
+    })
+    .catch(() => false);
+}
+
+export async function inspectKnowInfoOuterHtml(page: Page): Promise<KnowInfoOuterHtmlSnapshot> {
+  await ensureEvaluateHelper(page);
+  return page
+    .evaluate(() => {
+      const selectors = [".knowInfo.ql-editor", ".knowInfo", ".ql-editor"];
+      for (const selector of selectors) {
+        const el = document.querySelector<HTMLElement>(selector);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 && rect.height <= 0) continue;
+        const text = (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
+        const outerHtml = el.outerHTML;
+        return {
+          found: true,
+          selector,
+          text_length: text.length,
+          outer_html_length: outerHtml.length,
+          img_count: el.querySelectorAll("img").length,
+          outer_html: outerHtml,
+        };
+      }
+      return {
+        found: false,
+        selector: null,
+        text_length: 0,
+        outer_html_length: 0,
+        img_count: 0,
+        outer_html: null,
+      };
+    })
+    .catch(() => ({
+      found: false,
+      selector: null,
+      text_length: 0,
+      outer_html_length: 0,
+      img_count: 0,
+      outer_html: null,
+    }));
+}
+
+export async function clickMatchedLeafDetailEntry(
+  page: Page,
+  leafTitle: string
+): Promise<MatchedLeafDetailEntryResult> {
+  const urlBefore = page.url();
+  const clickAttempts: string[] = [];
+  let leafMatchTitle: string | null = null;
+  let scopeText = "";
+  let scopeTextLength = 0;
+  let actionText: string | null = null;
+  let failureReason: string | null = null;
+  let loginDialogDetected = false;
+
+  const attemptAction = async (
+    label: MatchedLeafDetailEntryResult["strategy"]
+  ): Promise<MatchedLeafDetailEntryResult | null> => {
+    const mark = await markMatchedLeafDetailTarget(page, leafTitle);
+    if (!mark.found) {
+      failureReason = "matched leaf was not found in visible DOM";
+      return null;
+    }
+    leafMatchTitle = mark.leafText;
+    scopeText = mark.scopeText;
+    scopeTextLength = mark.scopeTextLength;
+    actionText = mark.actionText;
+    if (!mark.actionText) {
+      failureReason = "matched leaf scope did not contain a visible detail-entry action";
+      return null;
+    }
+    const clicked = await clickMarkedLocator(page, "[data-pw-baseline-detail-action='1']");
+    clickAttempts.push(`${label}:${clicked ? "clicked" : "not_visible"}`);
+    const routeOk = await waitForKonwledgeInfoRoute(page);
+    if (!routeOk) {
+      loginDialogDetected = await detectVisibleLoginDialog(page);
+      if (loginDialogDetected) {
+        failureReason = "detail entry opened login dialog; authenticated storage state is missing or expired";
+      }
+    }
+    if (!routeOk) return null;
+    const finalUrl = page.url();
+    return {
+      attempted: true,
+      success: true,
+      text: mark.actionText,
+      strategy: label,
+      url_before: urlBefore,
+      final_url: finalUrl,
+      route_changed: finalUrl !== urlBefore,
+      final_url_contains_konwledgeInfo: finalUrl.includes("konwledgeInfo"),
+      leaf_match_title: mark.leafText,
+      scope_found: true,
+      scope_text_length: mark.scopeTextLength,
+      scope_text_preview: mark.scopeText,
+      click_attempts: clickAttempts,
+      login_dialog_detected: false,
+      failure_reason: null,
+    };
+  };
+
+  const firstAction = await attemptAction("matched_leaf_action");
+  if (firstAction) return firstAction;
+
+  const secondAction = await attemptAction("matched_leaf_action_retry");
+  if (secondAction) return secondAction;
+
+  const markForLeaf = await markMatchedLeafDetailTarget(page, leafTitle);
+  if (markForLeaf.found) {
+    leafMatchTitle = markForLeaf.leafText;
+    scopeText = markForLeaf.scopeText;
+    scopeTextLength = markForLeaf.scopeTextLength;
+    actionText = markForLeaf.actionText ?? actionText;
+    const clickedLeaf = await clickMarkedLocator(page, "[data-pw-baseline-detail-leaf='1']");
+    clickAttempts.push(`matched_leaf_direct:${clickedLeaf ? "clicked" : "not_visible"}`);
+    const leafRouteOk = await waitForKonwledgeInfoRoute(page);
+    if (!leafRouteOk) {
+      loginDialogDetected = await detectVisibleLoginDialog(page);
+      if (loginDialogDetected) {
+        failureReason = "detail entry opened login dialog; authenticated storage state is missing or expired";
+      }
+    }
+    if (leafRouteOk) {
+      const finalUrl = page.url();
+      return {
+        attempted: true,
+        success: true,
+        text: markForLeaf.leafText,
+        strategy: "matched_leaf_direct",
+        url_before: urlBefore,
+        final_url: finalUrl,
+        route_changed: finalUrl !== urlBefore,
+        final_url_contains_konwledgeInfo: finalUrl.includes("konwledgeInfo"),
+        leaf_match_title: markForLeaf.leafText,
+        scope_found: true,
+        scope_text_length: markForLeaf.scopeTextLength,
+        scope_text_preview: markForLeaf.scopeText,
+        click_attempts: clickAttempts,
+        login_dialog_detected: false,
+        failure_reason: null,
+      };
+    }
+  }
+
+  const afterSelectAction = await attemptAction("matched_leaf_after_select_action");
+  if (afterSelectAction) return afterSelectAction;
+
+  const finalUrl = page.url();
+  loginDialogDetected = loginDialogDetected || await detectVisibleLoginDialog(page);
+  return {
+    attempted: true,
+    success: false,
+    text: actionText,
+    strategy: "failed",
+    url_before: urlBefore,
+    final_url: finalUrl,
+    route_changed: finalUrl !== urlBefore,
+    final_url_contains_konwledgeInfo: finalUrl.includes("konwledgeInfo"),
+    leaf_match_title: leafMatchTitle,
+    scope_found: leafMatchTitle !== null,
+    scope_text_length: scopeTextLength,
+    scope_text_preview: scopeText,
+    click_attempts: clickAttempts,
+    login_dialog_detected: loginDialogDetected,
+    failure_reason: failureReason ?? "matched leaf detail-entry actions did not enter konwledgeInfo route",
+  };
 }
 
 function hasAnySignal(value: string, signals: string[]): boolean {
@@ -658,7 +1003,7 @@ export async function captureReplayDebugSnapshot(
   };
 }
 
-// ©§©§ Phase 3.19: Detail Content Stabilization ©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§©§
+// Phase 3.19: Detail Content Stabilization
 
 export interface StabilizationRound {
   round: number;
