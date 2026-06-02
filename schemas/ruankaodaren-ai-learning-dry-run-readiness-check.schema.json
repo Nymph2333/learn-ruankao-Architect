@@ -1,0 +1,545 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-ai-learning-dry-run-readiness-check.schema.json",
+  "title": "RuankaoAiLearningDryRunReadinessCheck",
+  "description": "Phase 5.8 AI Learning dry-run execution readiness check. It determines future dry-run readiness only and does not execute or generate content.",
+  "type": "object",
+  "required": [
+    "check_version",
+    "source_name",
+    "created_at",
+    "check_scope",
+    "generation_allowed",
+    "dry_run_generation_allowed",
+    "dry_run_execution_allowed",
+    "formal_ai_learning_generation_allowed",
+    "readiness_mode",
+    "review_gate_required",
+    "auto_approval",
+    "source_layer_modification_allowed",
+    "official_markdown_modification_allowed",
+    "source_content_write_allowed",
+    "phase5_9_entry_allowed",
+    "item_count",
+    "source_packet_prior_contract_gate",
+    "input_bundle_constructability",
+    "output_isolation_readiness",
+    "phase5_9_entry_policy",
+    "artifact_commit_policy",
+    "items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "check_version": {
+      "type": "string",
+      "const": "phase5.8"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "check_scope": {
+      "type": "string",
+      "const": "dry_run_execution_readiness_check_only"
+    },
+    "generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_execution_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "formal_ai_learning_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "readiness_mode": {
+      "type": "string",
+      "const": "check_only"
+    },
+    "review_gate_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "auto_approval": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_layer_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "official_markdown_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_content_write_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "phase5_9_entry_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "item_count": {
+      "type": "integer",
+      "const": 3
+    },
+    "source_packet_prior_contract_gate": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunReadinessPriorContractGate"
+    },
+    "input_bundle_constructability": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunInputBundleConstructability"
+    },
+    "output_isolation_readiness": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunOutputIsolationReadiness"
+    },
+    "phase5_9_entry_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningPhase59EntryPolicy"
+    },
+    "artifact_commit_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunReadinessArtifactCommitPolicy"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/RuankaoAiLearningDryRunReadinessItem"
+      }
+    }
+  },
+  "$defs": {
+    "RuankaoAiLearningDryRunReadinessPriorContractGate": {
+      "type": "object",
+      "required": [
+        "source_packet_exists",
+        "complete_count",
+        "phase5_4_generation_allowed",
+        "phase5_5_generation_allowed",
+        "phase5_6_generation_allowed",
+        "phase5_6_dry_run_generation_allowed",
+        "phase5_7_generation_allowed",
+        "phase5_7_dry_run_execution_allowed",
+        "gate_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_packet_exists": {
+          "type": "boolean",
+          "const": true
+        },
+        "complete_count": {
+          "type": "integer",
+          "const": 3
+        },
+        "phase5_4_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_5_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_6_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_6_dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_7_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_7_dry_run_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "gate_result": {
+          "type": "string",
+          "const": "pass"
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunInputBundleConstructability": {
+      "type": "object",
+      "required": [
+        "constructable_now",
+        "reason",
+        "required_references",
+        "isolated_output_target_valid",
+        "source_layer_write_allowed",
+        "official_markdown_write_allowed",
+        "future_constructable_after_review"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "constructable_now": {
+          "type": "boolean",
+          "const": false
+        },
+        "reason": {
+          "type": "string",
+          "const": "human_review_not_approved"
+        },
+        "required_references": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_packet",
+              "prompt_contract",
+              "dry_run_contract",
+              "request_manifest",
+              "execution_contract"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "isolated_output_target_valid": {
+          "type": "boolean",
+          "const": true
+        },
+        "source_layer_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "official_markdown_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "future_constructable_after_review": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunOutputIsolationReadiness": {
+      "type": "object",
+      "required": [
+        "default_future_output_path",
+        "allowed_output_paths",
+        "forbidden_output_paths",
+        "source_layer_write_allowed",
+        "official_markdown_write_allowed",
+        "source_content_write_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_future_output_path": {
+          "type": "string",
+          "const": "verification/dry-run/ruankaodaren/baseline/"
+        },
+        "allowed_output_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "verification/dry-run/ruankaodaren/",
+              "drafts/ai-learning/ruankaodaren/"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "forbidden_output_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "docs/ruankaodaren/baseline/",
+              "source-packets/",
+              "source_content",
+              "data/raw",
+              "data/intermediate"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "source_layer_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "official_markdown_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "source_content_write_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningPhase59EntryPolicy": {
+      "type": "object",
+      "required": [
+        "phase5_9_entry_allowed",
+        "required_before_entry",
+        "prohibited_before_entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase5_9_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "required_before_entry": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "explicit_user_approval",
+              "human_review_request_created",
+              "human_review_approved",
+              "selected_item_is_phase5_9_candidate",
+              "output_path_isolated",
+              "source_packet_reference_valid",
+              "prompt_contract_reference_valid",
+              "dry_run_contract_reference_valid",
+              "request_manifest_reference_valid",
+              "execution_contract_reference_valid"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 10,
+          "maxItems": 10
+        },
+        "prohibited_before_entry": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_layer_modification",
+              "official_markdown_modification",
+              "generation_allowed_true",
+              "auto_approval_true",
+              "taxonomy_suspect_unrestricted_generation",
+              "asset_without_manual_review"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 6,
+          "maxItems": 6
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunReadinessArtifactCommitPolicy": {
+      "type": "object",
+      "required": [
+        "commit_allowed",
+        "commit_forbidden"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commit_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema",
+              "types",
+              "builder",
+              "validator",
+              "verification_doc",
+              "generated_readiness_check_json",
+              "generated_readiness_check_md"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 7,
+          "maxItems": 7
+        },
+        "commit_forbidden": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ai_learning_content",
+              "dry_run_content",
+              "input_bundle_instance",
+              "official_markdown_rewrite",
+              "source_layer_modifications",
+              "raw_snapshots",
+              "intermediate_generated_artifacts",
+              "asset_images",
+              ".auth",
+              "node_modules",
+              "pnpm-workspace.yaml"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 11,
+          "maxItems": 11
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunReadinessItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "render_as",
+        "current_status",
+        "eligible_for_request",
+        "phase5_9_candidate",
+        "current_execution_allowed",
+        "current_dry_run_generation_allowed",
+        "current_formal_generation_allowed",
+        "taxonomy_suspect",
+        "is_multi_card_sequence",
+        "requires_manual_asset_review",
+        "requires_manual_review",
+        "no_ocr",
+        "no_image_table_reconstruction",
+        "cannot_claim_image_content_recognized",
+        "may_become_phase5_9_candidate_after_review",
+        "required_warnings",
+        "readiness_blockers",
+        "readiness_prerequisites",
+        "readiness_result",
+        "readiness_output_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "asset_card",
+            "short_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "current_status": {
+          "type": "string",
+          "enum": [
+            "not_ready",
+            "review_required"
+          ]
+        },
+        "eligible_for_request": {
+          "type": "boolean"
+        },
+        "phase5_9_candidate": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_formal_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        },
+        "is_multi_card_sequence": {
+          "type": "boolean"
+        },
+        "requires_manual_asset_review": {
+          "type": "boolean"
+        },
+        "requires_manual_review": {
+          "type": "boolean"
+        },
+        "no_ocr": {
+          "type": "boolean"
+        },
+        "no_image_table_reconstruction": {
+          "type": "boolean"
+        },
+        "cannot_claim_image_content_recognized": {
+          "type": "boolean"
+        },
+        "may_become_phase5_9_candidate_after_review": {
+          "type": "boolean"
+        },
+        "taxonomy_suspect_handling": {
+          "type": "string",
+          "const": "restrict_readiness"
+        },
+        "multi_card_sequence_handling": {
+          "type": "string",
+          "const": "do_not_claim_complete"
+        },
+        "parent_node_handling": {
+          "type": "string",
+          "const": "do_not_generate_as_leaf"
+        },
+        "required_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "readiness_blockers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "readiness_prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "human_review_request",
+              "human_review_approval",
+              "isolated_output_path",
+              "source_packet_reference",
+              "prompt_contract_reference",
+              "dry_run_contract_reference",
+              "request_manifest_reference",
+              "execution_contract_reference",
+              "manual_asset_review",
+              "human_image_content_verification",
+              "taxonomy_restriction_review",
+              "parent_node_review"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "readiness_result": {
+          "type": "string",
+          "enum": [
+            "blocked",
+            "blocked_until_human_review"
+          ]
+        },
+        "readiness_output_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
