@@ -61,6 +61,8 @@
     "validate:ai-learning-dry-run-execution-contract": "tsx scripts/validate-ruankaodaren-ai-learning-dry-run-execution-contract.ts",
     "build:ai-learning-dry-run-readiness-check": "tsx scripts/build-ruankaodaren-ai-learning-dry-run-readiness-check.ts",
     "validate:ai-learning-dry-run-readiness-check": "tsx scripts/validate-ruankaodaren-ai-learning-dry-run-readiness-check.ts",
+    "build:ai-learning-human-review-request-package": "tsx scripts/build-ruankaodaren-ai-learning-human-review-request-package.ts",
+    "validate:ai-learning-human-review-request-package": "tsx scripts/validate-ruankaodaren-ai-learning-human-review-request-package.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
