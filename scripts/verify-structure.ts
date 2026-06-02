@@ -39,6 +39,9 @@ const requiredDirectories = [
   "source-packets",
   "source-packets/ruankaodaren",
   "source-packets/ruankaodaren/baseline",
+  "prompts",
+  "prompts/ruankaodaren",
+  "prompts/ruankaodaren/ai-learning",
   "schemas",
   "packages/domain-types",
   "docs",
@@ -168,9 +171,11 @@ const requiredFiles = [
   "schemas/ruankaodaren-human-review-status.schema.json",
   "schemas/ruankaodaren-dual-layer-document.schema.json",
   "schemas/ruankaodaren-source-packet.schema.json",
+  "schemas/ruankaodaren-ai-learning-prompt-contract.schema.json",
   "packages/domain-types/ruankaodaren-human-review-status.ts",
   "packages/domain-types/ruankaodaren-dual-layer-document.ts",
   "packages/domain-types/ruankaodaren-source-packet.ts",
+  "packages/domain-types/ruankaodaren-ai-learning-prompt-contract.ts",
   "scripts/build-ruankaodaren-human-review-status.ts",
   "scripts/validate-ruankaodaren-human-review-status.ts",
   "scripts/build-ruankaodaren-controlled-expansion-plan.ts",
@@ -178,18 +183,26 @@ const requiredFiles = [
   "scripts/validate-ruankaodaren-dual-layer-contract.ts",
   "scripts/build-ruankaodaren-source-packets.ts",
   "scripts/validate-ruankaodaren-source-packets.ts",
+  "scripts/build-ruankaodaren-ai-learning-prompt-contract.ts",
+  "scripts/validate-ruankaodaren-ai-learning-prompt-contract.ts",
   "scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
   "scripts/recheck-ruankaodaren-taxonomy.ts",
+  "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md",
+  "prompts/ruankaodaren/ai-learning/short-card-ai-learning.prompt.md",
+  "prompts/ruankaodaren/ai-learning/concept-card-ai-learning.prompt.md",
+  "prompts/ruankaodaren/ai-learning/manual-review-ai-learning.prompt.md",
   "verification/phase4_5_human_review_signoff_and_controlled_expansion_plan_check.md",
   "verification/phase5_0_source_ai_dual_layer_contract_check.md",
   "verification/phase5_1_source_packet_builder_and_taxonomy_recheck.md",
   "verification/phase5_2_source_artifact_recovery_and_taxonomy_live_recheck.md",
-  "verification/phase5_3_baseline_detail_entry_recovery_contract_repair.md"
+  "verification/phase5_3_baseline_detail_entry_recovery_contract_repair.md",
+  "verification/phase5_4_compliance_addendum.md",
+  "verification/phase5_4_ai_learning_prompt_contract_check.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
   "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
     "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
     "## 4. Source Layer Policy",
@@ -225,6 +238,50 @@ const requiredContent: Record<string, string[]> = {
     "## 5. Detail Entry Binding Policy",
     "pnpm test:baseline-detail-entry",
     "No raw XHR direct read"
+  ],
+  "verification/phase5_4_ai_learning_prompt_contract_check.md": [
+    "# Phase 5.4 AI Learning Layer Prompt Contract",
+    "## 4. Source Layer Binding",
+    "## 5. AI Learning Sections",
+    "## 6. Content Shape Policies",
+    "## 7. Taxonomy-suspect Policy",
+    "pnpm build:ai-learning-prompt-contract",
+    "pnpm validate:ai-learning-prompt-contract"
+  ],
+  "verification/phase5_4_compliance_addendum.md": [
+    "# Phase 5.4 Compliance Addendum",
+    "## 1. Source Packet Gate Audit",
+    "complete_count: 3",
+    "source packet repair attempted: false",
+    "## 4. Validator Coverage Addendum",
+    "## 5. Git Status Audit"
+  ],
+  "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md": [
+    "AI-generated",
+    "Do not OCR",
+    "Do not reconstruct image tables",
+    "Source Summary / 原文摘要",
+    "Review Notes / 复核提示"
+  ],
+  "prompts/ruankaodaren/ai-learning/short-card-ai-learning.prompt.md": [
+    "AI-generated",
+    "verified short text",
+    "Do not claim the source covered all topic details",
+    "Source Summary / 原文摘要",
+    "Review Notes / 复核提示"
+  ],
+  "prompts/ruankaodaren/ai-learning/concept-card-ai-learning.prompt.md": [
+    "AI-generated",
+    "Separate source-derived facts from AI expansion",
+    "Source Summary / 原文摘要",
+    "Review Notes / 复核提示"
+  ],
+  "prompts/ruankaodaren/ai-learning/manual-review-ai-learning.prompt.md": [
+    "AI-generated",
+    "Do not OCR",
+    "Do not access webpages",
+    "Source Summary / 原文摘要",
+    "Review Notes / 复核提示"
   ],
   "templates/concept-card.md": [
     "# <Concept English> / <中文术语>",

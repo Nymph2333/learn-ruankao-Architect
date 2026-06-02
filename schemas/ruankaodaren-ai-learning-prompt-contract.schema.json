@@ -1,0 +1,384 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-ai-learning-prompt-contract.schema.json",
+  "title": "RuankaoAiLearningPromptContract",
+  "description": "Phase 5.4 AI Learning Layer prompt contract. It defines prompt boundaries only and does not allow AI learning content generation.",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "source_name",
+    "created_at",
+    "generation_allowed",
+    "contract_scope",
+    "input_policy",
+    "source_layer_binding",
+    "ai_learning_sections",
+    "content_shape_policies",
+    "taxonomy_policy",
+    "review_policy",
+    "items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "phase5.4"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "contract_scope": {
+      "type": "string",
+      "const": "prompt_contract_only"
+    },
+    "input_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningInputPolicy"
+    },
+    "source_layer_binding": {
+      "$ref": "#/$defs/RuankaoSourceLayerBinding"
+    },
+    "ai_learning_sections": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "$ref": "#/$defs/RuankaoAiLearningSection"
+      }
+    },
+    "content_shape_policies": {
+      "$ref": "#/$defs/RuankaoContentShapePolicies"
+    },
+    "taxonomy_policy": {
+      "$ref": "#/$defs/RuankaoTaxonomyAiPolicy"
+    },
+    "review_policy": {
+      "$ref": "#/$defs/RuankaoAiReviewPolicy"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/RuankaoAiLearningPromptItem"
+      }
+    }
+  },
+  "$defs": {
+    "RuankaoAiLearningInputPolicy": {
+      "type": "object",
+      "required": [
+        "allowed_inputs",
+        "forbidden_inputs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_packet",
+              "dual_layer_schema",
+              "intermediate_json",
+              "asset_manifest",
+              "asset_metadata",
+              "human_review_status"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "forbidden_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "raw_html_direct_read",
+              "raw_xhr_direct_read",
+              "web_requests",
+              "ocr",
+              "encrypted_xhr_decryption",
+              "image_table_reconstruction",
+              "source_layer_modification",
+              "unmarked_ai_content"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "RuankaoSourceLayerBinding": {
+      "type": "object",
+      "required": [
+        "must_reference_source_packet",
+        "must_preserve_source_text",
+        "must_not_modify_source_layer",
+        "must_separate_ai_layer"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "must_reference_source_packet": {
+          "type": "boolean",
+          "const": true
+        },
+        "must_preserve_source_text": {
+          "type": "boolean",
+          "const": true
+        },
+        "must_not_modify_source_layer": {
+          "type": "boolean",
+          "const": true
+        },
+        "must_separate_ai_layer": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "RuankaoAiLearningSection": {
+      "type": "object",
+      "required": [
+        "section_id",
+        "title",
+        "allowed",
+        "requires_ai_generated_label",
+        "requires_source_reference"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "section_id": {
+          "type": "string",
+          "enum": [
+            "ai_explanation",
+            "architecture_mapping",
+            "case_study_pattern",
+            "paper_usage",
+            "misconceptions",
+            "memory_hooks"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "allowed": {
+          "type": "boolean"
+        },
+        "requires_ai_generated_label": {
+          "type": "boolean",
+          "const": true
+        },
+        "requires_source_reference": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "RuankaoContentShapeAiPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "can_explain_text_blocks": {
+          "type": "boolean"
+        },
+        "can_explain_asset_metadata": {
+          "type": "boolean"
+        },
+        "can_describe_image_content": {
+          "type": "boolean"
+        },
+        "requires_asset_manual_review": {
+          "type": "boolean"
+        },
+        "can_expand_concepts": {
+          "type": "boolean"
+        },
+        "must_mark_source_as_short": {
+          "type": "boolean"
+        },
+        "must_not_claim_source_complete": {
+          "type": "boolean"
+        },
+        "requires_manual_review": {
+          "type": "boolean"
+        },
+        "can_expand_from_text_blocks": {
+          "type": "boolean"
+        },
+        "can_map_to_exam_points": {
+          "type": "boolean"
+        },
+        "must_mark_ai_generated": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "RuankaoContentShapePolicies": {
+      "type": "object",
+      "required": [
+        "asset_card",
+        "short_card",
+        "concept_card",
+        "manual_review_card"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "asset_card": {
+          "$ref": "#/$defs/RuankaoContentShapeAiPolicy"
+        },
+        "short_card": {
+          "$ref": "#/$defs/RuankaoContentShapeAiPolicy"
+        },
+        "concept_card": {
+          "$ref": "#/$defs/RuankaoContentShapeAiPolicy"
+        },
+        "manual_review_card": {
+          "$ref": "#/$defs/RuankaoContentShapeAiPolicy"
+        }
+      }
+    },
+    "RuankaoTaxonomyAiPolicy": {
+      "type": "object",
+      "required": [
+        "taxonomy_suspect_handling",
+        "multi_card_sequence_handling",
+        "parent_node_handling",
+        "affected_titles"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "taxonomy_suspect_handling": {
+          "type": "string",
+          "const": "restrict_generation"
+        },
+        "multi_card_sequence_handling": {
+          "type": "string",
+          "const": "do_not_claim_complete"
+        },
+        "parent_node_handling": {
+          "type": "string",
+          "const": "do_not_generate_as_leaf"
+        },
+        "affected_titles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "RuankaoAiReviewPolicy": {
+      "type": "object",
+      "required": [
+        "ai_generation_status_default",
+        "ai_review_status_default",
+        "human_review_required",
+        "auto_approval"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ai_generation_status_default": {
+          "type": "string",
+          "const": "not_generated"
+        },
+        "ai_review_status_default": {
+          "type": "string",
+          "const": "pending_review"
+        },
+        "human_review_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "auto_approval": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningPromptItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "source_packet_item_status",
+        "render_as",
+        "content_shape",
+        "taxonomy_suspect",
+        "ai_generation_allowed_for_item",
+        "allowed_ai_sections",
+        "required_warnings",
+        "prompt_template_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_packet_item_status": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "incomplete"
+          ]
+        },
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "asset_card",
+            "short_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "content_shape": {
+          "type": "string",
+          "minLength": 1
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        },
+        "ai_generation_allowed_for_item": {
+          "type": "boolean",
+          "const": false
+        },
+        "allowed_ai_sections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "prompt_template_id": {
+          "type": "string",
+          "enum": [
+            "asset-card-ai-learning",
+            "short-card-ai-learning",
+            "concept-card-ai-learning",
+            "manual-review-ai-learning"
+          ]
+        }
+      }
+    }
+  }
+}

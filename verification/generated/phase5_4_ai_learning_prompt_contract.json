@@ -1,0 +1,174 @@
+{
+  "contract_version": "phase5.4",
+  "source_name": "ruankaodaren",
+  "created_at": "2026-06-02T05:57:17.168Z",
+  "generation_allowed": false,
+  "contract_scope": "prompt_contract_only",
+  "input_policy": {
+    "allowed_inputs": [
+      "source_packet",
+      "dual_layer_schema",
+      "intermediate_json",
+      "asset_manifest",
+      "asset_metadata",
+      "human_review_status"
+    ],
+    "forbidden_inputs": [
+      "raw_html_direct_read",
+      "raw_xhr_direct_read",
+      "web_requests",
+      "ocr",
+      "encrypted_xhr_decryption",
+      "image_table_reconstruction",
+      "source_layer_modification",
+      "unmarked_ai_content"
+    ]
+  },
+  "source_layer_binding": {
+    "must_reference_source_packet": true,
+    "must_preserve_source_text": true,
+    "must_not_modify_source_layer": true,
+    "must_separate_ai_layer": true
+  },
+  "ai_learning_sections": [
+    {
+      "section_id": "ai_explanation",
+      "title": "AI Explanation / AI解析",
+      "allowed": true,
+      "requires_ai_generated_label": true,
+      "requires_source_reference": true
+    },
+    {
+      "section_id": "architecture_mapping",
+      "title": "Architecture Mapping / 架构师考点映射",
+      "allowed": true,
+      "requires_ai_generated_label": true,
+      "requires_source_reference": true
+    },
+    {
+      "section_id": "case_study_pattern",
+      "title": "Case Study Pattern / 案例答题模式",
+      "allowed": true,
+      "requires_ai_generated_label": true,
+      "requires_source_reference": true
+    },
+    {
+      "section_id": "paper_usage",
+      "title": "Paper Usage / 论文表达",
+      "allowed": true,
+      "requires_ai_generated_label": true,
+      "requires_source_reference": true
+    },
+    {
+      "section_id": "misconceptions",
+      "title": "Misconceptions / 易错点",
+      "allowed": true,
+      "requires_ai_generated_label": true,
+      "requires_source_reference": true
+    },
+    {
+      "section_id": "memory_hooks",
+      "title": "Memory Hooks / 记忆钩子",
+      "allowed": true,
+      "requires_ai_generated_label": true,
+      "requires_source_reference": true
+    }
+  ],
+  "content_shape_policies": {
+    "asset_card": {
+      "can_explain_text_blocks": true,
+      "can_explain_asset_metadata": true,
+      "can_describe_image_content": false,
+      "requires_asset_manual_review": true,
+      "notes": [
+        "image asset can only be referenced as asset_ref",
+        "no image content interpretation without human review"
+      ]
+    },
+    "short_card": {
+      "can_expand_concepts": true,
+      "must_mark_source_as_short": true,
+      "must_not_claim_source_complete": true,
+      "requires_manual_review": true,
+      "notes": [
+        "source is verified short text",
+        "AI expansion must not claim complete topic coverage"
+      ]
+    },
+    "concept_card": {
+      "can_expand_from_text_blocks": true,
+      "can_map_to_exam_points": true,
+      "must_mark_ai_generated": true,
+      "requires_manual_review": true,
+      "notes": [
+        "separate source-derived facts from AI expansion"
+      ]
+    },
+    "manual_review_card": {
+      "can_expand_concepts": false,
+      "must_mark_ai_generated": true,
+      "requires_manual_review": true,
+      "notes": [
+        "use only when source packet or taxonomy state requires manual review before any learning content"
+      ]
+    }
+  },
+  "taxonomy_policy": {
+    "taxonomy_suspect_handling": "restrict_generation",
+    "multi_card_sequence_handling": "do_not_claim_complete",
+    "parent_node_handling": "do_not_generate_as_leaf",
+    "affected_titles": [
+      "13.3 软件架构风格"
+    ]
+  },
+  "review_policy": {
+    "ai_generation_status_default": "not_generated",
+    "ai_review_status_default": "pending_review",
+    "human_review_required": true,
+    "auto_approval": false
+  },
+  "items": [
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "source_packet_item_status": "complete",
+      "render_as": "asset_card",
+      "content_shape": "MIXED_TEXT_IMAGE",
+      "taxonomy_suspect": false,
+      "ai_generation_allowed_for_item": false,
+      "allowed_ai_sections": [],
+      "required_warnings": [
+        "no_ocr",
+        "no_image_table_reconstruction",
+        "asset_manual_review_required"
+      ],
+      "prompt_template_id": "asset-card-ai-learning"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "source_packet_item_status": "complete",
+      "render_as": "short_card",
+      "content_shape": "STATIC_LOW_TEXT_VERIFIED",
+      "taxonomy_suspect": true,
+      "ai_generation_allowed_for_item": false,
+      "allowed_ai_sections": [],
+      "required_warnings": [
+        "verified_short_text",
+        "taxonomy_suspect",
+        "multi_card_sequence_possible",
+        "do_not_claim_complete"
+      ],
+      "prompt_template_id": "short-card-ai-learning"
+    },
+    {
+      "title": "9.1 信息安全基础知识",
+      "source_packet_item_status": "complete",
+      "render_as": "concept_card",
+      "content_shape": "HTML_RICH_TEXT",
+      "taxonomy_suspect": false,
+      "ai_generation_allowed_for_item": false,
+      "allowed_ai_sections": [],
+      "required_warnings": [],
+      "prompt_template_id": "concept-card-ai-learning"
+    }
+  ]
+}
