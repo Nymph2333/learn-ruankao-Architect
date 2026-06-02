@@ -1,0 +1,433 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-ai-learning-dry-run-request-manifest.schema.json",
+  "title": "RuankaoAiLearningDryRunRequestManifest",
+  "description": "Phase 5.6 AI Learning dry-run request manifest. It defines eligibility, review prerequisites, output isolation, and commit policy only.",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "source_name",
+    "created_at",
+    "manifest_scope",
+    "generation_allowed",
+    "dry_run_generation_allowed",
+    "formal_ai_learning_generation_allowed",
+    "review_gate_required",
+    "auto_approval",
+    "source_layer_modification_allowed",
+    "official_markdown_modification_allowed",
+    "source_content_write_allowed",
+    "phase5_7_entry_allowed",
+    "item_count",
+    "source_packet_gate",
+    "output_isolation_policy",
+    "review_prerequisite_policy",
+    "artifact_commit_policy",
+    "items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": {
+      "type": "string",
+      "const": "phase5.6"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "manifest_scope": {
+      "type": "string",
+      "const": "dry_run_request_manifest_only"
+    },
+    "generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "formal_ai_learning_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "review_gate_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "auto_approval": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_layer_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "official_markdown_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_content_write_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "phase5_7_entry_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "item_count": {
+      "type": "integer",
+      "const": 3
+    },
+    "source_packet_gate": {
+      "$ref": "#/$defs/RuankaoAiLearningSourcePacketGate"
+    },
+    "output_isolation_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningOutputIsolationPolicy"
+    },
+    "review_prerequisite_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningReviewPrerequisitePolicy"
+    },
+    "artifact_commit_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningArtifactCommitPolicy"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/RuankaoAiLearningDryRunRequestManifestItem"
+      }
+    }
+  },
+  "$defs": {
+    "RuankaoAiLearningSourcePacketGate": {
+      "type": "object",
+      "required": [
+        "source_packet_exists",
+        "complete_count",
+        "overall_source_packet_status",
+        "gate_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_packet_exists": {
+          "type": "boolean",
+          "const": true
+        },
+        "complete_count": {
+          "type": "integer",
+          "const": 3
+        },
+        "overall_source_packet_status": {
+          "type": "string",
+          "const": "complete"
+        },
+        "gate_result": {
+          "type": "string",
+          "const": "pass"
+        }
+      }
+    },
+    "RuankaoAiLearningOutputIsolationPolicy": {
+      "type": "object",
+      "required": [
+        "default_output_path",
+        "allowed_output_paths",
+        "forbidden_output_paths",
+        "source_layer_write_allowed",
+        "official_markdown_write_allowed",
+        "source_content_write_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_output_path": {
+          "type": "string",
+          "const": "verification/dry-run/ruankaodaren/baseline/"
+        },
+        "allowed_output_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "verification/dry-run/ruankaodaren/",
+              "drafts/ai-learning/ruankaodaren/"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 2
+        },
+        "forbidden_output_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "docs/ruankaodaren/baseline/",
+              "source-packets/",
+              "source_content",
+              "data/raw",
+              "data/intermediate"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 5
+        },
+        "source_layer_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "official_markdown_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "source_content_write_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningReviewPrerequisitePolicy": {
+      "type": "object",
+      "required": [
+        "required_prerequisites",
+        "blocking_conditions",
+        "human_review_required",
+        "auto_approval"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "required_prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_packet_complete",
+              "prompt_contract_validated",
+              "dry_run_contract_validated",
+              "item_eligibility_checked",
+              "output_path_isolated",
+              "human_review_request_created",
+              "no_source_layer_modification",
+              "no_official_markdown_modification"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "blocking_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "source_packet_incomplete",
+              "taxonomy_suspect_without_restriction",
+              "asset_without_manual_review",
+              "output_path_points_to_source_layer",
+              "output_path_points_to_official_markdown",
+              "generation_allowed_true",
+              "auto_approval_true"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 7,
+          "maxItems": 7
+        },
+        "human_review_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "auto_approval": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningArtifactCommitPolicy": {
+      "type": "object",
+      "required": [
+        "commit_allowed",
+        "commit_forbidden"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commit_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema",
+              "types",
+              "builder",
+              "validator",
+              "verification_doc",
+              "generated_manifest_json",
+              "generated_manifest_md"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 7,
+          "maxItems": 7
+        },
+        "commit_forbidden": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ai_learning_content",
+              "dry_run_content",
+              "official_markdown_rewrite",
+              "source_layer_modifications",
+              "raw_snapshots",
+              "intermediate_generated_artifacts",
+              "asset_images",
+              ".auth",
+              "node_modules",
+              "pnpm-workspace.yaml"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 10,
+          "maxItems": 10
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunRequestManifestItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "render_as",
+        "request_status",
+        "eligible_for_request",
+        "dry_run_generation_allowed",
+        "formal_generation_allowed",
+        "unrestricted_request_allowed",
+        "taxonomy_suspect",
+        "is_multi_card_sequence",
+        "requires_manual_asset_review",
+        "requires_manual_review",
+        "no_ocr",
+        "no_image_table_reconstruction",
+        "cannot_claim_image_content_recognized",
+        "may_request_future_dry_run_after_review",
+        "required_warnings",
+        "eligibility_blockers",
+        "required_prerequisites",
+        "output_isolation_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "asset_card",
+            "short_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "request_status": {
+          "type": "string",
+          "const": "not_requested"
+        },
+        "eligible_for_request": {
+          "type": "boolean"
+        },
+        "dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "formal_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "unrestricted_request_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        },
+        "is_multi_card_sequence": {
+          "type": "boolean"
+        },
+        "requires_manual_asset_review": {
+          "type": "boolean"
+        },
+        "requires_manual_review": {
+          "type": "boolean"
+        },
+        "no_ocr": {
+          "type": "boolean"
+        },
+        "no_image_table_reconstruction": {
+          "type": "boolean"
+        },
+        "cannot_claim_image_content_recognized": {
+          "type": "boolean"
+        },
+        "may_request_future_dry_run_after_review": {
+          "type": "boolean"
+        },
+        "taxonomy_suspect_handling": {
+          "type": "string",
+          "const": "restrict_request"
+        },
+        "multi_card_sequence_handling": {
+          "type": "string",
+          "const": "do_not_claim_complete"
+        },
+        "parent_node_handling": {
+          "type": "string",
+          "const": "do_not_generate_as_leaf"
+        },
+        "required_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "eligibility_blockers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "required_prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "human_review_request",
+              "isolated_output_path",
+              "source_packet_reference",
+              "prompt_contract_reference",
+              "dry_run_contract_reference",
+              "manual_asset_review",
+              "human_image_content_verification",
+              "taxonomy_restriction_review",
+              "parent_node_review"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "output_isolation_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
