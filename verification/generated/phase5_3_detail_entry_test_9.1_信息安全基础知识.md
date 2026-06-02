@@ -1,23 +1,23 @@
 # Phase 5.3 Detail-entry Test: 9.1 信息安全基础知识
 
-Generated at: 2026-05-31T05:44:03.324Z
+Generated at: 2026-06-02T03:34:30.982Z
 
 ## Summary
 
 - title: 9.1 信息安全基础知识
-- auth_state_present: false
+- auth_state_present: true
 - live_replay_success: true
 - leaf_match_title: 9.1 信息安全基础知识
 - detail_entry_attempted: true
-- detail_entry_success: false
-- login_dialog_detected: true
-- detail_entry_route_changed: false
-- final_url_contains_konwledgeInfo: false
-- knowInfo_outer_html_found: false
-- knowInfo_outer_html_text_length: 0
-- metadata_compatible_with_parser: false
-- recommended_action: provide_authenticated_storage_state
-- detail_entry_failure_reason: detail entry opened login dialog; authenticated storage state is missing or expired
+- detail_entry_success: true
+- login_dialog_detected: false
+- detail_entry_route_changed: true
+- final_url_contains_konwledgeInfo: true
+- knowInfo_outer_html_found: true
+- knowInfo_outer_html_text_length: 206
+- metadata_compatible_with_parser: true
+- recommended_action: safe_for_recovery
+- detail_entry_failure_reason: (none)
 
 ## Constraints
 

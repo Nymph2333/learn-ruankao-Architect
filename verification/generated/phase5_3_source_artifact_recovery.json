@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-31T05:44:03.399Z",
+  "generated_at": "2026-06-02T03:35:19.454Z",
   "phase": "5.3",
   "attempted_titles": [
     "1.3 指令系统CISC和RISC",
@@ -8,17 +8,13 @@
   ],
   "counts": {
     "attempted_count": 3,
-    "recovered_intermediate_count": 0,
-    "recovered_asset_manifest_count": 0,
-    "recovered_asset_file_count": 0,
-    "asset_files_after_total": 0,
-    "failed_count": 3
+    "recovered_intermediate_count": 3,
+    "recovered_asset_manifest_count": 1,
+    "recovered_asset_file_count": 1,
+    "asset_files_after_total": 1,
+    "failed_count": 0
   },
-  "failed_items": [
-    "1.3 指令系统CISC和RISC",
-    "13.3 软件架构风格",
-    "9.1 信息安全基础知识"
-  ],
+  "failed_items": [],
   "items": [
     {
       "title": "1.3 指令系统CISC和RISC",
@@ -26,25 +22,29 @@
       "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-26T09-40-21-903Z.json",
       "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-26T09-40-21-903Z.json",
       "intermediate_before": false,
-      "intermediate_after": false,
-      "effective_intermediate_path": null,
+      "intermediate_after": true,
+      "effective_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json",
       "asset_manifest_before": false,
-      "asset_manifest_after": false,
-      "effective_asset_manifest_path": null,
-      "asset_files_after": [],
-      "detail_entry_test_pass": false,
-      "parser_contract_ready": false,
-      "parser_contract_failure_reason": "detail entry opened login dialog; authenticated storage state is missing or expired",
-      "metadata_path": null,
-      "outer_html_path": null,
-      "parsed_intermediate_path": null,
-      "recovered_asset_manifest_path": null,
-      "asset_files": [],
-      "recovery_status": "failed",
+      "asset_manifest_after": true,
+      "effective_asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json",
+      "asset_files_after": [
+        "sources/ruankaodaren/raw/assets/images/f7ec5801201e2211246260af3c050dfdd04ecfaa4684fe564c102a7d4821ea9c.png"
+      ],
+      "detail_entry_test_pass": true,
+      "parser_contract_ready": true,
+      "parser_contract_failure_reason": null,
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-06-02T03-31-42-677Z.json",
+      "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-06-02T03-31-42-677Z-knowInfo_ql-editor.html",
+      "parsed_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json",
+      "recovered_asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json",
+      "asset_files": [
+        "sources/ruankaodaren/raw/assets/images/f7ec5801201e2211246260af3c050dfdd04ecfaa4684fe564c102a7d4821ea9c.png"
+      ],
+      "recovery_status": "recovered",
       "taxonomy_suspect": false,
       "notes": [
         "official Markdown present and read for status only: docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
-        "detail-entry test failed; parser was not run: detail entry opened login dialog; authenticated storage state is missing or expired",
+        "selected exact-title metadata timestamp: 2026-06-02T03-31-42-677Z",
         "one or more controlled recovery commands exited non-zero; see commands[].output_tail"
       ],
       "commands": [
@@ -57,9 +57,90 @@
             "--title",
             "1.3 指令系统CISC和RISC"
           ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[baseline-detail-entry-test] completed\n  title:                           1.3 指令系统CISC和RISC\n  auth_state_present:              true\n  live_replay_success:             true\n  detail_entry_success:            true\n  login_dialog_detected:           false\n  final_url_contains_konwledgeInfo:true\n  knowInfo_outer_html_found:       true\n  metadata_compatible_with_parser: true\n  recommended_action:              safe_for_recovery\n  detail_entry_failure_reason:     (none)\n  JSON report:                     verification/generated/phase5_3_detail_entry_test_1.3_指令系统CISC和RISC.json\n  Markdown report:                 verification/generated/phase5_3_detail_entry_test_1.3_指令系统CISC和RISC.md\n\n$ tsx scripts/test-ruankaodaren-baseline-detail-entry.ts \"--\" \"--title\" \"1.3 指令系统CISC和RISC\""
+        },
+        {
+          "label": "crawl_require_leaf",
+          "args": [
+            "run",
+            "crawl:ruankaodaren",
+            "--",
+            "--target",
+            "1.3 指令系统CISC和RISC",
+            "--require-leaf",
+            "--require-live-replay",
+            "--no-xhr-body"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[crawler] interaction harvesting started\n[crawler] interaction start url: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] interaction start title: 软考达人—专业的软考刷题题库，软考历年真题，软考模拟考试，软考考前押题。柴丁科技\n[crawler] body text length before interaction: 510\n[crawler] target resolver enabled: 1.3 指令系统CISC和RISC\n[crawler] catalog resolver: 1.3 指令系统CISC和RISC (exact_full_title)\n[crawler] directory expand success\n[crawler] knowledge node identified (not clicked): 1.3 指令系统CISC和RISC\n[crawler] body text length after interaction: 3315\n[crawler] detail content signal: yes\n[crawler] body text length before detail entry: 3315\n[crawler] detail entry click success (strategy: matched_leaf_action)\n[crawler] body text length after detail entry: 507\n[crawler] post-detail content signal: yes\n[crawler] content alignment: unknown (title: null)\n[crawler] waiting for detail content to stabilize\n[crawler] detail content stabilization: stable_with_assets selector=.knowInfo.ql-editor text=94\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n[crawler] crawler completed\n\n$ tsx scripts/crawl-ruankaodaren.ts \"--\" \"--target\" \"1.3 指令系统CISC和RISC\" \"--require-leaf\" \"--require-live-replay\" \"--no-xhr-body\""
+        },
+        {
+          "label": "parse",
+          "args": [
+            "run",
+            "parse:ruankaodaren",
+            "--",
+            "--timestamp",
+            "2026-06-02T03-31-42-677Z"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[parser] timestamp: 2026-06-02T03-31-42-677Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: C:\\project\\learn-ruankao-Architect\\data\\intermediate\\ruankaodaren\\samples\\2026-06-02T03-31-42-677Z.json\n[parser] selected_metadata_timestamp: 2026-06-02T03-31-42-677Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-06-02T03-31-42-677Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-06-02T03-31-42-677Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json\n[parser] selected_reason: timestamp_strict\n[parser] selection_log: C:\\project\\learn-ruankao-Architect\\verification\\generated\\phase3_16_parser_selection_2026-06-02T03-31-42-677Z.json\n[parser] parser_diagnostics: C:\\project\\learn-ruankao-Architect\\verification\\generated\\phase3_17_parser_diagnostics_2026-06-02T03-31-42-677Z.json\n[parser] root_text_length: 92\n[parser] total_text_length: 92\n[parser] direct_text_node_count: 0\n[parser] title: 1.3 指令系统CISC和RISC\n[parser] text_blocks: 3\n[parser] key_terms: 7\n[parser] image_refs: 1\n[parser] html_fragments: 1\n[parser] classification: MIXED_TEXT_IMAGE\n[parser] parser_confidence: medium\n[parser] requires_manual_review: true\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false\n\n$ tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--timestamp\" \"2026-06-02T03-31-42-677Z\""
+        },
+        {
+          "label": "validate_intermediate",
+          "args": [
+            "run",
+            "validate:intermediate",
+            "--",
+            "--file",
+            "data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json"
+          ],
           "exit_code": 1,
           "ok": false,
-          "output_tail": "[baseline-detail-entry-test] completed\n  title:                           1.3 指令系统CISC和RISC\n  auth_state_present:              false\n  live_replay_success:             true\n  detail_entry_success:            false\n  login_dialog_detected:           true\n  final_url_contains_konwledgeInfo:false\n  knowInfo_outer_html_found:       false\n  metadata_compatible_with_parser: false\n  recommended_action:              provide_authenticated_storage_state\n  detail_entry_failure_reason:     detail entry opened login dialog; authenticated storage state is missing or expired\n  JSON report:                     verification/generated/phase5_3_detail_entry_test_1.3_指令系统CISC和RISC.json\n  Markdown report:                 verification/generated/phase5_3_detail_entry_test_1.3_指令系统CISC和RISC.md\n[ELIFECYCLE] Command failed with exit code 1.\n\n$ tsx scripts/test-ruankaodaren-baseline-detail-entry.ts -- --title '1.3 指令系统CISC和RISC'"
+          "output_tail": "[validate] validating 1 file(s)...\n\n\nValidated: 1 file(s). Failures: 1/1\n[ELIFECYCLE] Command failed with exit code 1.\n\n$ tsx scripts/validate-ruankaodaren-intermediate.ts \"--\" \"--file\" \"data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json\"\n[FAIL] C:\\project\\learn-ruankao-Architect\\data\\intermediate\\ruankaodaren\\samples\\2026-06-02T03-31-42-677Z.json\n  ✗ schema: /navigation_context/detail_entry_strategy must be equal to one of the allowed values\n[validate] Validation failed. Fix errors above."
+        },
+        {
+          "label": "preflight",
+          "args": [
+            "run",
+            "preflight:sample",
+            "--",
+            "--timestamp",
+            "2026-06-02T03-31-42-677Z"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[preflight] JSON written: verification/generated/phase3_8_preflight_2026-06-02T03-31-42-677Z.json\n[preflight] Markdown written: verification/generated/phase3_8_preflight_2026-06-02T03-31-42-677Z.md\n[preflight] Sample preflight complete\n  timestamp:          2026-06-02T03-31-42-677Z\n  metadata_gate:      pass\n  content_gate:       pass\n  duplicate_gate:     pass\n  overall:            pass\n  recommended_action: parse\n\n$ tsx scripts/preflight-ruankaodaren-sample.ts \"--\" \"--timestamp\" \"2026-06-02T03-31-42-677Z\""
+        },
+        {
+          "label": "capture_assets",
+          "args": [
+            "run",
+            "capture:assets",
+            "--",
+            "--file",
+            "data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[capture] Processing 1 intermediate file(s)...\n\n[capture] Processing: data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json\n  [download] order=0 url=https://image-t.chaiding.com/ruankao/20240808/d2d172a92eaf4055aa7852d56a4cacb4.jpg-ruankao\n  [saved]  sources/ruankaodaren/raw/assets/images/f7ec5801201e2211246260af3c050dfdd04ecfaa4684fe564c102a7d4821ea9c.png\n           sha256=f7ec5801201e2211246260af3c050dfdd04ecfaa4684fe564c102a7d4821ea9c\n           size=119843 bytes  type=image/png\n           dimensions=624x206\n[capture] Manifest written: sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json\n\n[capture] Summary for \"1.3 指令系统CISC和RISC\":\n  total image_refs: 1\n  downloaded:       1\n  failed:           0\n  manifest:         sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json\n\n[capture] Done.\n\n$ tsx scripts/capture-ruankaodaren-assets.ts \"--\" \"--file\" \"data/intermediate/ruankaodaren/samples/2026-06-02T03-31-42-677Z.json\""
+        },
+        {
+          "label": "validate_assets",
+          "args": [
+            "run",
+            "validate:assets",
+            "--",
+            "--file",
+            "sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[validate:assets] Validating 1 manifest(s)...\n\n[PASS] sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json\n  source_title:    1.3 指令系统CISC和RISC\n  source_timestamp: 2026-06-02T03-31-42-677Z\n  asset_count:     1\n  downloaded:      1\n  failed:          0\n  [asset order=0]\n    saved_path:   sources/ruankaodaren/raw/assets/images/f7ec5801201e2211246260af3c050dfdd04ecfaa4684fe564c102a7d4821ea9c.png\n    sha256:       f7ec5801201e2211246260af3c050dfdd04ecfaa4684fe564c102a7d4821ea9c\n    size_bytes:   119843\n    content_type: image/png\n    dimensions:   624x206\n  constraints:     ocr_used=false  image_table_reconstructed=false  markdown_generated=false  encrypted_xhr_decrypted=false\n\nValidated: 1 manifest(s). Failures: 0/1\n[validate:assets] All manifests passed schema and invariant checks.\n\n$ tsx scripts/validate-ruankaodaren-assets.ts \"--\" \"--file\" \"sources/ruankaodaren/raw/assets/manifests/2026-06-02T03-31-42-677Z.json\""
         }
       ]
     },
@@ -69,26 +150,27 @@
       "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T02-54-15-543Z.json",
       "asset_manifest_path": "sources/ruankaodaren/raw/assets/manifests/2026-05-28T02-54-15-543Z.json",
       "intermediate_before": false,
-      "intermediate_after": false,
-      "effective_intermediate_path": null,
+      "intermediate_after": true,
+      "effective_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-06-02T03-33-07-412Z.json",
       "asset_manifest_before": false,
       "asset_manifest_after": false,
       "effective_asset_manifest_path": null,
       "asset_files_after": [],
-      "detail_entry_test_pass": false,
-      "parser_contract_ready": false,
-      "parser_contract_failure_reason": "detail entry opened login dialog; authenticated storage state is missing or expired",
-      "metadata_path": null,
-      "outer_html_path": null,
-      "parsed_intermediate_path": null,
+      "detail_entry_test_pass": true,
+      "parser_contract_ready": true,
+      "parser_contract_failure_reason": null,
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-06-02T03-33-07-412Z.json",
+      "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-06-02T03-33-07-412Z-knowInfo_ql-editor.html",
+      "parsed_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-06-02T03-33-07-412Z.json",
       "recovered_asset_manifest_path": null,
       "asset_files": [],
-      "recovery_status": "failed",
+      "recovery_status": "partially_recovered",
       "taxonomy_suspect": true,
       "notes": [
         "official Markdown present and read for status only: docs/ruankaodaren/baseline/13.3_软件架构风格.md",
-        "detail-entry test failed; parser was not run: detail entry opened login dialog; authenticated storage state is missing or expired",
+        "selected exact-title metadata timestamp: 2026-06-02T03-33-07-412Z",
         "taxonomy_suspect=true for 13.3 pending live parent/leaf/multi-card diagnosis",
+        "13.3 low extracted text signal: 61",
         "one or more controlled recovery commands exited non-zero; see commands[].output_tail"
       ],
       "commands": [
@@ -101,9 +183,64 @@
             "--title",
             "13.3 软件架构风格"
           ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[baseline-detail-entry-test] completed\n  title:                           13.3 软件架构风格\n  auth_state_present:              true\n  live_replay_success:             true\n  detail_entry_success:            true\n  login_dialog_detected:           false\n  final_url_contains_konwledgeInfo:true\n  knowInfo_outer_html_found:       true\n  metadata_compatible_with_parser: true\n  recommended_action:              safe_for_recovery\n  detail_entry_failure_reason:     (none)\n  JSON report:                     verification/generated/phase5_3_detail_entry_test_13.3_软件架构风格.json\n  Markdown report:                 verification/generated/phase5_3_detail_entry_test_13.3_软件架构风格.md\n\n$ tsx scripts/test-ruankaodaren-baseline-detail-entry.ts \"--\" \"--title\" \"13.3 软件架构风格\""
+        },
+        {
+          "label": "crawl_require_leaf",
+          "args": [
+            "run",
+            "crawl:ruankaodaren",
+            "--",
+            "--target",
+            "13.3 软件架构风格",
+            "--require-leaf",
+            "--require-live-replay",
+            "--no-xhr-body"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "selection required: no\n[crawler] interaction harvesting started\n[crawler] interaction start url: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] interaction start title: 软考达人—专业的软考刷题题库，软考历年真题，软考模拟考试，软考考前押题。柴丁科技\n[crawler] body text length before interaction: 510\n[crawler] target resolver enabled: 13.3 软件架构风格\n[crawler] catalog resolver: 13.3 软件架构风格 (exact_full_title)\n[crawler] directory expand success\n[crawler] knowledge node identified (not clicked): 13.3 软件架构风格\n[crawler] body text length after interaction: 3315\n[crawler] detail content signal: yes\n[crawler] body text length before detail entry: 3315\n[crawler] detail entry click success (strategy: matched_leaf_action)\n[crawler] body text length after detail entry: 555\n[crawler] post-detail content signal: yes\n[crawler] content alignment: unknown (title: null)\n[crawler] waiting for detail content to stabilize\n[crawler] detail content stabilization: stable_but_low_text selector=.knowInfo.ql-editor text=61\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n[crawler] crawler completed\n\n$ tsx scripts/crawl-ruankaodaren.ts \"--\" \"--target\" \"13.3 软件架构风格\" \"--require-leaf\" \"--require-live-replay\" \"--no-xhr-body\""
+        },
+        {
+          "label": "parse",
+          "args": [
+            "run",
+            "parse:ruankaodaren",
+            "--",
+            "--timestamp",
+            "2026-06-02T03-33-07-412Z"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[parser] timestamp: 2026-06-02T03-33-07-412Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: C:\\project\\learn-ruankao-Architect\\data\\intermediate\\ruankaodaren\\samples\\2026-06-02T03-33-07-412Z.json\n[parser] selected_metadata_timestamp: 2026-06-02T03-33-07-412Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-06-02T03-33-07-412Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-06-02T03-33-07-412Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-06-02T03-33-07-412Z.json\n[parser] selected_reason: timestamp_strict\n[parser] selection_log: C:\\project\\learn-ruankao-Architect\\verification\\generated\\phase3_16_parser_selection_2026-06-02T03-33-07-412Z.json\n[parser] parser_diagnostics: C:\\project\\learn-ruankao-Architect\\verification\\generated\\phase3_17_parser_diagnostics_2026-06-02T03-33-07-412Z.json\n[parser] root_text_length: 61\n[parser] total_text_length: 61\n[parser] direct_text_node_count: 0\n[parser] title: 13.3 软件架构风格\n[parser] text_blocks: 1\n[parser] key_terms: 3\n[parser] image_refs: 0\n[parser] html_fragments: 1\n[parser] classification: HTML_RICH_TEXT\n[parser] parser_confidence: high\n[parser] requires_manual_review: false\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false\n\n$ tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--timestamp\" \"2026-06-02T03-33-07-412Z\""
+        },
+        {
+          "label": "validate_intermediate",
+          "args": [
+            "run",
+            "validate:intermediate",
+            "--",
+            "--file",
+            "data/intermediate/ruankaodaren/samples/2026-06-02T03-33-07-412Z.json"
+          ],
           "exit_code": 1,
           "ok": false,
-          "output_tail": "[baseline-detail-entry-test] completed\n  title:                           13.3 软件架构风格\n  auth_state_present:              false\n  live_replay_success:             true\n  detail_entry_success:            false\n  login_dialog_detected:           true\n  final_url_contains_konwledgeInfo:false\n  knowInfo_outer_html_found:       false\n  metadata_compatible_with_parser: false\n  recommended_action:              provide_authenticated_storage_state\n  detail_entry_failure_reason:     detail entry opened login dialog; authenticated storage state is missing or expired\n  JSON report:                     verification/generated/phase5_3_detail_entry_test_13.3_软件架构风格.json\n  Markdown report:                 verification/generated/phase5_3_detail_entry_test_13.3_软件架构风格.md\n[ELIFECYCLE] Command failed with exit code 1.\n\n$ tsx scripts/test-ruankaodaren-baseline-detail-entry.ts -- --title '13.3 软件架构风格'"
+          "output_tail": "[validate] validating 1 file(s)...\n\n\nValidated: 1 file(s). Failures: 1/1\n[ELIFECYCLE] Command failed with exit code 1.\n\n$ tsx scripts/validate-ruankaodaren-intermediate.ts \"--\" \"--file\" \"data/intermediate/ruankaodaren/samples/2026-06-02T03-33-07-412Z.json\"\n[FAIL] C:\\project\\learn-ruankao-Architect\\data\\intermediate\\ruankaodaren\\samples\\2026-06-02T03-33-07-412Z.json\n  ✗ schema: /navigation_context/detail_entry_strategy must be equal to one of the allowed values\n[validate] Validation failed. Fix errors above."
+        },
+        {
+          "label": "preflight",
+          "args": [
+            "run",
+            "preflight:sample",
+            "--",
+            "--timestamp",
+            "2026-06-02T03-33-07-412Z"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[preflight] JSON written: verification/generated/phase3_8_preflight_2026-06-02T03-33-07-412Z.json\n[preflight] Markdown written: verification/generated/phase3_8_preflight_2026-06-02T03-33-07-412Z.md\n[preflight] Sample preflight complete\n  timestamp:          2026-06-02T03-33-07-412Z\n  metadata_gate:      pass\n  content_gate:       fail\n  duplicate_gate:     pass\n  overall:            fail\n  recommended_action: quarantine\n\n$ tsx scripts/preflight-ruankaodaren-sample.ts \"--\" \"--timestamp\" \"2026-06-02T03-33-07-412Z\""
         }
       ]
     },
@@ -113,25 +250,25 @@
       "canonical_sample_path": "data/intermediate/ruankaodaren/samples/2026-05-28T05-25-27-891Z.json",
       "asset_manifest_path": null,
       "intermediate_before": false,
-      "intermediate_after": false,
-      "effective_intermediate_path": null,
+      "intermediate_after": true,
+      "effective_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-06-02T03-34-31-932Z.json",
       "asset_manifest_before": false,
       "asset_manifest_after": false,
       "effective_asset_manifest_path": null,
       "asset_files_after": [],
-      "detail_entry_test_pass": false,
-      "parser_contract_ready": false,
-      "parser_contract_failure_reason": "detail entry opened login dialog; authenticated storage state is missing or expired",
-      "metadata_path": null,
-      "outer_html_path": null,
-      "parsed_intermediate_path": null,
+      "detail_entry_test_pass": true,
+      "parser_contract_ready": true,
+      "parser_contract_failure_reason": null,
+      "metadata_path": "sources/ruankaodaren/raw/metadata/2026-06-02T03-34-31-932Z.json",
+      "outer_html_path": "sources/ruankaodaren/raw/outer-html/2026-06-02T03-34-31-932Z-knowInfo_ql-editor.html",
+      "parsed_intermediate_path": "data/intermediate/ruankaodaren/samples/2026-06-02T03-34-31-932Z.json",
       "recovered_asset_manifest_path": null,
       "asset_files": [],
-      "recovery_status": "failed",
+      "recovery_status": "recovered",
       "taxonomy_suspect": false,
       "notes": [
         "official Markdown present and read for status only: docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
-        "detail-entry test failed; parser was not run: detail entry opened login dialog; authenticated storage state is missing or expired",
+        "selected exact-title metadata timestamp: 2026-06-02T03-34-31-932Z",
         "one or more controlled recovery commands exited non-zero; see commands[].output_tail"
       ],
       "commands": [
@@ -144,9 +281,64 @@
             "--title",
             "9.1 信息安全基础知识"
           ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[baseline-detail-entry-test] completed\n  title:                           9.1 信息安全基础知识\n  auth_state_present:              true\n  live_replay_success:             true\n  detail_entry_success:            true\n  login_dialog_detected:           false\n  final_url_contains_konwledgeInfo:true\n  knowInfo_outer_html_found:       true\n  metadata_compatible_with_parser: true\n  recommended_action:              safe_for_recovery\n  detail_entry_failure_reason:     (none)\n  JSON report:                     verification/generated/phase5_3_detail_entry_test_9.1_信息安全基础知识.json\n  Markdown report:                 verification/generated/phase5_3_detail_entry_test_9.1_信息安全基础知识.md\n\n$ tsx scripts/test-ruankaodaren-baseline-detail-entry.ts \"--\" \"--title\" \"9.1 信息安全基础知识\""
+        },
+        {
+          "label": "crawl_require_leaf",
+          "args": [
+            "run",
+            "crawl:ruankaodaren",
+            "--",
+            "--target",
+            "9.1 信息安全基础知识",
+            "--require-leaf",
+            "--require-live-replay",
+            "--no-xhr-body"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "xt selection required: no\n[crawler] interaction harvesting started\n[crawler] interaction start url: https://ruankaodaren.com/exam/#/knowlegde\n[crawler] interaction start title: 软考达人—专业的软考刷题题库，软考历年真题，软考模拟考试，软考考前押题。柴丁科技\n[crawler] body text length before interaction: 510\n[crawler] target resolver enabled: 9.1 信息安全基础知识\n[crawler] catalog resolver: 9.1 信息安全基础知识 (exact_full_title)\n[crawler] directory expand success\n[crawler] knowledge node identified (not clicked): 9.1 信息安全基础知识\n[crawler] body text length after interaction: 3315\n[crawler] detail content signal: yes\n[crawler] body text length before detail entry: 3315\n[crawler] detail entry click success (strategy: matched_leaf_action)\n[crawler] body text length after detail entry: 643\n[crawler] post-detail content signal: yes\n[crawler] content alignment: unknown (title: null)\n[crawler] waiting for detail content to stabilize\n[crawler] detail content stabilization: stable_rich selector=.knowInfo.ql-editor text=206\n[crawler] saving html\n[crawler] saving screenshot\n[crawler] saving dom text snapshot\n[crawler] saving container text snapshot\n[crawler] saving accessibility snapshot\n[crawler] saving storage key snapshot\n[crawler] saving xhr responses\n[crawler] saving network timeline\n[crawler] saving console logs\n[crawler] knowledge api seen: no\n[crawler] knowledge content signal: yes\n[crawler] detail content signal: yes\n[crawler] post-detail content signal: yes\n[crawler] writing metadata\n[crawler] crawler completed\n\n$ tsx scripts/crawl-ruankaodaren.ts \"--\" \"--target\" \"9.1 信息安全基础知识\" \"--require-leaf\" \"--require-live-replay\" \"--no-xhr-body\""
+        },
+        {
+          "label": "parse",
+          "args": [
+            "run",
+            "parse:ruankaodaren",
+            "--",
+            "--timestamp",
+            "2026-06-02T03-34-31-932Z"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[parser] timestamp: 2026-06-02T03-34-31-932Z\n[parser] .knowInfo.ql-editor found — extracting content...\n[parser] output: C:\\project\\learn-ruankao-Architect\\data\\intermediate\\ruankaodaren\\samples\\2026-06-02T03-34-31-932Z.json\n[parser] selected_metadata_timestamp: 2026-06-02T03-34-31-932Z\n[parser] selected_metadata_path: sources/ruankaodaren/raw/metadata/2026-06-02T03-34-31-932Z.json\n[parser] selected_outer_html_path: sources/ruankaodaren/raw/outer-html/2026-06-02T03-34-31-932Z-knowInfo_ql-editor.html\n[parser] output_intermediate_path: data/intermediate/ruankaodaren/samples/2026-06-02T03-34-31-932Z.json\n[parser] selected_reason: timestamp_strict\n[parser] selection_log: C:\\project\\learn-ruankao-Architect\\verification\\generated\\phase3_16_parser_selection_2026-06-02T03-34-31-932Z.json\n[parser] parser_diagnostics: C:\\project\\learn-ruankao-Architect\\verification\\generated\\phase3_17_parser_diagnostics_2026-06-02T03-34-31-932Z.json\n[parser] root_text_length: 206\n[parser] total_text_length: 388\n[parser] direct_text_node_count: 16\n[parser] title: 9.1 信息安全基础知识\n[parser] text_blocks: 21\n[parser] key_terms: 11\n[parser] image_refs: 0\n[parser] html_fragments: 1\n[parser] classification: HTML_RICH_TEXT\n[parser] parser_confidence: high\n[parser] requires_manual_review: true\n[parser] constraints.ocr_used: false\n[parser] constraints.markdown_generated: false\n\n$ tsx scripts/parse-ruankaodaren-outer-html.ts \"--\" \"--timestamp\" \"2026-06-02T03-34-31-932Z\""
+        },
+        {
+          "label": "validate_intermediate",
+          "args": [
+            "run",
+            "validate:intermediate",
+            "--",
+            "--file",
+            "data/intermediate/ruankaodaren/samples/2026-06-02T03-34-31-932Z.json"
+          ],
           "exit_code": 1,
           "ok": false,
-          "output_tail": "[baseline-detail-entry-test] completed\n  title:                           9.1 信息安全基础知识\n  auth_state_present:              false\n  live_replay_success:             true\n  detail_entry_success:            false\n  login_dialog_detected:           true\n  final_url_contains_konwledgeInfo:false\n  knowInfo_outer_html_found:       false\n  metadata_compatible_with_parser: false\n  recommended_action:              provide_authenticated_storage_state\n  detail_entry_failure_reason:     detail entry opened login dialog; authenticated storage state is missing or expired\n  JSON report:                     verification/generated/phase5_3_detail_entry_test_9.1_信息安全基础知识.json\n  Markdown report:                 verification/generated/phase5_3_detail_entry_test_9.1_信息安全基础知识.md\n[ELIFECYCLE] Command failed with exit code 1.\n\n$ tsx scripts/test-ruankaodaren-baseline-detail-entry.ts -- --title '9.1 信息安全基础知识'"
+          "output_tail": "[validate] validating 1 file(s)...\n\n\nValidated: 1 file(s). Failures: 1/1\n[ELIFECYCLE] Command failed with exit code 1.\n\n$ tsx scripts/validate-ruankaodaren-intermediate.ts \"--\" \"--file\" \"data/intermediate/ruankaodaren/samples/2026-06-02T03-34-31-932Z.json\"\n[FAIL] C:\\project\\learn-ruankao-Architect\\data\\intermediate\\ruankaodaren\\samples\\2026-06-02T03-34-31-932Z.json\n  ✗ schema: /navigation_context/detail_entry_strategy must be equal to one of the allowed values\n[validate] Validation failed. Fix errors above."
+        },
+        {
+          "label": "preflight",
+          "args": [
+            "run",
+            "preflight:sample",
+            "--",
+            "--timestamp",
+            "2026-06-02T03-34-31-932Z"
+          ],
+          "exit_code": 0,
+          "ok": true,
+          "output_tail": "[preflight] JSON written: verification/generated/phase3_8_preflight_2026-06-02T03-34-31-932Z.json\n[preflight] Markdown written: verification/generated/phase3_8_preflight_2026-06-02T03-34-31-932Z.md\n[preflight] Sample preflight complete\n  timestamp:          2026-06-02T03-34-31-932Z\n  metadata_gate:      pass\n  content_gate:       fail\n  duplicate_gate:     pass\n  overall:            fail\n  recommended_action: quarantine\n\n$ tsx scripts/preflight-ruankaodaren-sample.ts \"--\" \"--timestamp\" \"2026-06-02T03-34-31-932Z\""
         }
       ]
     }
