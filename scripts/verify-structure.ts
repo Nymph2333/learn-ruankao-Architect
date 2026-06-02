@@ -172,10 +172,12 @@ const requiredFiles = [
   "schemas/ruankaodaren-dual-layer-document.schema.json",
   "schemas/ruankaodaren-source-packet.schema.json",
   "schemas/ruankaodaren-ai-learning-prompt-contract.schema.json",
+  "schemas/ruankaodaren-ai-learning-dry-run-contract.schema.json",
   "packages/domain-types/ruankaodaren-human-review-status.ts",
   "packages/domain-types/ruankaodaren-dual-layer-document.ts",
   "packages/domain-types/ruankaodaren-source-packet.ts",
   "packages/domain-types/ruankaodaren-ai-learning-prompt-contract.ts",
+  "packages/domain-types/ruankaodaren-ai-learning-dry-run-contract.ts",
   "scripts/build-ruankaodaren-human-review-status.ts",
   "scripts/validate-ruankaodaren-human-review-status.ts",
   "scripts/build-ruankaodaren-controlled-expansion-plan.ts",
@@ -185,6 +187,8 @@ const requiredFiles = [
   "scripts/validate-ruankaodaren-source-packets.ts",
   "scripts/build-ruankaodaren-ai-learning-prompt-contract.ts",
   "scripts/validate-ruankaodaren-ai-learning-prompt-contract.ts",
+  "scripts/build-ruankaodaren-ai-learning-dry-run-contract.ts",
+  "scripts/validate-ruankaodaren-ai-learning-dry-run-contract.ts",
   "scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
   "scripts/recheck-ruankaodaren-taxonomy.ts",
   "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md",
@@ -197,12 +201,15 @@ const requiredFiles = [
   "verification/phase5_2_source_artifact_recovery_and_taxonomy_live_recheck.md",
   "verification/phase5_3_baseline_detail_entry_recovery_contract_repair.md",
   "verification/phase5_4_compliance_addendum.md",
-  "verification/phase5_4_ai_learning_prompt_contract_check.md"
+  "verification/phase5_4_ai_learning_prompt_contract_check.md",
+  "verification/phase5_5_ai_learning_dry_run_contract_check.md",
+  "verification/generated/phase5_5_ai_learning_dry_run_contract.json",
+  "verification/generated/phase5_5_ai_learning_dry_run_contract.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
   "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
     "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
     "## 4. Source Layer Policy",
@@ -255,6 +262,28 @@ const requiredContent: Record<string, string[]> = {
     "source packet repair attempted: false",
     "## 4. Validator Coverage Addendum",
     "## 5. Git Status Audit"
+  ],
+  "verification/phase5_5_ai_learning_dry_run_contract_check.md": [
+    "# Phase 5.5 AI Learning Dry-run Contract",
+    "## 4. Dry-run Contract Policy",
+    "## 5. Output Isolation Policy",
+    "## 6. Review Gate State Machine",
+    "pnpm build:ai-learning-dry-run-contract",
+    "pnpm validate:ai-learning-dry-run-contract"
+  ],
+  "verification/generated/phase5_5_ai_learning_dry_run_contract.json": [
+    "\"contract_version\": \"phase5.5\"",
+    "\"dry_run_allowed\": \"request_only\"",
+    "\"generation_allowed\": false",
+    "\"review_gate_required\": true",
+    "\"auto_approval\": false"
+  ],
+  "verification/generated/phase5_5_ai_learning_dry_run_contract.md": [
+    "# Phase 5.5 AI Learning Dry-run Contract",
+    "dry_run_allowed: request_only",
+    "generation_allowed: false",
+    "review_gate_required: true",
+    "phase5_6_generation_allowed: false"
   ],
   "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md": [
     "AI-generated",

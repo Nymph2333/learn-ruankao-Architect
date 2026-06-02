@@ -1,0 +1,125 @@
+{
+  "contract_version": "phase5.5",
+  "source_name": "ruankaodaren",
+  "created_at": "2026-06-02T06:51:43.899Z",
+  "dry_run_allowed": "request_only",
+  "generation_allowed": false,
+  "contract_scope": "dry_run_request_and_review_gate_only",
+  "review_gate_required": true,
+  "auto_approval": false,
+  "human_review_required": true,
+  "source_layer_modification_allowed": false,
+  "official_markdown_modification_allowed": false,
+  "source_content_write_allowed": false,
+  "output_policy": {
+    "default_output_root": "verification/dry-run/ruankaodaren/baseline",
+    "allowed_output_roots": [
+      "verification/dry-run",
+      "drafts/ai-learning"
+    ],
+    "forbidden_output_roots": [
+      "docs/ruankaodaren/baseline",
+      "source_content"
+    ],
+    "must_not_point_to_official_markdown": true,
+    "must_not_point_to_source_content": true,
+    "must_use_isolated_output_root": true
+  },
+  "review_gate": {
+    "allowed_statuses": [
+      "not_requested",
+      "dry_run_requested",
+      "dry_run_generated",
+      "human_review_pending",
+      "human_review_changes_requested",
+      "human_review_rejected",
+      "human_review_approved"
+    ],
+    "default_status": "not_requested",
+    "human_review_required": true,
+    "human_review_approved": false,
+    "auto_approval": false,
+    "phase5_6_generation_allowed": false,
+    "without_human_review_approval": {
+      "formal_ai_learning_generation_allowed": false,
+      "docs_baseline_write_allowed": false,
+      "official_markdown_modification_allowed": false,
+      "phase5_6_entry_allowed": false
+    }
+  },
+  "items": [
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "source_packet_item_status": "complete",
+      "render_as": "asset_card",
+      "content_shape": "MIXED_TEXT_IMAGE",
+      "taxonomy_suspect": false,
+      "is_multi_card_sequence": false,
+      "dry_run_generation_allowed": false,
+      "unrestricted_dry_run_allowed": false,
+      "review_gate_status": "not_requested",
+      "human_review_approved": false,
+      "dry_run_output_path": "verification/dry-run/ruankaodaren/baseline/1.3 指令系统CISC和RISC.dry-run-request.json",
+      "required_warnings": [
+        "no_ocr",
+        "no_image_table_reconstruction",
+        "asset_manual_review_required",
+        "cannot_claim_image_content_recognized"
+      ],
+      "requires_manual_review": false,
+      "requires_manual_asset_review": true,
+      "no_ocr": true,
+      "no_image_table_reconstruction": true,
+      "cannot_claim_image_content_recognized": true,
+      "may_enter_future_dry_run_after_review": false
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "source_packet_item_status": "complete",
+      "render_as": "short_card",
+      "content_shape": "STATIC_LOW_TEXT_VERIFIED",
+      "taxonomy_suspect": true,
+      "is_multi_card_sequence": true,
+      "dry_run_generation_allowed": false,
+      "unrestricted_dry_run_allowed": false,
+      "review_gate_status": "not_requested",
+      "human_review_approved": false,
+      "dry_run_output_path": "verification/dry-run/ruankaodaren/baseline/13.3 软件架构风格.dry-run-request.json",
+      "required_warnings": [
+        "verified_short_text",
+        "taxonomy_suspect",
+        "multi_card_sequence_possible",
+        "do_not_claim_complete"
+      ],
+      "requires_manual_review": true,
+      "requires_manual_asset_review": false,
+      "no_ocr": false,
+      "no_image_table_reconstruction": false,
+      "cannot_claim_image_content_recognized": false,
+      "may_enter_future_dry_run_after_review": false,
+      "taxonomy_suspect_handling": "restrict_dry_run",
+      "multi_card_sequence_handling": "do_not_claim_complete",
+      "parent_node_handling": "do_not_generate_as_leaf"
+    },
+    {
+      "title": "9.1 信息安全基础知识",
+      "source_packet_item_status": "complete",
+      "render_as": "concept_card",
+      "content_shape": "HTML_RICH_TEXT",
+      "taxonomy_suspect": false,
+      "is_multi_card_sequence": false,
+      "dry_run_generation_allowed": false,
+      "unrestricted_dry_run_allowed": false,
+      "review_gate_status": "not_requested",
+      "human_review_approved": false,
+      "dry_run_output_path": "verification/dry-run/ruankaodaren/baseline/9.1 信息安全基础知识.dry-run-request.json",
+      "required_warnings": [],
+      "requires_manual_review": true,
+      "requires_manual_asset_review": false,
+      "no_ocr": false,
+      "no_image_table_reconstruction": false,
+      "cannot_claim_image_content_recognized": false,
+      "may_enter_future_dry_run_after_review": true
+    }
+  ]
+}
