@@ -15,6 +15,7 @@ import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type {
   RuankaoSourcePacket,
+  RuankaoSourcePacketAssetRequirement,
   RuankaoSourcePacketConstraints,
   RuankaoSourcePacketItem,
   RuankaoSourcePacketRecommendedAction,
@@ -41,9 +42,12 @@ interface RendererInputContract {
   baseline_items: Array<{
     canonical_title: string;
     canonical_sample_path: string;
+    readiness_class: string;
+    content_shape: string;
     asset_manifest_path: string | null;
     renderer_policy: {
       render_as: RuankaoSourcePacketRenderAs;
+      preserve_asset_refs: boolean;
     };
   }>;
 }
@@ -70,6 +74,11 @@ interface IntermediateDocumentLike {
     title?: string | null;
     text_blocks?: Array<{ text?: string }>;
     image_refs?: unknown[];
+    asset_refs?: unknown[];
+    html_fragments?: Array<{
+      contains_image?: boolean;
+      outer_html?: string;
+    }>;
   };
   classification?: {
     content_source_classification?: string;
@@ -87,6 +96,12 @@ interface ManifestResolution {
   effectivePath: string | null;
   recoveredPath: string | null;
   manifest: AssetManifest | null;
+}
+
+interface AssetRequirementDecision {
+  requirement: RuankaoSourcePacketAssetRequirement;
+  reason: string;
+  required: boolean;
 }
 
 const constraints: RuankaoSourcePacketConstraints = {
@@ -235,18 +250,62 @@ function extractAssetFiles(assetManifestPath: string | null): string[] {
     .map((asset) => asset.saved_path as string);
 }
 
+function imageRefsCount(intermediate: IntermediateDocumentLike | null): number {
+  return intermediate?.content?.image_refs?.length ?? 0;
+}
+
+function assetRefsCount(intermediate: IntermediateDocumentLike | null): number {
+  return intermediate?.content?.asset_refs?.length ?? 0;
+}
+
+function contentShapeIndicatesAssets(contentShape: string | null | undefined): boolean {
+  return contentShape === "MIXED_TEXT_IMAGE" || contentShape === "IMAGE_ASSET_CARD";
+}
+
+function decideAssetRequirement(args: {
+  imageRefsCount: number;
+  assetRefsCount: number;
+  renderAs: RuankaoSourcePacketRenderAs;
+  contentShape: string;
+  preserveAssetRefs: boolean;
+  legacyAssetManifestPath: string | null;
+  assetManifestExists: boolean;
+  assetFilesExist: boolean;
+}): AssetRequirementDecision {
+  const requirementReasons: string[] = [];
+  if (args.imageRefsCount > 0) requirementReasons.push(`image_refs_count=${args.imageRefsCount}`);
+  if (args.assetRefsCount > 0) requirementReasons.push(`asset_refs_count=${args.assetRefsCount}`);
+  if (args.renderAs === "asset_card") requirementReasons.push("render_as=asset_card");
+  if (contentShapeIndicatesAssets(args.contentShape)) requirementReasons.push(`content_shape=${args.contentShape}`);
+  if (args.preserveAssetRefs) requirementReasons.push("renderer_policy.preserve_asset_refs=true");
+
+  if (requirementReasons.length > 0) {
+    const artifactStatus = args.assetManifestExists && args.assetFilesExist ? "present" : "missing";
+    return {
+      requirement: artifactStatus === "present" ? "required" : "missing_required",
+      reason: `asset artifacts required because ${requirementReasons.join("; ")}; artifacts ${artifactStatus}`,
+      required: true,
+    };
+  }
+
+  const legacyNote = args.legacyAssetManifestPath
+    ? "; legacy asset_manifest_path present but no image_refs detected"
+    : "";
+  return {
+    requirement: "not_required",
+    reason: `asset artifacts not required because image_refs_count=0; asset_refs_count=0; render_as=${args.renderAs}; content_shape=${args.contentShape}; preserve_asset_refs=${args.preserveAssetRefs}${legacyNote}`,
+    required: false,
+  };
+}
+
 function sourceLayerStatus(args: {
   officialMarkdownExists: boolean;
   intermediateJsonExists: boolean;
-  assetManifestExpected: boolean;
-  assetManifestExists: boolean;
-  assetFilesExpected: boolean;
-  assetFilesExist: boolean;
+  assetRequirement: RuankaoSourcePacketAssetRequirement;
 }): RuankaoSourceLayerStatus {
   if (!args.officialMarkdownExists && !args.intermediateJsonExists) return "incomplete";
   if (!args.intermediateJsonExists) return args.officialMarkdownExists ? "intermediate_missing" : "incomplete";
-  if (args.assetManifestExpected && !args.assetManifestExists) return "asset_missing";
-  if (args.assetFilesExpected && !args.assetFilesExist) return "asset_missing";
+  if (args.assetRequirement === "missing_required") return "asset_missing";
   return "complete";
 }
 
@@ -296,7 +355,6 @@ function buildItem(item: RendererInputContract["baseline_items"][number]): Ruank
   const officialMarkdownExists = existsSync(resolve(repoRoot, officialMarkdownPath));
   const intermediateResolution = findRecoveredIntermediate(title, item.canonical_sample_path);
   const intermediateJsonExists = intermediateResolution.effectivePath !== null;
-  const assetManifestExpected = item.asset_manifest_path !== null;
   const manifestResolution = findRecoveredManifest(
     title,
     item.asset_manifest_path,
@@ -305,8 +363,19 @@ function buildItem(item: RendererInputContract["baseline_items"][number]): Ruank
   );
   const assetManifestExists = manifestResolution.effectivePath !== null;
   const assetFiles = extractAssetFiles(manifestResolution.effectivePath);
-  const assetFilesExpected = item.renderer_policy.render_as === "asset_card" || assetFiles.length > 0;
-  const assetFilesExist = assetFilesExpected ? assetFiles.length > 0 && assetFiles.every((assetPath) => existsSync(resolve(repoRoot, assetPath))) : false;
+  const imageRefTotal = imageRefsCount(intermediateResolution.document);
+  const assetRefTotal = assetRefsCount(intermediateResolution.document);
+  const assetFilesExist = assetFiles.length > 0 && assetFiles.every((assetPath) => existsSync(resolve(repoRoot, assetPath)));
+  const assetRequirement = decideAssetRequirement({
+    imageRefsCount: imageRefTotal,
+    assetRefsCount: assetRefTotal,
+    renderAs: item.renderer_policy.render_as,
+    contentShape: item.content_shape,
+    preserveAssetRefs: item.renderer_policy.preserve_asset_refs,
+    legacyAssetManifestPath: item.asset_manifest_path,
+    assetManifestExists,
+    assetFilesExist,
+  });
   const taxonomySuspect = title === "13.3 软件架构风格";
   const taxonomyNotes = taxonomyNotesFor(title, intermediateResolution.document);
   if (intermediateResolution.recoveredPath) {
@@ -315,12 +384,20 @@ function buildItem(item: RendererInputContract["baseline_items"][number]): Ruank
   if (manifestResolution.recoveredPath) {
     taxonomyNotes.push(`canonical asset_manifest_path missing; effective recovered manifest used: ${manifestResolution.recoveredPath}`);
   }
+  if (assetRequirement.requirement === "not_required" && item.asset_manifest_path) {
+    taxonomyNotes.push("legacy asset_manifest_path present but no image_refs detected; asset manifest not required for completeness");
+  }
+  taxonomyNotes.push(`asset_requirement_reason: ${assetRequirement.reason}`);
 
   const missingArtifacts: string[] = [];
   if (!officialMarkdownExists) missingArtifacts.push(officialMarkdownPath);
   if (!intermediateResolution.effectivePath) missingArtifacts.push(item.canonical_sample_path);
-  if (assetManifestExpected && !assetManifestExists) missingArtifacts.push(item.asset_manifest_path as string);
-  if (assetFilesExpected && assetFiles.length === 0) missingArtifacts.push("asset_files: none discoverable from missing asset manifest");
+  if (assetRequirement.requirement === "missing_required" && !assetManifestExists) {
+    missingArtifacts.push(item.asset_manifest_path ?? "asset_manifest: required but no manifest path available");
+  }
+  if (assetRequirement.requirement === "missing_required" && assetManifestExists && assetFiles.length === 0) {
+    missingArtifacts.push("asset_files: none discoverable from required asset manifest");
+  }
   for (const assetPath of assetFiles) {
     if (!existsSync(resolve(repoRoot, assetPath))) missingArtifacts.push(assetPath);
   }
@@ -328,9 +405,8 @@ function buildItem(item: RendererInputContract["baseline_items"][number]): Ruank
   const complete =
     officialMarkdownExists &&
     intermediateJsonExists &&
-    (!assetManifestExpected || assetManifestExists) &&
-    (!assetFilesExpected || assetFilesExist);
-  const assetProblem = (assetManifestExpected && !assetManifestExists) || (assetFilesExpected && !assetFilesExist);
+    assetRequirement.requirement !== "missing_required";
+  const assetProblem = assetRequirement.requirement === "missing_required";
   const status = recoveryStatus({
     complete,
     hasEffectiveIntermediate: intermediateJsonExists,
@@ -351,21 +427,22 @@ function buildItem(item: RendererInputContract["baseline_items"][number]): Ruank
     effective_asset_manifest_path: manifestResolution.effectivePath,
     recovered_asset_manifest_path: manifestResolution.recoveredPath,
     asset_files: assetFiles,
+    asset_requirement: assetRequirement.requirement,
+    asset_requirement_reason: assetRequirement.reason,
+    image_refs_count: imageRefTotal,
+    asset_refs_count: assetRefTotal,
     source_availability: {
       official_markdown_exists: officialMarkdownExists,
       intermediate_json_exists: intermediateJsonExists,
       asset_manifest_exists: assetManifestExists,
-      asset_files_exist: assetFilesExist,
+      asset_files_exist: assetRequirement.required ? assetFilesExist : false,
       source_packet_complete: complete,
     },
     missing_artifacts: missingArtifacts,
     source_layer_status: sourceLayerStatus({
       officialMarkdownExists,
       intermediateJsonExists,
-      assetManifestExpected,
-      assetManifestExists,
-      assetFilesExpected,
-      assetFilesExist,
+      assetRequirement: assetRequirement.requirement,
     }),
     ai_learning_layer_status: "not_generated",
     constraints,
@@ -414,6 +491,10 @@ function renderMarkdown(packet: RuankaoSourcePacket): string {
       `- effective_intermediate_path: \`${item.effective_intermediate_path ?? "(none)"}\``,
       `- asset_manifest_path: \`${item.asset_manifest_path ?? "(none)"}\``,
       `- effective_asset_manifest_path: \`${item.effective_asset_manifest_path ?? "(none)"}\``,
+      `- asset_requirement: ${item.asset_requirement}`,
+      `- asset_requirement_reason: ${item.asset_requirement_reason}`,
+      `- image_refs_count: ${item.image_refs_count}`,
+      `- asset_refs_count: ${item.asset_refs_count}`,
       `- source_layer_status: ${item.source_layer_status}`,
       `- recommended_action: ${item.recommended_action}`,
       `- recovery_status: ${item.recovery_status}`,

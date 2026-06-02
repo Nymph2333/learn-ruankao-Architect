@@ -132,6 +132,10 @@
         "effective_asset_manifest_path",
         "recovered_asset_manifest_path",
         "asset_files",
+        "asset_requirement",
+        "asset_requirement_reason",
+        "image_refs_count",
+        "asset_refs_count",
         "source_availability",
         "missing_artifacts",
         "source_layer_status",
@@ -195,6 +199,26 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "asset_requirement": {
+          "type": "string",
+          "enum": [
+            "required",
+            "not_required",
+            "missing_required"
+          ]
+        },
+        "asset_requirement_reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "image_refs_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "asset_refs_count": {
+          "type": "integer",
+          "minimum": 0
         },
         "source_availability": {
           "$ref": "#/$defs/RuankaoSourceAvailability"

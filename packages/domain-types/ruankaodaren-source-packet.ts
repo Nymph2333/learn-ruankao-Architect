@@ -35,6 +35,11 @@ export type RuankaoSourcePacketRenderAs =
   | "concept_card"
   | "manual_review_card";
 
+export type RuankaoSourcePacketAssetRequirement =
+  | "required"
+  | "not_required"
+  | "missing_required";
+
 export interface RuankaoSourceAvailability {
   official_markdown_exists: boolean;
   intermediate_json_exists: boolean;
@@ -65,6 +70,10 @@ export interface RuankaoSourcePacketItem {
   effective_asset_manifest_path: string | null;
   recovered_asset_manifest_path: string | null;
   asset_files: string[];
+  asset_requirement: RuankaoSourcePacketAssetRequirement;
+  asset_requirement_reason: string;
+  image_refs_count: number;
+  asset_refs_count: number;
   source_availability: RuankaoSourceAvailability;
   missing_artifacts: string[];
   source_layer_status: RuankaoSourceLayerStatus;

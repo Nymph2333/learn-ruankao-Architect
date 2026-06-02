@@ -97,6 +97,27 @@ function invariantCheck(packet: RuankaoSourcePacket): string[] {
       packet.phase5_2_ai_generation_allowed !== false) {
       errors.push("missing intermediate JSON requires phase5_2_ai_generation_allowed=false");
     }
+    if (item.asset_requirement === "missing_required" && item.source_availability.source_packet_complete === true) {
+      errors.push(`${prefix}.source_packet_complete must be false when asset_requirement=missing_required`);
+    }
+    if (item.asset_requirement === "missing_required" && item.source_layer_status !== "asset_missing") {
+      errors.push(`${prefix}.source_layer_status must be asset_missing when asset_requirement=missing_required`);
+    }
+    if (item.asset_requirement !== "missing_required" && item.source_layer_status === "asset_missing") {
+      errors.push(`${prefix}.source_layer_status cannot be asset_missing when asset_requirement=${item.asset_requirement}`);
+    }
+    if (item.asset_requirement === "not_required" && item.missing_artifacts.some((artifact) => artifact.includes("assets/manifests"))) {
+      errors.push(`${prefix}.missing_artifacts must not include legacy asset manifests when asset_requirement=not_required`);
+    }
+    if (item.image_refs_count > 0 && item.asset_requirement === "not_required") {
+      errors.push(`${prefix}.asset_requirement cannot be not_required when image_refs_count > 0`);
+    }
+    if (item.asset_refs_count > 0 && item.asset_requirement === "not_required") {
+      errors.push(`${prefix}.asset_requirement cannot be not_required when asset_refs_count > 0`);
+    }
+    if (item.render_as === "asset_card" && item.asset_requirement === "not_required") {
+      errors.push(`${prefix}.asset_requirement cannot be not_required for asset_card`);
+    }
     const assetCardMissingArtifact =
       item.render_as === "asset_card" &&
       (item.source_availability.asset_manifest_exists === false || item.source_availability.asset_files_exist === false);
