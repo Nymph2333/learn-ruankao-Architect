@@ -1,0 +1,693 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-ai-learning-dry-run-execution-contract.schema.json",
+  "title": "RuankaoAiLearningDryRunExecutionContract",
+  "description": "Phase 5.7 AI Learning dry-run execution contract. It defines future execution construction, validation, isolation, and review gates only.",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "source_name",
+    "created_at",
+    "contract_scope",
+    "generation_allowed",
+    "dry_run_generation_allowed",
+    "dry_run_execution_allowed",
+    "formal_ai_learning_generation_allowed",
+    "execution_mode",
+    "review_gate_required",
+    "auto_approval",
+    "source_layer_modification_allowed",
+    "official_markdown_modification_allowed",
+    "source_content_write_allowed",
+    "phase5_8_entry_allowed",
+    "item_count",
+    "source_packet_prior_contract_gate",
+    "input_bundle_schema",
+    "future_output_format",
+    "future_dry_run_sections",
+    "execution_status_machine",
+    "output_isolation_policy",
+    "artifact_commit_policy",
+    "items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "phase5.7"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "contract_scope": {
+      "type": "string",
+      "const": "dry_run_execution_contract_only"
+    },
+    "generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_execution_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "formal_ai_learning_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "execution_mode": {
+      "type": "string",
+      "const": "contract_only"
+    },
+    "review_gate_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "auto_approval": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_layer_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "official_markdown_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_content_write_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "phase5_8_entry_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "item_count": {
+      "type": "integer",
+      "const": 3
+    },
+    "source_packet_prior_contract_gate": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionGate"
+    },
+    "input_bundle_schema": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionInputBundleSchema"
+    },
+    "future_output_format": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionOutputFormat"
+    },
+    "future_dry_run_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Source Summary / 原文摘要",
+          "AI Explanation / AI解析",
+          "Architecture Mapping / 架构师考点映射",
+          "Case Study Pattern / 案例答题模式",
+          "Paper Usage / 论文表达",
+          "Misconceptions / 易错点",
+          "Memory Hooks / 记忆钩子",
+          "Review Notes / 复核提示"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "execution_status_machine": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionStatusMachine"
+    },
+    "output_isolation_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionOutputIsolationPolicy"
+    },
+    "artifact_commit_policy": {
+      "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionArtifactCommitPolicy"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionContractItem"
+      }
+    }
+  },
+  "$defs": {
+    "RuankaoAiLearningDryRunExecutionGate": {
+      "type": "object",
+      "required": [
+        "source_packet_exists",
+        "complete_count",
+        "phase5_4_generation_allowed",
+        "phase5_5_generation_allowed",
+        "phase5_6_generation_allowed",
+        "phase5_6_dry_run_generation_allowed",
+        "gate_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_packet_exists": {
+          "type": "boolean",
+          "const": true
+        },
+        "complete_count": {
+          "type": "integer",
+          "const": 3
+        },
+        "phase5_4_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_5_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_6_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_6_dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "gate_result": {
+          "type": "string",
+          "const": "pass"
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionControls": {
+      "type": "object",
+      "required": [
+        "generation_allowed",
+        "dry_run_generation_allowed",
+        "dry_run_execution_allowed",
+        "formal_generation_allowed",
+        "source_layer_write_allowed",
+        "official_markdown_write_allowed",
+        "auto_approval"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "dry_run_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "formal_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "source_layer_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "official_markdown_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "auto_approval": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionInputBundleSchema": {
+      "type": "object",
+      "required": [
+        "source_packet_reference",
+        "prompt_contract_reference",
+        "dry_run_contract_reference",
+        "dry_run_request_manifest_reference",
+        "item_identity",
+        "item_render_as",
+        "item_content_shape",
+        "source_layer_refs",
+        "allowed_prompt_template_id",
+        "output_isolation_target",
+        "review_request_reference",
+        "execution_controls"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_packet_reference": {
+          "type": "string",
+          "const": "source-packets/ruankaodaren/baseline/source-packet.json"
+        },
+        "prompt_contract_reference": {
+          "type": "string",
+          "const": "verification/generated/phase5_4_ai_learning_prompt_contract.json"
+        },
+        "dry_run_contract_reference": {
+          "type": "string",
+          "const": "verification/generated/phase5_5_ai_learning_dry_run_contract.json"
+        },
+        "dry_run_request_manifest_reference": {
+          "type": "string",
+          "const": "verification/generated/phase5_6_ai_learning_dry_run_request_manifest.json"
+        },
+        "item_identity": {
+          "type": "string",
+          "const": "title"
+        },
+        "item_render_as": {
+          "type": "string",
+          "const": "render_as"
+        },
+        "item_content_shape": {
+          "type": "string",
+          "const": "render_as_bound_content_shape"
+        },
+        "source_layer_refs": {
+          "type": "string",
+          "const": "source_availability"
+        },
+        "allowed_prompt_template_id": {
+          "type": "string",
+          "const": "prompt_template_id"
+        },
+        "output_isolation_target": {
+          "type": "string",
+          "const": "future_execution_output_path"
+        },
+        "review_request_reference": {
+          "type": "string",
+          "const": "human_review_request"
+        },
+        "execution_controls": {
+          "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionControls"
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionOutputFormat": {
+      "type": "object",
+      "required": [
+        "output_kind",
+        "ai_generated_label_required",
+        "dry_run_label_required",
+        "not_human_approved_label_required",
+        "source_packet_reference_required",
+        "prompt_contract_reference_required",
+        "dry_run_contract_reference_required",
+        "request_manifest_reference_required",
+        "source_layer_modification_forbidden",
+        "official_markdown_modification_forbidden"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "output_kind": {
+          "type": "string",
+          "const": "dry_run_ai_learning_draft"
+        },
+        "ai_generated_label_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "dry_run_label_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "not_human_approved_label_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "source_packet_reference_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "prompt_contract_reference_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "dry_run_contract_reference_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "request_manifest_reference_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "source_layer_modification_forbidden": {
+          "type": "boolean",
+          "const": true
+        },
+        "official_markdown_modification_forbidden": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionStatusMachine": {
+      "type": "object",
+      "required": [
+        "allowed_statuses",
+        "default_status",
+        "transition_rules",
+        "phase5_7_execution_ready_allowed",
+        "phase5_7_dry_run_executed_allowed",
+        "phase5_8_entry_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionStatus"
+          },
+          "uniqueItems": true,
+          "minItems": 10,
+          "maxItems": 10
+        },
+        "default_status": {
+          "type": "string",
+          "const": "not_executable"
+        },
+        "transition_rules": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionTransitionRule"
+          }
+        },
+        "phase5_7_execution_ready_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_7_dry_run_executed_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_8_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionTransitionRule": {
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "requires"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionStatus"
+        },
+        "to": {
+          "$ref": "#/$defs/RuankaoAiLearningDryRunExecutionStatus"
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionStatus": {
+      "type": "string",
+      "enum": [
+        "not_executable",
+        "execution_request_required",
+        "execution_review_pending",
+        "execution_ready",
+        "execution_blocked",
+        "dry_run_executed",
+        "dry_run_review_pending",
+        "dry_run_changes_requested",
+        "dry_run_rejected",
+        "dry_run_approved"
+      ]
+    },
+    "RuankaoAiLearningDryRunExecutionOutputIsolationPolicy": {
+      "type": "object",
+      "required": [
+        "default_future_output_path",
+        "allowed_output_paths",
+        "forbidden_output_paths",
+        "source_layer_write_allowed",
+        "official_markdown_write_allowed",
+        "source_content_write_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_future_output_path": {
+          "type": "string",
+          "const": "verification/dry-run/ruankaodaren/baseline/"
+        },
+        "allowed_output_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "verification/dry-run/ruankaodaren/",
+              "drafts/ai-learning/ruankaodaren/"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "forbidden_output_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "docs/ruankaodaren/baseline/",
+              "source-packets/",
+              "source_content",
+              "data/raw",
+              "data/intermediate"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "source_layer_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "official_markdown_write_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "source_content_write_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionArtifactCommitPolicy": {
+      "type": "object",
+      "required": [
+        "commit_allowed",
+        "commit_forbidden"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commit_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema",
+              "types",
+              "builder",
+              "validator",
+              "verification_doc",
+              "generated_execution_contract_json",
+              "generated_execution_contract_md"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 7,
+          "maxItems": 7
+        },
+        "commit_forbidden": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ai_learning_content",
+              "dry_run_content",
+              "official_markdown_rewrite",
+              "source_layer_modifications",
+              "raw_snapshots",
+              "intermediate_generated_artifacts",
+              "asset_images",
+              ".auth",
+              "node_modules",
+              "pnpm-workspace.yaml"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 10,
+          "maxItems": 10
+        }
+      }
+    },
+    "RuankaoAiLearningDryRunExecutionContractItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "render_as",
+        "eligible_for_request",
+        "execution_status",
+        "execution_allowed",
+        "dry_run_generation_allowed",
+        "formal_generation_allowed",
+        "unrestricted_execution_allowed",
+        "taxonomy_suspect",
+        "is_multi_card_sequence",
+        "requires_manual_asset_review",
+        "requires_manual_review",
+        "no_ocr",
+        "no_image_table_reconstruction",
+        "cannot_claim_image_content_recognized",
+        "may_enter_future_execution_after_review",
+        "required_warnings",
+        "execution_blockers",
+        "execution_prerequisites",
+        "future_execution_output_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "render_as": {
+          "type": "string",
+          "enum": [
+            "asset_card",
+            "short_card",
+            "concept_card",
+            "manual_review_card"
+          ]
+        },
+        "eligible_for_request": {
+          "type": "boolean"
+        },
+        "execution_status": {
+          "type": "string",
+          "const": "not_executable"
+        },
+        "execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "formal_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "unrestricted_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        },
+        "is_multi_card_sequence": {
+          "type": "boolean"
+        },
+        "requires_manual_asset_review": {
+          "type": "boolean"
+        },
+        "requires_manual_review": {
+          "type": "boolean"
+        },
+        "no_ocr": {
+          "type": "boolean"
+        },
+        "no_image_table_reconstruction": {
+          "type": "boolean"
+        },
+        "cannot_claim_image_content_recognized": {
+          "type": "boolean"
+        },
+        "may_enter_future_execution_after_review": {
+          "type": "boolean"
+        },
+        "taxonomy_suspect_handling": {
+          "type": "string",
+          "const": "restrict_execution"
+        },
+        "multi_card_sequence_handling": {
+          "type": "string",
+          "const": "do_not_claim_complete"
+        },
+        "parent_node_handling": {
+          "type": "string",
+          "const": "do_not_generate_as_leaf"
+        },
+        "required_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "execution_blockers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "execution_prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "human_review_request",
+              "human_review_approval",
+              "isolated_output_path",
+              "source_packet_reference",
+              "prompt_contract_reference",
+              "dry_run_contract_reference",
+              "request_manifest_reference",
+              "manual_asset_review",
+              "human_image_content_verification",
+              "taxonomy_restriction_review",
+              "parent_node_review"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "future_execution_output_path": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

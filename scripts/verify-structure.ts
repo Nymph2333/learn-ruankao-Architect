@@ -174,12 +174,14 @@ const requiredFiles = [
   "schemas/ruankaodaren-ai-learning-prompt-contract.schema.json",
   "schemas/ruankaodaren-ai-learning-dry-run-contract.schema.json",
   "schemas/ruankaodaren-ai-learning-dry-run-request-manifest.schema.json",
+  "schemas/ruankaodaren-ai-learning-dry-run-execution-contract.schema.json",
   "packages/domain-types/ruankaodaren-human-review-status.ts",
   "packages/domain-types/ruankaodaren-dual-layer-document.ts",
   "packages/domain-types/ruankaodaren-source-packet.ts",
   "packages/domain-types/ruankaodaren-ai-learning-prompt-contract.ts",
   "packages/domain-types/ruankaodaren-ai-learning-dry-run-contract.ts",
   "packages/domain-types/ruankaodaren-ai-learning-dry-run-request-manifest.ts",
+  "packages/domain-types/ruankaodaren-ai-learning-dry-run-execution-contract.ts",
   "scripts/build-ruankaodaren-human-review-status.ts",
   "scripts/validate-ruankaodaren-human-review-status.ts",
   "scripts/build-ruankaodaren-controlled-expansion-plan.ts",
@@ -193,6 +195,8 @@ const requiredFiles = [
   "scripts/validate-ruankaodaren-ai-learning-dry-run-contract.ts",
   "scripts/build-ruankaodaren-ai-learning-dry-run-request-manifest.ts",
   "scripts/validate-ruankaodaren-ai-learning-dry-run-request-manifest.ts",
+  "scripts/build-ruankaodaren-ai-learning-dry-run-execution-contract.ts",
+  "scripts/validate-ruankaodaren-ai-learning-dry-run-execution-contract.ts",
   "scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
   "scripts/recheck-ruankaodaren-taxonomy.ts",
   "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md",
@@ -208,15 +212,18 @@ const requiredFiles = [
   "verification/phase5_4_ai_learning_prompt_contract_check.md",
   "verification/phase5_5_ai_learning_dry_run_contract_check.md",
   "verification/phase5_6_ai_learning_dry_run_request_manifest_check.md",
+  "verification/phase5_7_ai_learning_dry_run_execution_contract_check.md",
   "verification/generated/phase5_5_ai_learning_dry_run_contract.json",
   "verification/generated/phase5_5_ai_learning_dry_run_contract.md",
   "verification/generated/phase5_6_ai_learning_dry_run_request_manifest.json",
-  "verification/generated/phase5_6_ai_learning_dry_run_request_manifest.md"
+  "verification/generated/phase5_6_ai_learning_dry_run_request_manifest.md",
+  "verification/generated/phase5_7_ai_learning_dry_run_execution_contract.json",
+  "verification/generated/phase5_7_ai_learning_dry_run_execution_contract.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "build:ai-learning-dry-run-request-manifest", "validate:ai-learning-dry-run-request-manifest", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "build:ai-learning-dry-run-request-manifest", "validate:ai-learning-dry-run-request-manifest", "build:ai-learning-dry-run-execution-contract", "validate:ai-learning-dry-run-execution-contract", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
   "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
     "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
     "## 4. Source Layer Policy",
@@ -313,6 +320,29 @@ const requiredContent: Record<string, string[]> = {
     "generation_allowed: false",
     "dry_run_generation_allowed: false",
     "phase5_7_entry_allowed: false"
+  ],
+  "verification/phase5_7_ai_learning_dry_run_execution_contract_check.md": [
+    "# Phase 5.7 AI Learning Dry-run Execution Contract",
+    "## 3. Execution Input Bundle Contract",
+    "## 4. Execution Output Format Contract",
+    "## 5. Execution Status Machine",
+    "pnpm build:ai-learning-dry-run-execution-contract",
+    "pnpm validate:ai-learning-dry-run-execution-contract"
+  ],
+  "verification/generated/phase5_7_ai_learning_dry_run_execution_contract.json": [
+    "\"contract_version\": \"phase5.7\"",
+    "\"contract_scope\": \"dry_run_execution_contract_only\"",
+    "\"generation_allowed\": false",
+    "\"dry_run_execution_allowed\": false",
+    "\"phase5_8_entry_allowed\": false"
+  ],
+  "verification/generated/phase5_7_ai_learning_dry_run_execution_contract.md": [
+    "# Phase 5.7 AI Learning Dry-run Execution Contract",
+    "contract_version: phase5.7",
+    "execution_mode: contract_only",
+    "generation_allowed: false",
+    "dry_run_execution_allowed: false",
+    "phase5_8_entry_allowed: false"
   ],
   "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md": [
     "AI-generated",

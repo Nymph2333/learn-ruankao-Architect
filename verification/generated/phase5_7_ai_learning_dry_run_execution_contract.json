@@ -1,0 +1,280 @@
+{
+  "contract_version": "phase5.7",
+  "source_name": "ruankaodaren",
+  "created_at": "2026-06-02T08:23:42.989Z",
+  "contract_scope": "dry_run_execution_contract_only",
+  "generation_allowed": false,
+  "dry_run_generation_allowed": false,
+  "dry_run_execution_allowed": false,
+  "formal_ai_learning_generation_allowed": false,
+  "execution_mode": "contract_only",
+  "review_gate_required": true,
+  "auto_approval": false,
+  "source_layer_modification_allowed": false,
+  "official_markdown_modification_allowed": false,
+  "source_content_write_allowed": false,
+  "phase5_8_entry_allowed": false,
+  "item_count": 3,
+  "source_packet_prior_contract_gate": {
+    "source_packet_exists": true,
+    "complete_count": 3,
+    "phase5_4_generation_allowed": false,
+    "phase5_5_generation_allowed": false,
+    "phase5_6_generation_allowed": false,
+    "phase5_6_dry_run_generation_allowed": false,
+    "gate_result": "pass"
+  },
+  "input_bundle_schema": {
+    "source_packet_reference": "source-packets/ruankaodaren/baseline/source-packet.json",
+    "prompt_contract_reference": "verification/generated/phase5_4_ai_learning_prompt_contract.json",
+    "dry_run_contract_reference": "verification/generated/phase5_5_ai_learning_dry_run_contract.json",
+    "dry_run_request_manifest_reference": "verification/generated/phase5_6_ai_learning_dry_run_request_manifest.json",
+    "item_identity": "title",
+    "item_render_as": "render_as",
+    "item_content_shape": "render_as_bound_content_shape",
+    "source_layer_refs": "source_availability",
+    "allowed_prompt_template_id": "prompt_template_id",
+    "output_isolation_target": "future_execution_output_path",
+    "review_request_reference": "human_review_request",
+    "execution_controls": {
+      "generation_allowed": false,
+      "dry_run_generation_allowed": false,
+      "dry_run_execution_allowed": false,
+      "formal_generation_allowed": false,
+      "source_layer_write_allowed": false,
+      "official_markdown_write_allowed": false,
+      "auto_approval": false
+    }
+  },
+  "future_output_format": {
+    "output_kind": "dry_run_ai_learning_draft",
+    "ai_generated_label_required": true,
+    "dry_run_label_required": true,
+    "not_human_approved_label_required": true,
+    "source_packet_reference_required": true,
+    "prompt_contract_reference_required": true,
+    "dry_run_contract_reference_required": true,
+    "request_manifest_reference_required": true,
+    "source_layer_modification_forbidden": true,
+    "official_markdown_modification_forbidden": true
+  },
+  "future_dry_run_sections": [
+    "Source Summary / 原文摘要",
+    "AI Explanation / AI解析",
+    "Architecture Mapping / 架构师考点映射",
+    "Case Study Pattern / 案例答题模式",
+    "Paper Usage / 论文表达",
+    "Misconceptions / 易错点",
+    "Memory Hooks / 记忆钩子",
+    "Review Notes / 复核提示"
+  ],
+  "execution_status_machine": {
+    "allowed_statuses": [
+      "not_executable",
+      "execution_request_required",
+      "execution_review_pending",
+      "execution_ready",
+      "execution_blocked",
+      "dry_run_executed",
+      "dry_run_review_pending",
+      "dry_run_changes_requested",
+      "dry_run_rejected",
+      "dry_run_approved"
+    ],
+    "default_status": "not_executable",
+    "transition_rules": [
+      {
+        "from": "not_executable",
+        "to": "execution_request_required",
+        "requires": [
+          "item eligible_for_request = true"
+        ]
+      },
+      {
+        "from": "execution_request_required",
+        "to": "execution_review_pending",
+        "requires": [
+          "human_review_request_created = true"
+        ]
+      },
+      {
+        "from": "execution_review_pending",
+        "to": "execution_ready",
+        "requires": [
+          "human_review_approved = true",
+          "output_path_isolated = true",
+          "source_packet_reference_valid = true",
+          "prompt_contract_reference_valid = true",
+          "dry_run_contract_reference_valid = true",
+          "request_manifest_reference_valid = true"
+        ]
+      },
+      {
+        "from": "execution_ready",
+        "to": "dry_run_executed",
+        "requires": [
+          "explicit Phase 5.8 entry approval"
+        ]
+      }
+    ],
+    "phase5_7_execution_ready_allowed": false,
+    "phase5_7_dry_run_executed_allowed": false,
+    "phase5_8_entry_allowed": false
+  },
+  "output_isolation_policy": {
+    "default_future_output_path": "verification/dry-run/ruankaodaren/baseline/",
+    "allowed_output_paths": [
+      "verification/dry-run/ruankaodaren/",
+      "drafts/ai-learning/ruankaodaren/"
+    ],
+    "forbidden_output_paths": [
+      "docs/ruankaodaren/baseline/",
+      "source-packets/",
+      "source_content",
+      "data/raw",
+      "data/intermediate"
+    ],
+    "source_layer_write_allowed": false,
+    "official_markdown_write_allowed": false,
+    "source_content_write_allowed": false
+  },
+  "artifact_commit_policy": {
+    "commit_allowed": [
+      "schema",
+      "types",
+      "builder",
+      "validator",
+      "verification_doc",
+      "generated_execution_contract_json",
+      "generated_execution_contract_md"
+    ],
+    "commit_forbidden": [
+      "ai_learning_content",
+      "dry_run_content",
+      "official_markdown_rewrite",
+      "source_layer_modifications",
+      "raw_snapshots",
+      "intermediate_generated_artifacts",
+      "asset_images",
+      ".auth",
+      "node_modules",
+      "pnpm-workspace.yaml"
+    ]
+  },
+  "items": [
+    {
+      "title": "1.3 指令系统CISC和RISC",
+      "render_as": "asset_card",
+      "eligible_for_request": false,
+      "execution_status": "not_executable",
+      "execution_allowed": false,
+      "dry_run_generation_allowed": false,
+      "formal_generation_allowed": false,
+      "unrestricted_execution_allowed": false,
+      "taxonomy_suspect": false,
+      "is_multi_card_sequence": false,
+      "requires_manual_asset_review": true,
+      "requires_manual_review": true,
+      "no_ocr": true,
+      "no_image_table_reconstruction": true,
+      "cannot_claim_image_content_recognized": true,
+      "may_enter_future_execution_after_review": false,
+      "required_warnings": [
+        "no_ocr",
+        "no_image_table_reconstruction",
+        "asset_manual_review_required",
+        "cannot_claim_image_content_recognized"
+      ],
+      "execution_blockers": [
+        "asset_manual_review_required",
+        "image_content_not_human_verified"
+      ],
+      "execution_prerequisites": [
+        "human_review_request",
+        "human_review_approval",
+        "isolated_output_path",
+        "source_packet_reference",
+        "prompt_contract_reference",
+        "dry_run_contract_reference",
+        "request_manifest_reference",
+        "manual_asset_review",
+        "human_image_content_verification"
+      ],
+      "future_execution_output_path": "verification/dry-run/ruankaodaren/baseline/1.3 指令系统CISC和RISC.execution-contract.json"
+    },
+    {
+      "title": "13.3 软件架构风格",
+      "render_as": "short_card",
+      "eligible_for_request": false,
+      "execution_status": "not_executable",
+      "execution_allowed": false,
+      "dry_run_generation_allowed": false,
+      "formal_generation_allowed": false,
+      "unrestricted_execution_allowed": false,
+      "taxonomy_suspect": true,
+      "is_multi_card_sequence": true,
+      "requires_manual_asset_review": false,
+      "requires_manual_review": true,
+      "no_ocr": false,
+      "no_image_table_reconstruction": false,
+      "cannot_claim_image_content_recognized": false,
+      "may_enter_future_execution_after_review": false,
+      "required_warnings": [
+        "verified_short_text",
+        "taxonomy_suspect",
+        "multi_card_sequence_possible",
+        "do_not_claim_complete"
+      ],
+      "execution_blockers": [
+        "taxonomy_suspect",
+        "multi_card_sequence_possible",
+        "parent_node_not_safe_as_leaf"
+      ],
+      "execution_prerequisites": [
+        "human_review_request",
+        "human_review_approval",
+        "isolated_output_path",
+        "source_packet_reference",
+        "prompt_contract_reference",
+        "dry_run_contract_reference",
+        "request_manifest_reference",
+        "taxonomy_restriction_review",
+        "parent_node_review"
+      ],
+      "future_execution_output_path": "verification/dry-run/ruankaodaren/baseline/13.3 软件架构风格.execution-contract.json",
+      "taxonomy_suspect_handling": "restrict_execution",
+      "multi_card_sequence_handling": "do_not_claim_complete",
+      "parent_node_handling": "do_not_generate_as_leaf"
+    },
+    {
+      "title": "9.1 信息安全基础知识",
+      "render_as": "concept_card",
+      "eligible_for_request": true,
+      "execution_status": "not_executable",
+      "execution_allowed": false,
+      "dry_run_generation_allowed": false,
+      "formal_generation_allowed": false,
+      "unrestricted_execution_allowed": false,
+      "taxonomy_suspect": false,
+      "is_multi_card_sequence": false,
+      "requires_manual_asset_review": false,
+      "requires_manual_review": true,
+      "no_ocr": false,
+      "no_image_table_reconstruction": false,
+      "cannot_claim_image_content_recognized": false,
+      "may_enter_future_execution_after_review": true,
+      "required_warnings": [],
+      "execution_blockers": [],
+      "execution_prerequisites": [
+        "human_review_request",
+        "human_review_approval",
+        "isolated_output_path",
+        "source_packet_reference",
+        "prompt_contract_reference",
+        "dry_run_contract_reference",
+        "request_manifest_reference"
+      ],
+      "future_execution_output_path": "verification/dry-run/ruankaodaren/baseline/9.1 信息安全基础知识.execution-contract.json"
+    }
+  ]
+}
