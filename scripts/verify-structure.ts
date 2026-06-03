@@ -205,6 +205,8 @@ const requiredFiles = [
   "scripts/validate-ruankaodaren-ai-learning-dry-run-readiness-check.ts",
   "scripts/build-ruankaodaren-ai-learning-human-review-request-package.ts",
   "scripts/validate-ruankaodaren-ai-learning-human-review-request-package.ts",
+  "scripts/build-ruankaodaren-ai-learning-human-review-approval-gate.ts",
+  "scripts/validate-ruankaodaren-ai-learning-human-review-approval-gate.ts",
   "scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
   "scripts/recheck-ruankaodaren-taxonomy.ts",
   "prompts/ruankaodaren/ai-learning/asset-card-ai-learning.prompt.md",
@@ -223,6 +225,9 @@ const requiredFiles = [
   "verification/phase5_7_ai_learning_dry_run_execution_contract_check.md",
   "verification/phase5_8_ai_learning_dry_run_readiness_check.md",
   "verification/phase5_9_ai_learning_human_review_request_package.md",
+  "verification/phase5_10_ai_learning_human_review_approval_gate.md",
+  "schemas/ruankaodaren-ai-learning-human-review-approval-gate.schema.json",
+  "packages/domain-types/ruankaodaren-ai-learning-human-review-approval-gate.ts",
   "verification/generated/phase5_5_ai_learning_dry_run_contract.json",
   "verification/generated/phase5_5_ai_learning_dry_run_contract.md",
   "verification/generated/phase5_6_ai_learning_dry_run_request_manifest.json",
@@ -232,12 +237,14 @@ const requiredFiles = [
   "verification/generated/phase5_8_ai_learning_dry_run_readiness_check.json",
   "verification/generated/phase5_8_ai_learning_dry_run_readiness_check.md",
   "verification/generated/phase5_9_ai_learning_human_review_request_package.json",
-  "verification/generated/phase5_9_ai_learning_human_review_request_package.md"
+  "verification/generated/phase5_9_ai_learning_human_review_request_package.md",
+  "verification/generated/phase5_10_ai_learning_human_review_approval_gate.json",
+  "verification/generated/phase5_10_ai_learning_human_review_approval_gate.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "build:ai-learning-dry-run-request-manifest", "validate:ai-learning-dry-run-request-manifest", "build:ai-learning-dry-run-execution-contract", "validate:ai-learning-dry-run-execution-contract", "build:ai-learning-dry-run-readiness-check", "validate:ai-learning-dry-run-readiness-check", "build:ai-learning-human-review-request-package", "validate:ai-learning-human-review-request-package", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "build:ai-learning-dry-run-request-manifest", "validate:ai-learning-dry-run-request-manifest", "build:ai-learning-dry-run-execution-contract", "validate:ai-learning-dry-run-execution-contract", "build:ai-learning-dry-run-readiness-check", "validate:ai-learning-dry-run-readiness-check", "build:ai-learning-human-review-request-package", "validate:ai-learning-human-review-request-package", "build:ai-learning-human-review-approval-gate", "validate:ai-learning-human-review-approval-gate", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
   "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
     "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
     "## 4. Source Layer Policy",

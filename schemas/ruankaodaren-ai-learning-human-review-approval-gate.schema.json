@@ -1,0 +1,617 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ruankao-architect-knowledge-base/schemas/ruankaodaren-ai-learning-human-review-approval-gate.schema.json",
+  "title": "RuankaoAiLearningHumanReviewApprovalGate",
+  "description": "Phase 5.10 AI Learning dry-run human review approval gate. This gate defines approval structure only and does not execute approval.",
+  "type": "object",
+  "required": [
+    "gate_version",
+    "source_name",
+    "created_at",
+    "gate_scope",
+    "generation_allowed",
+    "dry_run_generation_allowed",
+    "dry_run_execution_allowed",
+    "formal_ai_learning_generation_allowed",
+    "approval_gate_defined",
+    "approval_executed",
+    "reviewer_decision",
+    "human_review_required",
+    "human_review_approved",
+    "auto_approval",
+    "source_layer_modification_allowed",
+    "official_markdown_modification_allowed",
+    "phase5_11_entry_allowed",
+    "source_packet_prior_contract_gate",
+    "reviewer_decision_schema",
+    "approval_evidence_requirements",
+    "selected_item_approval_gate",
+    "excluded_items_approval_policy",
+    "phase5_11_entry_policy",
+    "artifact_commit_policy"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "gate_version": {
+      "type": "string",
+      "const": "phase5.10"
+    },
+    "source_name": {
+      "type": "string",
+      "const": "ruankaodaren"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gate_scope": {
+      "type": "string",
+      "const": "dry_run_human_review_approval_gate_only"
+    },
+    "generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "dry_run_execution_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "formal_ai_learning_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "approval_gate_defined": {
+      "type": "boolean",
+      "const": true
+    },
+    "approval_executed": {
+      "type": "boolean",
+      "const": false
+    },
+    "reviewer_decision": {
+      "type": "string",
+      "const": "pending"
+    },
+    "human_review_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "human_review_approved": {
+      "type": "boolean",
+      "const": false
+    },
+    "auto_approval": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_layer_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "official_markdown_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "phase5_11_entry_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_packet_prior_contract_gate": {
+      "$ref": "#/$defs/RuankaoApprovalGatePriorContractGate"
+    },
+    "reviewer_decision_schema": {
+      "$ref": "#/$defs/RuankaoApprovalGateReviewerDecisionSchema"
+    },
+    "approval_evidence_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "reviewer_identity_required",
+          "reviewer_decision_required",
+          "decided_at_required",
+          "selected_item_confirmed",
+          "source_packet_reference_verified",
+          "prompt_contract_reference_verified",
+          "dry_run_contract_reference_verified",
+          "request_manifest_reference_verified",
+          "execution_contract_reference_verified",
+          "readiness_check_reference_verified",
+          "human_review_request_package_reference_verified",
+          "output_path_isolated_verified",
+          "official_markdown_write_forbidden_confirmed",
+          "source_layer_write_forbidden_confirmed",
+          "no_ocr_confirmed",
+          "no_raw_html_or_xhr_confirmed",
+          "no_ai_content_in_source_content_confirmed",
+          "no_formal_generation_before_approval_confirmed"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 18,
+      "maxItems": 18
+    },
+    "selected_item_approval_gate": {
+      "$ref": "#/$defs/RuankaoApprovalGateSelectedItem"
+    },
+    "excluded_items_approval_policy": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/RuankaoApprovalGateExcludedItem"
+      }
+    },
+    "phase5_11_entry_policy": {
+      "$ref": "#/$defs/RuankaoApprovalGatePhase511EntryPolicy"
+    },
+    "artifact_commit_policy": {
+      "$ref": "#/$defs/RuankaoApprovalGateArtifactCommitPolicy"
+    }
+  },
+  "$defs": {
+    "RuankaoApprovalGatePriorContractGate": {
+      "type": "object",
+      "required": [
+        "source_packet_exists",
+        "complete_count",
+        "phase5_4_generation_allowed",
+        "phase5_5_generation_allowed",
+        "phase5_6_generation_allowed",
+        "phase5_6_dry_run_generation_allowed",
+        "phase5_7_dry_run_execution_allowed",
+        "phase5_8_phase5_9_entry_allowed",
+        "phase5_9_review_request_allowed",
+        "phase5_9_reviewer_decision",
+        "phase5_9_human_review_approved",
+        "gate_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_packet_exists": {
+          "type": "boolean",
+          "const": true
+        },
+        "complete_count": {
+          "type": "integer",
+          "const": 3
+        },
+        "phase5_4_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_5_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_6_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_6_dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_7_dry_run_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_8_phase5_9_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase5_9_review_request_allowed": {
+          "type": "boolean",
+          "const": true
+        },
+        "phase5_9_reviewer_decision": {
+          "type": "string",
+          "const": "pending"
+        },
+        "phase5_9_human_review_approved": {
+          "type": "boolean",
+          "const": false
+        },
+        "gate_result": {
+          "type": "string",
+          "const": "pass"
+        }
+      }
+    },
+    "RuankaoApprovalGateReviewerDecisionSchema": {
+      "type": "object",
+      "required": [
+        "current_decision",
+        "allowed_values",
+        "decision_executed",
+        "decided_by",
+        "decided_at",
+        "notes",
+        "decision_behavior"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "current_decision": {
+          "type": "string",
+          "const": "pending"
+        },
+        "allowed_values": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approve_for_phase5_11_dry_run_execution",
+              "request_changes",
+              "reject"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "decision_executed": {
+          "type": "boolean",
+          "const": false
+        },
+        "decided_by": {
+          "type": "null"
+        },
+        "decided_at": {
+          "type": "null"
+        },
+        "notes": {
+          "type": "null"
+        },
+        "decision_behavior": {
+          "$ref": "#/$defs/RuankaoApprovalGateReviewerDecisionBehavior"
+        }
+      }
+    },
+    "RuankaoApprovalGateReviewerDecisionBehavior": {
+      "type": "object",
+      "required": [
+        "pending",
+        "approve_for_phase5_11_dry_run_execution",
+        "request_changes",
+        "reject"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "pending": {
+          "type": "object",
+          "required": [
+            "phase5_11_entry_allowed",
+            "dry_run_execution_allowed"
+          ],
+          "properties": {
+            "phase5_11_entry_allowed": {
+              "type": "boolean",
+              "const": false
+            },
+            "dry_run_execution_allowed": {
+              "type": "boolean",
+              "const": false
+            }
+          }
+        },
+        "approve_for_phase5_11_dry_run_execution": {
+          "type": "object",
+          "required": [
+            "requires",
+            "may_allow_future_phase5_11_entry"
+          ],
+          "properties": {
+            "requires": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "explicit_user_approval",
+                  "reviewer_identity",
+                  "decided_at",
+                  "approval_evidence",
+                  "all_references_valid"
+                ]
+              },
+              "uniqueItems": true,
+              "minItems": 5,
+              "maxItems": 5
+            },
+            "may_allow_future_phase5_11_entry": {
+              "type": "boolean",
+              "const": true
+            }
+          }
+        },
+        "request_changes": {
+          "type": "object",
+          "required": [
+            "blocks_phase5_11",
+            "requires_change_request_notes",
+            "dry_run_execution_allowed"
+          ],
+          "properties": {
+            "blocks_phase5_11": {
+              "type": "boolean",
+              "const": true
+            },
+            "requires_change_request_notes": {
+              "type": "boolean",
+              "const": true
+            },
+            "dry_run_execution_allowed": {
+              "type": "boolean",
+              "const": false
+            }
+          }
+        },
+        "reject": {
+          "type": "object",
+          "required": [
+            "blocks_phase5_11",
+            "requires_rejection_reason",
+            "dry_run_execution_allowed"
+          ],
+          "properties": {
+            "blocks_phase5_11": {
+              "type": "boolean",
+              "const": true
+            },
+            "requires_rejection_reason": {
+              "type": "boolean",
+              "const": true
+            },
+            "dry_run_execution_allowed": {
+              "type": "boolean",
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "RuankaoApprovalGateSelectedItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "render_as",
+        "selected_for_human_review_request",
+        "selected_for_approval_gate",
+        "approval_status",
+        "reviewer_decision",
+        "human_review_approved",
+        "dry_run_generation_allowed",
+        "dry_run_execution_allowed",
+        "formal_generation_allowed",
+        "output_path_isolated",
+        "default_future_output_path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "const": "9.1 信息安全基础知识"
+        },
+        "render_as": {
+          "type": "string",
+          "const": "concept_card"
+        },
+        "selected_for_human_review_request": {
+          "type": "boolean",
+          "const": true
+        },
+        "selected_for_approval_gate": {
+          "type": "boolean",
+          "const": true
+        },
+        "approval_status": {
+          "type": "string",
+          "const": "pending"
+        },
+        "reviewer_decision": {
+          "type": "string",
+          "const": "pending"
+        },
+        "human_review_approved": {
+          "type": "boolean",
+          "const": false
+        },
+        "dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "dry_run_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "formal_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "output_path_isolated": {
+          "type": "boolean",
+          "const": true
+        },
+        "default_future_output_path": {
+          "type": "string",
+          "const": "verification/dry-run/ruankaodaren/baseline/9.1_信息安全基础知识/"
+        }
+      }
+    },
+    "RuankaoApprovalGateExcludedItem": {
+      "type": "object",
+      "required": [
+        "title",
+        "excluded_from_approval_gate",
+        "exclusion_reason",
+        "dry_run_generation_allowed",
+        "dry_run_execution_allowed",
+        "formal_generation_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "enum": [
+            "1.3 指令系统CISC和RISC",
+            "13.3 软件架构风格"
+          ]
+        },
+        "excluded_from_approval_gate": {
+          "type": "boolean",
+          "const": true
+        },
+        "exclusion_reason": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "asset_manual_review_required",
+              "image_content_not_human_verified",
+              "taxonomy_suspect",
+              "multi_card_sequence_possible",
+              "parent_node_not_safe_as_leaf"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 2
+        },
+        "taxonomy_suspect": {
+          "type": "boolean"
+        },
+        "is_multi_card_sequence": {
+          "type": "boolean"
+        },
+        "required_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "dry_run_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "dry_run_execution_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "formal_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "RuankaoApprovalGatePhase511EntryPolicy": {
+      "type": "object",
+      "required": [
+        "phase5_11_entry_allowed",
+        "required_before_entry",
+        "prohibited_before_entry"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase5_11_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "required_before_entry": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "explicit_user_approval",
+              "reviewer_decision_approve_for_phase5_11_dry_run_execution",
+              "human_review_approved",
+              "approval_evidence_complete",
+              "selected_item_is_9.1",
+              "output_path_isolated",
+              "all_contract_references_valid",
+              "no_source_layer_modification",
+              "no_official_markdown_modification"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 9,
+          "maxItems": 9
+        },
+        "prohibited_before_entry": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "auto_approval_true",
+              "generation_allowed_true",
+              "dry_run_execution_without_review",
+              "source_layer_modification",
+              "official_markdown_modification",
+              "selected_item_taxonomy_suspect",
+              "selected_item_asset_unreviewed",
+              "approval_evidence_missing"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 8,
+          "maxItems": 8
+        }
+      }
+    },
+    "RuankaoApprovalGateArtifactCommitPolicy": {
+      "type": "object",
+      "required": [
+        "commit_allowed",
+        "commit_forbidden"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "commit_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema",
+              "types",
+              "builder",
+              "validator",
+              "verification_doc",
+              "generated_approval_gate_json",
+              "generated_approval_gate_md"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 7,
+          "maxItems": 7
+        },
+        "commit_forbidden": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ai_learning_content",
+              "dry_run_content",
+              "approval_result_instance",
+              "input_bundle_instance",
+              "official_markdown_rewrite",
+              "source_layer_modifications",
+              "raw_snapshots",
+              "intermediate_generated_artifacts",
+              "asset_images",
+              ".auth",
+              "node_modules",
+              "pnpm-workspace.yaml"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 12,
+          "maxItems": 12
+        }
+      }
+    }
+  }
+}
