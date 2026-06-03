@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-controlled-source-expansion-plan.schema.json",
+  "title": "Ruankaodaren Controlled Source Expansion Plan",
+  "description": "Phase 6.0 controlled source expansion plan. Defines how source coverage may be expanded in a controlled, batch-scoped manner. Does not execute expansion.",
+  "type": "object",
+  "required": [
+    "plan_version", "source_name", "created_at", "plan_scope",
+    "execution_allowed", "crawler_allowed", "renderer_allowed", "recovery_allowed",
+    "web_requests_allowed", "raw_html_direct_read_allowed", "raw_xhr_direct_read_allowed",
+    "ocr_allowed", "encrypted_xhr_decryption_allowed", "image_table_reconstruction_allowed",
+    "source_layer_modification_allowed", "official_markdown_modification_allowed",
+    "ai_learning_generation_allowed", "phase6_1_entry_allowed",
+    "current_source_coverage", "expansion_strategy", "taxonomy_13_3_policy",
+    "detail_entry_test_gate", "source_artifact_policy", "asset_manifest_policy",
+    "missing_record_policy", "phase6_1_entry_gate", "artifact_commit_policy"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "plan_version": { "type": "string", "const": "phase6.0" },
+    "source_name": { "type": "string", "const": "ruankaodaren" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "plan_scope": { "type": "string", "const": "controlled_source_expansion_plan_only" },
+    "execution_allowed": { "type": "boolean", "const": false },
+    "crawler_allowed": { "type": "boolean", "const": false },
+    "renderer_allowed": { "type": "boolean", "const": false },
+    "recovery_allowed": { "type": "boolean", "const": false },
+    "web_requests_allowed": { "type": "boolean", "const": false },
+    "raw_html_direct_read_allowed": { "type": "boolean", "const": false },
+    "raw_xhr_direct_read_allowed": { "type": "boolean", "const": false },
+    "ocr_allowed": { "type": "boolean", "const": false },
+    "encrypted_xhr_decryption_allowed": { "type": "boolean", "const": false },
+    "image_table_reconstruction_allowed": { "type": "boolean", "const": false },
+    "source_layer_modification_allowed": { "type": "boolean", "const": false },
+    "official_markdown_modification_allowed": { "type": "boolean", "const": false },
+    "ai_learning_generation_allowed": { "type": "boolean", "const": false },
+    "phase6_1_entry_allowed": { "type": "boolean", "const": false },
+    "current_source_coverage": { "$ref": "#/$defs/CurrentSourceCoverage" },
+    "expansion_strategy": { "$ref": "#/$defs/ExpansionStrategy" },
+    "taxonomy_13_3_policy": { "$ref": "#/$defs/Taxonomy133Policy" },
+    "detail_entry_test_gate": { "$ref": "#/$defs/DetailEntryTestGate" },
+    "source_artifact_policy": { "$ref": "#/$defs/SourceArtifactPolicy" },
+    "asset_manifest_policy": { "$ref": "#/$defs/AssetManifestPolicy" },
+    "missing_record_policy": { "$ref": "#/$defs/MissingRecordPolicy" },
+    "phase6_1_entry_gate": { "$ref": "#/$defs/Phase61EntryGate" },
+    "artifact_commit_policy": { "$ref": "#/$defs/ArtifactCommitPolicy" }
+  },
+  "$defs": {
+    "CurrentSourceCoverage": {
+      "type": "object",
+      "required": ["coverage_scope", "full_site_captured", "baseline_item_count", "baseline_complete_count", "items", "coverage_boundary_notes"],
+      "additionalProperties": false,
+      "properties": {
+        "coverage_scope": { "type": "string", "const": "baseline_only" },
+        "full_site_captured": { "type": "boolean", "const": false },
+        "baseline_item_count": { "type": "integer", "const": 3 },
+        "baseline_complete_count": { "type": "integer", "const": 3 },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/CoverageItem" }, "minItems": 3 },
+        "coverage_boundary_notes": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "CoverageItem": {
+      "type": "object",
+      "required": ["title", "source_layer_status", "taxonomy_suspect", "render_as"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string" },
+        "source_layer_status": { "type": "string" },
+        "taxonomy_suspect": { "type": "boolean" },
+        "render_as": { "type": "string" }
+      }
+    },
+    "ExpansionStrategy": {
+      "type": "object",
+      "required": ["candidate_groups", "expansion_batch_size", "first_batch_goal", "no_full_site_bulk_capture", "no_unbounded_crawler", "no_renderer_bulk_run"],
+      "additionalProperties": false,
+      "properties": {
+        "candidate_groups": { "type": "array", "items": { "$ref": "#/$defs/CandidateGroup" }, "minItems": 1 },
+        "expansion_batch_size": { "$ref": "#/$defs/BatchSize" },
+        "first_batch_goal": { "type": "string" },
+        "no_full_site_bulk_capture": { "type": "boolean", "const": true },
+        "no_unbounded_crawler": { "type": "boolean", "const": true },
+        "no_renderer_bulk_run": { "type": "boolean", "const": true }
+      }
+    },
+    "CandidateGroup": {
+      "type": "object",
+      "required": ["group_name", "priority", "item_type_filter", "prerequisite"],
+      "additionalProperties": false,
+      "properties": {
+        "group_name": { "type": "string" },
+        "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+        "item_type_filter": { "type": "string" },
+        "prerequisite": { "type": "string" }
+      }
+    },
+    "BatchSize": {
+      "type": "object",
+      "required": ["min", "max", "rationale"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "integer", "minimum": 1 },
+        "max": { "type": "integer", "maximum": 10 },
+        "rationale": { "type": "string" }
+      }
+    },
+    "Taxonomy133Policy": {
+      "type": "object",
+      "required": ["title", "taxonomy_suspect", "is_multi_card_sequence_possible", "must_recheck_children_before_leaf_modeling", "suggested_recheck_targets", "must_not_claim_complete", "expansion_blocked_until_recheck"],
+      "additionalProperties": false,
+      "properties": {
+        "title": { "type": "string", "const": "13.3 \u8f6f\u4ef6\u67b6\u6784\u98ce\u683c" },
+        "taxonomy_suspect": { "type": "boolean", "const": true },
+        "is_multi_card_sequence_possible": { "type": "boolean", "const": true },
+        "must_recheck_children_before_leaf_modeling": { "type": "boolean", "const": true },
+        "suggested_recheck_targets": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "must_not_claim_complete": { "type": "boolean", "const": true },
+        "expansion_blocked_until_recheck": { "type": "boolean", "const": true }
+      }
+    },
+    "DetailEntryTestGate": {
+      "type": "object",
+      "required": ["detail_entry_test_required_before_expansion", "rationale", "accepted_signals", "blocked_if"],
+      "additionalProperties": false,
+      "properties": {
+        "detail_entry_test_required_before_expansion": { "type": "boolean", "const": true },
+        "rationale": { "type": "string" },
+        "accepted_signals": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "blocked_if": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "SourceArtifactPolicy": {
+      "type": "object",
+      "required": ["required_artifacts", "forbidden_source_shortcuts"],
+      "additionalProperties": false,
+      "properties": {
+        "required_artifacts": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "forbidden_source_shortcuts": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "AssetManifestPolicy": {
+      "type": "object",
+      "required": ["required_when", "not_required_when"],
+      "additionalProperties": false,
+      "properties": {
+        "required_when": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "not_required_when": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "MissingRecordPolicy": {
+      "type": "object",
+      "required": ["if_source_artifact_missing"],
+      "additionalProperties": false,
+      "properties": {
+        "if_source_artifact_missing": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "Phase61EntryGate": {
+      "type": "object",
+      "required": ["phase6_1_entry_allowed", "required_before_phase6_1"],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "type": "boolean", "const": false },
+        "required_before_phase6_1": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    },
+    "ArtifactCommitPolicy": {
+      "type": "object",
+      "required": ["commit_allowed", "commit_forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "commit_allowed": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "commit_forbidden": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      }
+    }
+  }
+}

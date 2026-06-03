@@ -65,6 +65,8 @@
     "validate:ai-learning-human-review-request-package": "tsx scripts/validate-ruankaodaren-ai-learning-human-review-request-package.ts",
     "build:ai-learning-human-review-approval-gate": "tsx scripts/build-ruankaodaren-ai-learning-human-review-approval-gate.ts",
     "validate:ai-learning-human-review-approval-gate": "tsx scripts/validate-ruankaodaren-ai-learning-human-review-approval-gate.ts",
+    "build:controlled-source-expansion-plan": "tsx scripts/build-ruankaodaren-controlled-source-expansion-plan.ts",
+    "validate:controlled-source-expansion-plan": "tsx scripts/validate-ruankaodaren-controlled-source-expansion-plan.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
