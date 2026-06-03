@@ -47,6 +47,8 @@ const requiredDirectories = [
   "docs",
   "docs/ruankaodaren",
   "docs/ruankaodaren/baseline",
+  "docs/specs",
+  "data/manifests",
   "reviews/ruankaodaren/baseline",
   "templates",
   "templates/renderer",
@@ -246,12 +248,18 @@ const requiredFiles = [
   "scripts/build-ruankaodaren-controlled-source-expansion-plan.ts",
   "scripts/validate-ruankaodaren-controlled-source-expansion-plan.ts",
   "verification/generated/phase6_0_controlled_source_expansion_plan.json",
-  "verification/generated/phase6_0_controlled_source_expansion_plan.md"
+  "verification/generated/phase6_0_controlled_source_expansion_plan.md",
+  "docs/specs/010_phase6_1_batch_selection_manifest.md",
+  "schemas/ruankaodaren-batch-selection-manifest.schema.json",
+  "packages/domain-types/ruankaodaren-batch-selection-manifest.ts",
+  "scripts/build-ruankaodaren-batch-selection-manifest.ts",
+  "scripts/validate-ruankaodaren-batch-selection-manifest.ts",
+  "data/manifests/phase6_1_batch_selection_manifest.json"
 ];
 
 const requiredContent: Record<string, string[]> = {
   "AGENTS.md": ["Non-Negotiable Output Structure"],
-  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "build:ai-learning-dry-run-request-manifest", "validate:ai-learning-dry-run-request-manifest", "build:ai-learning-dry-run-execution-contract", "validate:ai-learning-dry-run-execution-contract", "build:ai-learning-dry-run-readiness-check", "validate:ai-learning-dry-run-readiness-check", "build:ai-learning-human-review-request-package", "validate:ai-learning-human-review-request-package", "build:ai-learning-human-review-approval-gate", "validate:ai-learning-human-review-approval-gate", "build:controlled-source-expansion-plan", "validate:controlled-source-expansion-plan", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
+  "package.json": ["auth:ruankaodaren", "crawl:ruankaodaren", "parse:ruankaodaren", "validate:intermediate", "capture:assets", "validate:assets", "report:sample-coverage", "run:sample-acquisition", "audit:sample-quality", "audit:semantic-alignment", "audit:detail-binding", "audit:parser-extraction", "reparse:selected-samples", "preflight:sample", "test:catalog-resolver", "test:live-replay", "test:baseline-detail-entry", "diagnose:target-reachability", "catalog:reachable-leaves", "list:leaf-candidates", "select:content-ready-candidates", "probe:content-rich-candidates", "apply:probe-recommendations", "test:detail-stabilization", "discover:detail-interactions", "probe:secondary-interactions", "audit:renderer-readiness", "build:renderer-baseline", "build:renderer-input-contract", "validate:renderer-input-contract", "render:dry-run", "validate:render-dry-run", "render:single-baseline", "validate:single-baseline-render", "render:baseline-set", "validate:baseline-set-render", "audit:render-quality", "build:human-review-checklist", "validate:render-quality-audit", "report:renderer-policy-refinement", "build:human-review-status", "validate:human-review-status", "build:controlled-expansion-plan", "validate:controlled-expansion-plan", "validate:dual-layer-contract", "build:source-packets", "validate:source-packets", "build:ai-learning-prompt-contract", "validate:ai-learning-prompt-contract", "build:ai-learning-dry-run-contract", "validate:ai-learning-dry-run-contract", "build:ai-learning-dry-run-request-manifest", "validate:ai-learning-dry-run-request-manifest", "build:ai-learning-dry-run-execution-contract", "validate:ai-learning-dry-run-execution-contract", "build:ai-learning-dry-run-readiness-check", "validate:ai-learning-dry-run-readiness-check", "build:ai-learning-human-review-request-package", "validate:ai-learning-human-review-request-package", "build:ai-learning-human-review-approval-gate", "validate:ai-learning-human-review-approval-gate", "build:controlled-source-expansion-plan", "validate:controlled-source-expansion-plan", "build:batch-selection-manifest", "validate:batch-selection-manifest", "recover:baseline-source-artifacts", "recheck:taxonomy", "run:third-baseline-promotion"],
   "verification/phase5_0_source_ai_dual_layer_contract_check.md": [
     "# Phase 5.0 Source + AI Learning Dual-layer Renderer Contract",
     "## 4. Source Layer Policy",
