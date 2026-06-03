@@ -1,0 +1,238 @@
+{
+  "manifest_version": "phase6.3",
+  "manifest_type": "batch_activation_readiness_preflight",
+  "status": "preflight_complete_approval_pending",
+  "created_for_phase": "6.3",
+  "inherits_from_phase": ["6.0", "6.1", "6.2"],
+  "created_at": "2026-06-03T08:40:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_source_packets",
+      "validate_batch_structural_integrity",
+      "assess_readiness_criteria",
+      "write_activation_readiness_preflight_manifest"
+    ],
+    "forbidden": [
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json",
+      "execute_batch",
+      "set_batch_executable_true",
+      "set_activation_allowed_true",
+      "set_execution_allowed_true"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": false,
+    "activation_allowed": false,
+    "batch_executable": false,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false,
+    "taxonomy_suspect_13_3_quarantined": true
+  },
+  "batch_structural_assessment": {
+    "batch_id": "phase6_1_batch_001",
+    "selected_items": ["1.3"],
+    "structural_preconditions": {
+      "checks": [
+        {
+          "precondition": "Batch size within bounds (1-5)",
+          "status": "PASS",
+          "evidence": "Size = 1"
+        },
+        {
+          "precondition": "No quarantined items in selection",
+          "status": "PASS",
+          "evidence": "13.3 is quarantined and not selected"
+        },
+        {
+          "precondition": "No taxonomy suspect items in selection",
+          "status": "PASS",
+          "evidence": "13.3 resolved via quarantine"
+        },
+        {
+          "precondition": "Selected items exist in baseline",
+          "status": "PASS",
+          "evidence": "1.3 is part of baseline capture"
+        },
+        {
+          "precondition": "Source packets exist for selected items",
+          "status": "PASS",
+          "evidence": "Source packets validated"
+        },
+        {
+          "precondition": "Risk level acceptable",
+          "status": "PASS",
+          "evidence": "1.3 has risk_level=low"
+        },
+        {
+          "precondition": "Known issues manageable",
+          "status": "PASS",
+          "evidence": "1.3 has MIXED_TEXT_IMAGE (manageable)"
+        }
+      ],
+      "result": "PASS"
+    },
+    "item_risk_profile": {
+      "item_id": "1.3",
+      "title": "指令系统CISC和RISC",
+      "risk_level": "low",
+      "known_issue": "MIXED_TEXT_IMAGE",
+      "risk_assessment": "ACCEPTABLE"
+    }
+  },
+  "gate_inventory": {
+    "satisfied_gates": [
+      {
+        "gate": "expansion_blocked_until_recheck",
+        "status": false,
+        "resolved_by": "Phase 6.2"
+      },
+      {
+        "gate": "taxonomy_suspect_13_3",
+        "status": false,
+        "resolved_by": "Phase 6.2"
+      },
+      {
+        "gate": "Batch size within bounds",
+        "status": true,
+        "resolved_by": "Phase 6.1"
+      },
+      {
+        "gate": "No quarantined items selected",
+        "status": true,
+        "resolved_by": "Phase 6.1, 6.2"
+      },
+      {
+        "gate": "Source packet validation",
+        "status": true,
+        "resolved_by": "Baseline capture"
+      },
+      {
+        "gate": "Structural integrity",
+        "status": true,
+        "resolved_by": "Phase 6.3 assessment"
+      }
+    ],
+    "pending_gates": [
+      {
+        "gate": "phase6_1_entry_allowed",
+        "status": false,
+        "requirement": "Requires human approval (Phase 6.4+)"
+      },
+      {
+        "gate": "activation_allowed",
+        "status": false,
+        "requirement": "Requires explicit activation decision (Phase 6.4+)"
+      },
+      {
+        "gate": "batch_executable",
+        "status": false,
+        "requirement": "Requires full approval chain (Phase 6.5+)"
+      }
+    ],
+    "result": "6 of 9 gates satisfied, 3 pending human approval"
+  },
+  "readiness_decision": {
+    "structural_eligibility": "PASS",
+    "risk_profile": "ACCEPTABLE",
+    "gate_inventory_summary": "6/9 satisfied (3 pending approval)",
+    "decision": "The batch is structurally ready to become an activation candidate.",
+    "readiness_status": "activation_candidate",
+    "interpretation": [
+      "The batch has passed all structural and technical preconditions",
+      "The batch is eligible for activation pending human approval",
+      "The batch remains non-executable until approval gates are opened",
+      "The batch requires formal human review before activation",
+      "The batch will not execute until batch_executable=true"
+    ]
+  },
+  "updated_batch_status": {
+    "batch_metadata": {
+      "batch_id": "phase6_1_batch_001",
+      "readiness_status": "activation_candidate",
+      "batch_executable": false,
+      "activation_allowed": false,
+      "items": [
+        {
+          "item_id": "1.3",
+          "title": "指令系统CISC和RISC",
+          "execution_allowed": false,
+          "readiness_status": "ready_pending_approval"
+        }
+      ]
+    },
+    "item_status_summary": [
+      {
+        "item_id": "1.3",
+        "title": "指令系统CISC和RISC",
+        "status": "proposed_primary",
+        "readiness": "ready_pending_approval"
+      },
+      {
+        "item_id": "9.1",
+        "title": "信息安全基础知识",
+        "status": "deferred_candidate",
+        "readiness": "not_assessed"
+      },
+      {
+        "item_id": "13.3",
+        "title": "软件架构风格",
+        "status": "quarantined",
+        "readiness": "ineligible"
+      }
+    ]
+  },
+  "remaining_approval_requirements": {
+    "requirements": [
+      "Human Review Gate: Formal human review must approve the batch for activation",
+      "Entry Gate: phase6_1_entry_allowed must be set to true",
+      "Activation Gate: activation_allowed must be set to true",
+      "Execution Gate: batch_executable must be set to true (final step before execution)"
+    ],
+    "status": "0 of 4 approval gates satisfied"
+  },
+  "validation_expectations": {
+    "must_pass": [
+      "validate:controlled-source-expansion-plan",
+      "validate:source-packets",
+      "validate:dual-layer-contract",
+      "validate:batch-selection-manifest",
+      "validate:gate-recheck-manifest",
+      "validate:activation-readiness-preflight"
+    ],
+    "must_not_trigger": [
+      "crawler",
+      "renderer",
+      "recovery",
+      "web_requests",
+      "ai_learning_generation",
+      "asset_capture",
+      "raw_snapshot_creation",
+      "intermediate_json_creation",
+      "batch_execution"
+    ]
+  },
+  "final_decision": {
+    "preflight_complete": true,
+    "batch_id": "phase6_1_batch_001",
+    "readiness_status": "activation_candidate",
+    "batch_executable": false,
+    "activation_allowed": false,
+    "selected_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"]
+  }
+}

@@ -1,0 +1,266 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-activation-readiness-preflight",
+  "title": "Ruankaodaren Phase 6.3 Activation Readiness Preflight Manifest",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "scope",
+    "phase_gates",
+    "batch_structural_assessment",
+    "gate_inventory",
+    "readiness_decision",
+    "updated_batch_status",
+    "remaining_approval_requirements",
+    "validation_expectations",
+    "final_decision"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.3" },
+    "manifest_type": { "const": "batch_activation_readiness_preflight" },
+    "status": { "const": "preflight_complete_approval_pending" },
+    "created_for_phase": { "const": "6.3" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["6.0", "6.1", "6.2"] },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed",
+        "taxonomy_suspect_13_3_quarantined"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": false },
+        "activation_allowed": { "const": false },
+        "batch_executable": { "const": false },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false },
+        "taxonomy_suspect_13_3_quarantined": { "const": true }
+      }
+    },
+    "batch_structural_assessment": {
+      "type": "object",
+      "required": ["batch_id", "selected_items", "structural_preconditions", "item_risk_profile"],
+      "additionalProperties": false,
+      "properties": {
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "selected_items": {
+          "type": "array",
+          "items": { "const": "1.3" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "structural_preconditions": {
+          "type": "object",
+          "required": ["checks", "result"],
+          "additionalProperties": false,
+          "properties": {
+            "checks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["precondition", "status", "evidence"],
+                "additionalProperties": false,
+                "properties": {
+                  "precondition": { "type": "string" },
+                  "status": { "enum": ["PASS", "FAIL"] },
+                  "evidence": { "type": "string" }
+                }
+              }
+            },
+            "result": { "const": "PASS" }
+          }
+        },
+        "item_risk_profile": {
+          "type": "object",
+          "required": ["item_id", "title", "risk_level", "known_issue", "risk_assessment"],
+          "additionalProperties": false,
+          "properties": {
+            "item_id": { "const": "1.3" },
+            "title": { "const": "指令系统CISC和RISC" },
+            "risk_level": { "const": "low" },
+            "known_issue": { "const": "MIXED_TEXT_IMAGE" },
+            "risk_assessment": { "const": "ACCEPTABLE" }
+          }
+        }
+      }
+    },
+    "gate_inventory": {
+      "type": "object",
+      "required": ["satisfied_gates", "pending_gates", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "satisfied_gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gate", "status", "resolved_by"],
+            "additionalProperties": false,
+            "properties": {
+              "gate": { "type": "string" },
+              "status": { "type": "boolean" },
+              "resolved_by": { "type": "string" }
+            }
+          }
+        },
+        "pending_gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gate", "status", "requirement"],
+            "additionalProperties": false,
+            "properties": {
+              "gate": { "type": "string" },
+              "status": { "type": "boolean" },
+              "requirement": { "type": "string" }
+            }
+          }
+        },
+        "result": { "type": "string" }
+      }
+    },
+    "readiness_decision": {
+      "type": "object",
+      "required": ["structural_eligibility", "risk_profile", "gate_inventory_summary", "decision", "readiness_status", "interpretation"],
+      "additionalProperties": false,
+      "properties": {
+        "structural_eligibility": { "const": "PASS" },
+        "risk_profile": { "const": "ACCEPTABLE" },
+        "gate_inventory_summary": { "type": "string" },
+        "decision": { "type": "string" },
+        "readiness_status": { "const": "activation_candidate" },
+        "interpretation": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "updated_batch_status": {
+      "type": "object",
+      "required": ["batch_metadata", "item_status_summary"],
+      "additionalProperties": false,
+      "properties": {
+        "batch_metadata": {
+          "type": "object",
+          "required": ["batch_id", "readiness_status", "batch_executable", "activation_allowed", "items"],
+          "additionalProperties": false,
+          "properties": {
+            "batch_id": { "const": "phase6_1_batch_001" },
+            "readiness_status": { "const": "activation_candidate" },
+            "batch_executable": { "const": false },
+            "activation_allowed": { "const": false },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["item_id", "title", "execution_allowed", "readiness_status"],
+                "additionalProperties": false,
+                "properties": {
+                  "item_id": { "type": "string" },
+                  "title": { "type": "string" },
+                  "execution_allowed": { "const": false },
+                  "readiness_status": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "item_status_summary": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item_id", "title", "status", "readiness"],
+            "additionalProperties": false,
+            "properties": {
+              "item_id": { "type": "string" },
+              "title": { "type": "string" },
+              "status": { "type": "string" },
+              "readiness": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "remaining_approval_requirements": {
+      "type": "object",
+      "required": ["requirements", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "requirements": { "type": "array", "items": { "type": "string" } },
+        "status": { "type": "string" }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": ["must_pass", "must_not_trigger"],
+      "additionalProperties": false,
+      "properties": {
+        "must_pass": { "type": "array", "items": { "type": "string" } },
+        "must_not_trigger": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "final_decision": {
+      "type": "object",
+      "required": [
+        "preflight_complete",
+        "batch_id",
+        "readiness_status",
+        "batch_executable",
+        "activation_allowed",
+        "selected_items",
+        "deferred_items",
+        "quarantined_items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "preflight_complete": { "const": true },
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "readiness_status": { "const": "activation_candidate" },
+        "batch_executable": { "const": false },
+        "activation_allowed": { "const": false },
+        "selected_items": {
+          "type": "array",
+          "items": { "const": "1.3" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "deferred_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "9.1" }
+        },
+        "quarantined_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "13.3" }
+        }
+      }
+    }
+  }
+}
