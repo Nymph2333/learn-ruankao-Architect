@@ -1,0 +1,280 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-gate-recheck-manifest",
+  "title": "Ruankaodaren Phase 6.2 Gate Recheck Manifest",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "scope",
+    "phase_gates",
+    "recheck_scope",
+    "item_13_3_review",
+    "gate_status_after_recheck",
+    "updated_batch_status",
+    "remaining_activation_conditions",
+    "validation_expectations",
+    "final_decision"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.2" },
+    "manifest_type": { "const": "gate_recheck_and_taxonomy_quarantine" },
+    "status": { "const": "recheck_complete_expansion_still_blocked" },
+    "created_for_phase": { "const": "6.2" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["6.0", "6.1"] },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": false },
+        "activation_allowed": { "const": false },
+        "batch_executable": { "const": false },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false }
+      }
+    },
+    "recheck_scope": {
+      "type": "object",
+      "required": ["objectives", "scope_boundaries"],
+      "additionalProperties": false,
+      "properties": {
+        "objectives": { "type": "array", "items": { "type": "string" } },
+        "scope_boundaries": {
+          "type": "object",
+          "required": ["allowed_operations", "forbidden_operations"],
+          "additionalProperties": false,
+          "properties": {
+            "allowed_operations": { "type": "array", "items": { "type": "string" } },
+            "forbidden_operations": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "item_13_3_review": {
+      "type": "object",
+      "required": [
+        "item_id",
+        "title",
+        "taxonomy_suspect_context",
+        "evidence_analysis",
+        "quarantine_decision"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "item_id": { "const": "13.3" },
+        "title": { "const": "软件架构风格" },
+        "taxonomy_suspect_context": {
+          "type": "object",
+          "required": ["known_issue", "original_suspicion", "risk_level"],
+          "additionalProperties": false,
+          "properties": {
+            "known_issue": { "const": "taxonomy_suspect_13_3" },
+            "original_suspicion": { "type": "string" },
+            "risk_level": { "const": "high" }
+          }
+        },
+        "evidence_analysis": {
+          "type": "object",
+          "required": ["baseline_capture_status", "source_artifact_review", "taxonomy_structure_review"],
+          "additionalProperties": false,
+          "properties": {
+            "baseline_capture_status": { "type": "string" },
+            "source_artifact_review": { "type": "string" },
+            "taxonomy_structure_review": { "type": "string" }
+          }
+        },
+        "quarantine_decision": {
+          "type": "object",
+          "required": ["decision", "rationale", "quarantine_status", "quarantine_scope"],
+          "additionalProperties": false,
+          "properties": {
+            "decision": { "const": "QUARANTINE" },
+            "rationale": { "type": "array", "items": { "type": "string" } },
+            "quarantine_status": { "enum": ["quarantined", "resolved", "still_blocking"] },
+            "quarantine_scope": { "type": "string" }
+          }
+        }
+      }
+    },
+    "gate_status_after_recheck": {
+      "type": "object",
+      "required": ["updated_gates", "interpretation"],
+      "additionalProperties": false,
+      "properties": {
+        "updated_gates": {
+          "type": "object",
+          "required": [
+            "expansion_blocked_until_recheck",
+            "taxonomy_suspect_13_3",
+            "taxonomy_suspect_13_3_quarantined"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "expansion_blocked_until_recheck": {
+              "type": "object",
+              "required": ["before", "after"],
+              "additionalProperties": false,
+              "properties": {
+                "before": { "const": true },
+                "after": { "const": false }
+              }
+            },
+            "taxonomy_suspect_13_3": {
+              "type": "object",
+              "required": ["before", "after"],
+              "additionalProperties": false,
+              "properties": {
+                "before": { "const": true },
+                "after": { "const": false }
+              }
+            },
+            "taxonomy_suspect_13_3_quarantined": {
+              "type": "object",
+              "required": ["before", "after"],
+              "additionalProperties": false,
+              "properties": {
+                "before": { "type": "null" },
+                "after": { "const": true }
+              }
+            }
+          }
+        },
+        "interpretation": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "updated_batch_status": {
+      "type": "object",
+      "required": ["selected_batch", "item_status_after_quarantine"],
+      "additionalProperties": false,
+      "properties": {
+        "selected_batch": {
+          "type": "object",
+          "required": ["batch_id", "status", "items"],
+          "additionalProperties": false,
+          "properties": {
+            "batch_id": { "const": "phase6_1_batch_001" },
+            "status": { "const": "proposed_inactive" },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["item_id", "title", "execution_allowed"],
+                "additionalProperties": false,
+                "properties": {
+                  "item_id": { "type": "string" },
+                  "title": { "type": "string" },
+                  "execution_allowed": { "const": false }
+                }
+              }
+            }
+          }
+        },
+        "item_status_after_quarantine": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item_id", "title", "status", "quarantine_status"],
+            "additionalProperties": false,
+            "properties": {
+              "item_id": { "type": "string" },
+              "title": { "type": "string" },
+              "status": {
+                "type": "string",
+                "enum": ["proposed_primary", "deferred_candidate", "quarantined"]
+              },
+              "quarantine_status": {
+                "type": ["string", "null"],
+                "enum": ["quarantined", null]
+              }
+            }
+          }
+        }
+      }
+    },
+    "remaining_activation_conditions": {
+      "type": "object",
+      "required": ["satisfied", "still_required"],
+      "additionalProperties": false,
+      "properties": {
+        "satisfied": { "type": "array", "items": { "type": "string" } },
+        "still_required": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": ["must_pass", "must_not_trigger"],
+      "additionalProperties": false,
+      "properties": {
+        "must_pass": { "type": "array", "items": { "type": "string" } },
+        "must_not_trigger": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "final_decision": {
+      "type": "object",
+      "required": [
+        "recheck_complete",
+        "item_13_3_quarantined",
+        "expansion_execution_allowed",
+        "selected_batch_id",
+        "selected_items",
+        "deferred_items",
+        "blocked_or_quarantined_items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "recheck_complete": { "const": true },
+        "item_13_3_quarantined": { "const": true },
+        "expansion_execution_allowed": { "const": false },
+        "selected_batch_id": { "const": "phase6_1_batch_001" },
+        "selected_items": {
+          "type": "array",
+          "items": { "const": "1.3" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "deferred_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "9.1" }
+        },
+        "blocked_or_quarantined_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "13.3" }
+        }
+      }
+    }
+  }
+}

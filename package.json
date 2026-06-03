@@ -69,6 +69,7 @@
     "validate:controlled-source-expansion-plan": "tsx scripts/validate-ruankaodaren-controlled-source-expansion-plan.ts",
     "build:batch-selection-manifest": "tsx scripts/build-ruankaodaren-batch-selection-manifest.ts",
     "validate:batch-selection-manifest": "tsx scripts/validate-ruankaodaren-batch-selection-manifest.ts",
+    "validate:gate-recheck-manifest": "tsx scripts/validate-ruankaodaren-gate-recheck-manifest.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",

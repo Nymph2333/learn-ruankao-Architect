@@ -1,0 +1,196 @@
+{
+  "manifest_version": "phase6.2",
+  "manifest_type": "gate_recheck_and_taxonomy_quarantine",
+  "status": "recheck_complete_expansion_still_blocked",
+  "created_for_phase": "6.2",
+  "inherits_from_phase": ["6.0", "6.1"],
+  "created_at": "2026-06-03T08:24:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_source_packets",
+      "read_existing_intermediate_json",
+      "read_existing_rendered_documents",
+      "analyze_taxonomy_suspect_13_3",
+      "make_quarantine_decision",
+      "write_gate_recheck_manifest"
+    ],
+    "forbidden": [
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json",
+      "activate_expansion_execution",
+      "set_batch_executable_true",
+      "set_activation_allowed_true"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": false,
+    "activation_allowed": false,
+    "batch_executable": false,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "recheck_scope": {
+    "objectives": [
+      "Review taxonomy integrity of item 13.3 软件架构风格",
+      "Collect evidence from existing source artifacts",
+      "Make explicit quarantine or resolution decision",
+      "Update gate status based on evidence",
+      "Document rationale for decision"
+    ],
+    "scope_boundaries": {
+      "allowed_operations": [
+        "Read existing source packets",
+        "Read existing intermediate JSON",
+        "Read existing rendered documents",
+        "Analyze baseline item structure",
+        "Write gate recheck manifest"
+      ],
+      "forbidden_operations": [
+        "Run crawler",
+        "Run renderer",
+        "Make web requests",
+        "Modify source layer",
+        "Generate AI learning content",
+        "Create new raw snapshots",
+        "Create new intermediate JSON"
+      ]
+    }
+  },
+  "item_13_3_review": {
+    "item_id": "13.3",
+    "title": "软件架构风格",
+    "taxonomy_suspect_context": {
+      "known_issue": "taxonomy_suspect_13_3",
+      "original_suspicion": "Item 13.3 was flagged during Phase 6.0 planning as a taxonomy suspect due to potential structural ambiguity or boundary misalignment. Expansion surface is unknown and potentially unbounded.",
+      "risk_level": "high"
+    },
+    "evidence_analysis": {
+      "baseline_capture_status": "Item 13.3 is present in the baseline capture (baseline items: 1.3, 9.1, 13.3). Source packets exist for all three items. Item 13.3 artifacts are present in baseline capture.",
+      "source_artifact_review": "Source packets, intermediate JSON, and rendered documents exist for item 13.3 from baseline capture. Artifacts are structurally valid within the baseline context.",
+      "taxonomy_structure_review": "Item 13.3 is a known valid item in the Ruankaodaren taxonomy and appears in the official exam syllabus. However, the expansion surface of 13.3 is suspected to be large or structurally ambiguous. Expansion might introduce multiple sub-items, internal multi-card topics, or boundary ambiguity with adjacent topics."
+    },
+    "quarantine_decision": {
+      "decision": "QUARANTINE",
+      "rationale": [
+        "Item 13.3 is structurally valid in the baseline",
+        "However, its expansion surface is unknown and risky",
+        "Without a full taxonomy map, expanding 13.3 could introduce unbounded expansion",
+        "Expansion could create taxonomy drift or violate controlled expansion constraints",
+        "Conservative principle: exclude high-risk items until full taxonomy verification is complete",
+        "Item 13.3 may be reconsidered in a future phase after full taxonomy map is available and expansion boundaries are verified"
+      ],
+      "quarantine_status": "quarantined",
+      "quarantine_scope": "All future expansion batches until taxonomy map is complete and verified"
+    }
+  },
+  "gate_status_after_recheck": {
+    "updated_gates": {
+      "expansion_blocked_until_recheck": {
+        "before": true,
+        "after": false
+      },
+      "taxonomy_suspect_13_3": {
+        "before": true,
+        "after": false
+      },
+      "taxonomy_suspect_13_3_quarantined": {
+        "before": null,
+        "after": true
+      }
+    },
+    "interpretation": [
+      "The recheck is complete",
+      "The suspect status is resolved by quarantine",
+      "Expansion is no longer blocked by the recheck requirement",
+      "However, expansion is still blocked by other gates: phase6_1_entry_allowed: false, activation_allowed: false, batch_executable: false",
+      "Phase 6.2 resolves one blocker (taxonomy suspect recheck) but does NOT open execution gates"
+    ]
+  },
+  "updated_batch_status": {
+    "selected_batch": {
+      "batch_id": "phase6_1_batch_001",
+      "status": "proposed_inactive",
+      "items": [
+        {
+          "item_id": "1.3",
+          "title": "指令系统CISC和RISC",
+          "execution_allowed": false
+        }
+      ]
+    },
+    "item_status_after_quarantine": [
+      {
+        "item_id": "1.3",
+        "title": "指令系统CISC和RISC",
+        "status": "proposed_primary",
+        "quarantine_status": null
+      },
+      {
+        "item_id": "9.1",
+        "title": "信息安全基础知识",
+        "status": "deferred_candidate",
+        "quarantine_status": null
+      },
+      {
+        "item_id": "13.3",
+        "title": "软件架构风格",
+        "status": "quarantined",
+        "quarantine_status": "quarantined"
+      }
+    ]
+  },
+  "remaining_activation_conditions": {
+    "satisfied": [
+      "expansion_blocked_until_recheck is false (resolved by Phase 6.2)",
+      "taxonomy_suspect_13_3 is resolved or quarantined (resolved by Phase 6.2)",
+      "Source packet validation passes",
+      "Batch size remains between 1 and 5 (satisfied: size = 1)",
+      "No crawler or renderer runs during manifest validation"
+    ],
+    "still_required": [
+      "phase6_1_entry_allowed must be true (currently false)",
+      "activation_allowed must be true (currently false)",
+      "Human review gate must approve controlled expansion"
+    ]
+  },
+  "validation_expectations": {
+    "must_pass": [
+      "validate:controlled-source-expansion-plan",
+      "validate:source-packets",
+      "validate:dual-layer-contract",
+      "validate:batch-selection-manifest",
+      "validate:gate-recheck-manifest"
+    ],
+    "must_not_trigger": [
+      "crawler",
+      "renderer",
+      "recovery",
+      "web_requests",
+      "ai_learning_generation",
+      "asset_capture",
+      "raw_snapshot_creation",
+      "intermediate_json_creation"
+    ]
+  },
+  "final_decision": {
+    "recheck_complete": true,
+    "item_13_3_quarantined": true,
+    "expansion_execution_allowed": false,
+    "selected_batch_id": "phase6_1_batch_001",
+    "selected_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "blocked_or_quarantined_items": ["13.3"]
+  }
+}
