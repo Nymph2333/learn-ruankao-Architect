@@ -1,0 +1,303 @@
+{
+  "manifest_version": "phase6.16",
+  "manifest_type": "offline_batch_dry_run_approval_request",
+  "status": "offline_batch_dry_run_approval_request_created",
+  "created_for_phase": "6.16",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13", "6.14", "6.15"],
+  "created_at": "2026-06-04T00:00:00Z",
+  "scope": {
+    "allowed": [
+      "dry-run approval request creation",
+      "dry-run command placeholder documentation",
+      "dry-run scope documentation",
+      "allowed input documentation",
+      "forbidden input documentation",
+      "allowed future dry-run output documentation",
+      "forbidden current-phase output documentation",
+      "rollback condition documentation",
+      "audit condition documentation",
+      "no-go confirmation",
+      "human decision field creation"
+    ],
+    "forbidden": [
+      "dry-run execution",
+      "batch execution",
+      "crawler execution",
+      "renderer execution",
+      "recovery execution",
+      "web requests",
+      "AI learning content generation",
+      "source layer mutation",
+      "raw snapshot creation",
+      "intermediate JSON creation",
+      "asset capture",
+      "package script addition",
+      "dry-run result creation",
+      "dry-run record creation"
+    ]
+  },
+  "approval_status": "pending_human_review",
+  "requested_decision": "approve_offline_dry_run",
+  "dry_run_approval_status": "pending_human_review",
+  "dry_run_approved": false,
+  "dry_run_executed": false,
+  "batch_run_executed": false,
+  "run_mode": "offline_existing_source_packet_only",
+  "batch_id": "phase6_1_batch_001",
+  "approved_items": ["1.3"],
+  "run_command_approved": true,
+  "command_status": "approved",
+  "command_is_executable_now": true,
+  "command_has_been_executed": false,
+  "dry_run_plan_status": "planned_not_executed",
+  "dry_run_plan_manifest": "phase6_15_offline_batch_dry_run_plan.json",
+  "execution_authorization_status": "execution_approved",
+  "operational_mode_approval_status": "operational_mode_approved",
+  "request_metadata": {
+    "request_id": "offline_batch_dry_run_approval_request_phase6_16_001",
+    "request_type": "offline_batch_dry_run_approval_request",
+    "request_phase": "6.16",
+    "request_timestamp": "2026-06-04T00:00:00Z",
+    "prior_plan_phase": "6.15",
+    "prior_plan_manifest": "phase6_15_offline_batch_dry_run_plan.json",
+    "prior_plan_status": "offline_batch_dry_run_plan_created",
+    "referencing_approval_phase": "6.14",
+    "referencing_decision_phase": "6.11",
+    "referencing_plan_phase": "6.15",
+    "request_scope": "offline_batch_dry_run_approval_request_only"
+  },
+  "dry_run_scope": {
+    "eligible_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "item_count": 1,
+    "source_layer_mutation_allowed": false,
+    "output_artifact_creation_allowed": false,
+    "constraints": [
+      "Only item 1.3 may be dry-run assessed",
+      "9.1 remains deferred",
+      "13.3 remains quarantined and ineligible",
+      "Source layer mutation is not allowed",
+      "Output artifact creation is not allowed"
+    ]
+  },
+  "allowed_inputs": {
+    "description": "Only existing source packets, manifests, schemas, and taxonomy configuration may be used as input",
+    "inputs": [
+      { "name": "existing_source_packets", "source": "source-packets/ruankaodaren/baseline/", "status": "available" },
+      { "name": "manifest_artifacts", "source": "data/manifests/", "status": "available" },
+      { "name": "schema_definitions", "source": "schemas/", "status": "available" },
+      { "name": "taxonomy_configuration", "source": "config/taxonomy.yaml", "status": "available" }
+    ]
+  },
+  "forbidden_inputs": {
+    "description": "The following inputs are explicitly forbidden for Phase 6.16",
+    "inputs": [
+      "new_web_requests",
+      "crawler_outputs",
+      "renderer_outputs",
+      "recovery_outputs",
+      "ai_generated_content",
+      "raw_snapshots",
+      "intermediate_json",
+      "captured_assets"
+    ]
+  },
+  "dry_run_command": {
+    "dry_run_command_id": "phase6_16_offline_dry_run_command_001",
+    "command_type": "offline_batch_dry_run",
+    "command_status": "pending_human_review",
+    "command_is_executable_now": false,
+    "command_has_been_executed": false,
+    "command_text_placeholder": "pnpm run batch:offline:dry-run -- --batch phase6_1_batch_001 --items 1.3 --mode offline_existing_source_packet_only",
+    "command_is_placeholder_only": true,
+    "command_not_in_package_json": true,
+    "command_arguments": [
+      { "argument": "--batch", "value": "phase6_1_batch_001", "description": "Target batch identifier" },
+      { "argument": "--items", "value": "1.3", "description": "Comma-separated list of approved item IDs" },
+      { "argument": "--mode", "value": "offline_existing_source_packet_only", "description": "Execution mode constraint" }
+    ],
+    "command_constraints": [
+      "The command is a documentation placeholder only",
+      "No batch:offline:dry-run script exists in package.json",
+      "The command must not be executed in Phase 6.16",
+      "The command must not generate any output artifacts in Phase 6.16",
+      "The command must be approved by a human before future dry-run execution"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "operational_gate_decisions": {
+    "crawler_gate_decision": "not_required",
+    "renderer_gate_decision": "not_required",
+    "recovery_gate_decision": "not_required",
+    "web_requests_gate_decision": "not_required",
+    "ai_learning_generation_gate_decision": "not_allowed",
+    "constraint": "All operational gates remain closed for Phase 6.16"
+  },
+  "human_decision_fields": {
+    "requested_decision": "approve_offline_dry_run",
+    "dry_run_approval_status": "pending_human_review",
+    "dry_run_approved": false,
+    "human_review_required": true,
+    "human_decision_recorded": false,
+    "human_decision": null,
+    "decision_options": [
+      "approve_offline_dry_run",
+      "reject_offline_dry_run"
+    ],
+    "constraints": [
+      "The human must review the dry-run plan before approving",
+      "The human must explicitly approve or reject the dry-run",
+      "The decision must be recorded before any dry-run execution",
+      "No automatic approval is permitted"
+    ]
+  },
+  "allowed_future_outputs": {
+    "description": "The following artifacts may be created in a future phase after dry-run approval and execution",
+    "artifacts": [
+      { "name": "dry_run_record", "purpose": "Record of dry-run execution", "created_when": "After dry-run approval and execution", "status": "planned" },
+      { "name": "dry_run_audit_log", "purpose": "Audit trail of dry-run decisions", "created_when": "After dry-run execution", "status": "planned" },
+      { "name": "dry_run_item_scope_report", "purpose": "Report of items included in dry-run", "created_when": "After dry-run execution", "status": "planned" },
+      { "name": "dry_run_validation_report", "purpose": "Validation results of dry-run", "created_when": "After dry-run execution", "status": "planned" }
+    ]
+  },
+  "forbidden_phase6_16_artifacts": {
+    "description": "The following artifacts must NOT be created in Phase 6.16",
+    "artifacts": [
+      "actual_dry_run_record",
+      "actual_dry_run_result",
+      "actual_controlled_batch_run_record",
+      "actual_item_level_execution_result",
+      "actual_post_run_validation_report",
+      "raw_snapshots",
+      "intermediate_json",
+      "rendered_outputs",
+      "crawler_outputs",
+      "recovery_outputs",
+      "web_request_results",
+      "ai_learning_content",
+      "source_layer_mutations",
+      "captured_assets"
+    ]
+  },
+  "no_go_confirmation": {
+    "no_dry_run_execution_occurs": true,
+    "no_batch_execution_occurs": true,
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_source_layer_modified": true,
+    "no_ai_learning_generated": true,
+    "no_assets_captured": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "no_package_script_added_for_dry_run": true,
+    "crawler_allowed_remains_false": true,
+    "renderer_allowed_remains_false": true,
+    "recovery_allowed_remains_false": true,
+    "web_requests_allowed_remains_false": true,
+    "ai_learning_generation_allowed_remains_false": true,
+    "no_dry_run_record_created": true,
+    "no_dry_run_result_created": true
+  },
+  "operational_assertions": {
+    "dry_run_execution_claimed": false,
+    "batch_execution_claimed": false,
+    "crawler_output_claimed": false,
+    "renderer_output_claimed": false,
+    "recovery_output_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "web_requests_declared": false,
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false,
+    "assets_captured": false
+  },
+  "rollback_condition": {
+    "phase6_16_rollback_needed": false,
+    "reason": "No dry-run has been executed; rollback is not applicable",
+    "future_dry_run_rollback_requirements": [
+      "If the dry-run approval is granted and later found to be incorrect, the approval must be revoked",
+      "If the dry-run is executed and produces errors, the dry-run results must be invalidated",
+      "If the dry-run scope changes, a new approval request must be created"
+    ]
+  },
+  "audit_condition": {
+    "prior_phase_chain": [
+      "6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9",
+      "6.10", "6.11", "6.12", "6.13", "6.14", "6.15"
+    ],
+    "current_approval_status": "pending_human_review",
+    "current_dry_run_status": "not_started",
+    "current_dry_run_executed": false,
+    "current_batch_run_executed": false,
+    "current_operational_gates": {
+      "phase6_1_entry_allowed": true,
+      "activation_allowed": true,
+      "batch_executable": true,
+      "execution_allowed": true,
+      "crawler_allowed": false,
+      "renderer_allowed": false,
+      "recovery_allowed": false,
+      "web_requests_allowed": false,
+      "ai_learning_generation_allowed": false
+    },
+    "no_go_confirmation": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:offline-batch-dry-run-approval-request"
+    ],
+    "commit_scope": "Phase 6.16 offline dry-run approval request files and related schema/type/validator/package verification changes only"
+  },
+  "phase_progression_history": [
+    { "phase": "6.0", "outcome": "controlled_source_expansion_plan_created" },
+    { "phase": "6.1", "outcome": "batch_selection_manifest_created" },
+    { "phase": "6.2", "outcome": "gate_recheck_manifest_created" },
+    { "phase": "6.3", "outcome": "activation_readiness_preflight_manifest_created" },
+    { "phase": "6.4", "outcome": "batch_activation_human_approval_request_created" },
+    { "phase": "6.5", "outcome": "batch_activation_human_approval_decision_recorded" },
+    { "phase": "6.6", "outcome": "batch_execution_readiness_preflight_manifest_created" },
+    { "phase": "6.7", "outcome": "batch_execution_human_approval_request_created" },
+    { "phase": "6.8", "outcome": "batch_execution_human_approval_decision_recorded" },
+    { "phase": "6.9", "outcome": "controlled_batch_execution_plan_created" },
+    { "phase": "6.10", "outcome": "operational_gate_approval_request_created" },
+    { "phase": "6.11", "outcome": "operational_gate_approval_decision_recorded" },
+    { "phase": "6.12", "outcome": "offline_batch_run_plan_created" },
+    { "phase": "6.13", "outcome": "offline_batch_run_command_approval_request_created" },
+    { "phase": "6.14", "outcome": "offline_batch_run_command_approval_decision_recorded" },
+    { "phase": "6.15", "outcome": "offline_batch_dry_run_plan_created" },
+    { "phase": "6.16", "outcome": "offline_batch_dry_run_approval_request_created" }
+  ],
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "approval_status_must_be": "pending_human_review",
+    "requested_decision_must_be": "approve_offline_dry_run",
+    "dry_run_approval_status_must_be": "pending_human_review",
+    "dry_run_approved_must_be": false,
+    "dry_run_executed_must_be": false,
+    "batch_run_executed_must_be": false,
+    "run_mode_must_be": "offline_existing_source_packet_only",
+    "batch_id_must_be": "phase6_1_batch_001",
+    "operational_assertions_all_false": true,
+    "no_go_confirmations_all_true": true,
+    "item_constraints_satisfied": true,
+    "future_outputs_planned_only": true,
+    "forbidden_artifacts_explicitly_listed": true,
+    "operational_gate_decisions_all_not_required_or_not_allowed": true,
+    "human_decision_fields_present": true,
+    "dry_run_command_is_placeholder_only": true
+  }
+}
