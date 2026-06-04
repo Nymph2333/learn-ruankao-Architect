@@ -1,0 +1,433 @@
+{
+  "manifest_version": "phase6.12",
+  "manifest_type": "offline_batch_run_plan",
+  "status": "offline_batch_run_plan_created",
+  "created_for_phase": "6.12",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11"],
+  "created_at": "2026-06-04T05:30:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_phase6_3_manifest",
+      "read_existing_phase6_4_manifest",
+      "read_existing_phase6_5_manifest",
+      "read_existing_phase6_6_manifest",
+      "read_existing_phase6_7_manifest",
+      "read_existing_phase6_8_manifest",
+      "read_existing_phase6_9_manifest",
+      "read_existing_phase6_10_manifest",
+      "read_existing_phase6_11_manifest",
+      "read_existing_source_packets",
+      "document_offline_batch_run_plan",
+      "define_run_scope",
+      "define_input_boundary",
+      "define_planned_run_sequence",
+      "define_planned_future_artifacts",
+      "define_rollback_boundary",
+      "define_audit_boundary"
+    ],
+    "forbidden": [
+      "execute_batch",
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json",
+      "set_crawler_allowed_true",
+      "set_renderer_allowed_true",
+      "set_recovery_allowed_true",
+      "set_web_requests_allowed_true",
+      "set_ai_learning_generation_allowed_true"
+    ]
+  },
+  "plan_status": "planned_not_executed",
+  "run_mode": "offline_existing_source_packet_only",
+  "batch_id": "phase6_1_batch_001",
+  "approved_items": ["1.3"],
+  "execution_authorization_status": "execution_approved",
+  "operational_mode_approval_status": "operational_mode_approved",
+  "plan_metadata": {
+    "plan_id": "offline_batch_run_plan_phase6_12_001",
+    "plan_type": "offline_batch_run_plan",
+    "plan_phase": "6.12",
+    "plan_timestamp": "2026-06-04T05:30:00.000Z",
+    "referencing_decision_phase": "6.11",
+    "referencing_approval_phase": "6.10",
+    "plan_scope": "offline_batch_run_plan_only"
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "operational_gate_decisions": {
+    "crawler_gate_decision": "not_required",
+    "renderer_gate_decision": "not_required",
+    "recovery_gate_decision": "not_required",
+    "web_requests_gate_decision": "not_required",
+    "ai_learning_generation_gate_decision": "not_allowed",
+    "constraint": "All operational gates remain false. No gate is opened by this plan."
+  },
+  "run_scope": {
+    "batch_id": "phase6_1_batch_001",
+    "approved_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "item_count": 1,
+    "source_layer_mutation_allowed": false,
+    "constraints": [
+      "Only item 1.3 may be processed",
+      "9.1 remains deferred",
+      "13.3 remains quarantined and ineligible",
+      "No additional item may be added",
+      "No quarantined item may be selected",
+      "No source layer mutation may occur in this phase"
+    ]
+  },
+  "input_boundary": {
+    "allowed_inputs": [
+      {
+        "source_phase": "6.0",
+        "artifact": "controlled_source_expansion_plan",
+        "purpose": "Defines overall expansion scope",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.1",
+        "artifact": "batch_selection_manifest",
+        "purpose": "Defines batch 001 item selection",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.2",
+        "artifact": "quarantine_decision",
+        "purpose": "Confirms quarantine status for 13.3",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.3",
+        "artifact": "readiness_preflight",
+        "purpose": "Confirms activation readiness",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.4",
+        "artifact": "approval_request",
+        "purpose": "Records activation approval request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.5",
+        "artifact": "activation_decision",
+        "purpose": "Records activation approval",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.6",
+        "artifact": "execution_readiness_preflight",
+        "purpose": "Confirms execution readiness",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.7",
+        "artifact": "execution_approval_request",
+        "purpose": "Records execution approval request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.8",
+        "artifact": "execution_approval_decision",
+        "purpose": "Records execution approval",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.9",
+        "artifact": "controlled_batch_execution_plan",
+        "purpose": "Defines execution plan",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.10",
+        "artifact": "operational_gate_approval_request",
+        "purpose": "Records operational gate request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.11",
+        "artifact": "operational_gate_approval_decision",
+        "purpose": "Records operational gate approval",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "source_packets",
+        "artifact": "existing_source_packets_for_item_1_3",
+        "purpose": "Input data for execution",
+        "access_mode": "read_only"
+      }
+    ],
+    "forbidden_inputs": [
+      "new_web_content",
+      "crawler_output",
+      "renderer_output",
+      "recovery_output",
+      "ai_generated_learning_content",
+      "newly_captured_assets",
+      "newly_created_raw_snapshots",
+      "newly_created_intermediate_json"
+    ]
+  },
+  "planned_run_sequence": {
+    "description": "Descriptive only. No step is executed in Phase 6.12.",
+    "steps": [
+      {
+        "step": 1,
+        "name": "assert_prior_phase_chain_completeness",
+        "description": "Verify phases 6.0 through 6.11 are committed and manifests exist",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 2,
+        "name": "assert_approved_execution_mode",
+        "description": "Verify approved_execution_mode is offline_existing_source_packet_only",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 3,
+        "name": "assert_operational_gates_remain_closed",
+        "description": "Verify all operational gates are false",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 4,
+        "name": "assert_single_item_batch_scope",
+        "description": "Verify approved_items contains exactly ['1.3']",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 5,
+        "name": "assert_source_packet_availability",
+        "description": "Verify existing source packets for item 1.3 are present and readable",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 6,
+        "name": "assert_mixed_text_image_handling_rule",
+        "description": "Item 1.3 has MIXED_TEXT_IMAGE content type, execution must read existing source packets only",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 7,
+        "name": "assert_no_source_layer_mutation",
+        "description": "Verify no source layer files are modified",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 8,
+        "name": "prepare_run_command_placeholder",
+        "description": "Run command placeholder defined for future execution. NOT executed in Phase 6.12.",
+        "executed_in_phase6_12": false,
+        "placeholder_command": "pnpm run:offline-batch -- --batch-id=phase6_1_batch_001 --mode=offline_existing_source_packet_only --items=1.3"
+      },
+      {
+        "step": 9,
+        "name": "define_expected_future_run_record_fields",
+        "description": "Define fields for future run record",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 10,
+        "name": "define_post_run_validation_expectations",
+        "description": "Define validations that must pass after future execution",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 11,
+        "name": "define_rollback_boundary",
+        "description": "Define rollback requirements for future execution",
+        "executed_in_phase6_12": false
+      },
+      {
+        "step": 12,
+        "name": "define_audit_finalization_checklist",
+        "description": "Define audit checklist for execution finalization",
+        "executed_in_phase6_12": false
+      }
+    ]
+  },
+  "expected_future_run_record_fields": {
+    "description": "These fields will exist when the batch is eventually executed",
+    "fields": [
+      { "name": "run_id", "type": "string", "description": "Unique execution identifier" },
+      { "name": "batch_id", "type": "string", "description": "Batch identifier", "expected_value": "phase6_1_batch_001" },
+      { "name": "run_mode", "type": "string", "description": "Execution run mode", "expected_value": "offline_existing_source_packet_only" },
+      { "name": "started_at", "type": "string", "description": "ISO 8601 timestamp of execution start", "format": "date-time" },
+      { "name": "completed_at", "type": "string", "description": "ISO 8601 timestamp of execution completion", "format": "date-time" },
+      { "name": "status", "type": "string", "description": "Execution status", "expected_values": ["completed", "failed"] },
+      { "name": "items_processed", "type": "array", "description": "List of item IDs processed" },
+      { "name": "items_succeeded", "type": "array", "description": "List of item IDs succeeded" },
+      { "name": "items_failed", "type": "array", "description": "List of item IDs failed" }
+    ]
+  },
+  "post_run_validation_expectations": {
+    "description": "Validations that must pass after future execution",
+    "expectations": [
+      "All operational gates remain closed",
+      "Source layer is unmodified",
+      "Item 1.3 execution result exists",
+      "Execution audit log exists",
+      "No forbidden artifacts were created"
+    ]
+  },
+  "allowed_future_artifacts": {
+    "description": "These artifacts are planned only, not created in Phase 6.12",
+    "artifacts": [
+      {
+        "name": "controlled_batch_run_record",
+        "purpose": "Records batch execution metadata",
+        "created_when": "During future execution",
+        "status": "planned"
+      },
+      {
+        "name": "execution_audit_log",
+        "purpose": "Records step-by-step execution trace",
+        "created_when": "During future execution",
+        "status": "planned"
+      },
+      {
+        "name": "item_level_execution_result",
+        "purpose": "Records per-item outcome (1.3)",
+        "created_when": "During future execution",
+        "status": "planned"
+      },
+      {
+        "name": "post_run_validation_report",
+        "purpose": "Validates execution invariants",
+        "created_when": "After future execution",
+        "status": "planned"
+      }
+    ]
+  },
+  "forbidden_phase6_12_artifacts": {
+    "description": "Phase 6.12 must NOT create any of these artifacts",
+    "artifacts": [
+      "raw_snapshots",
+      "intermediate_json",
+      "rendered_outputs",
+      "crawler_outputs",
+      "recovery_outputs",
+      "ai_learning_content",
+      "source_layer_mutations",
+      "newly_captured_assets",
+      "web_request_results",
+      "actual_execution_result_files"
+    ]
+  },
+  "no_go_confirmation": {
+    "no_batch_execution_occurs": true,
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_source_layer_modified": true,
+    "no_ai_learning_generated": true,
+    "no_assets_captured": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "crawler_allowed_remains_false": true,
+    "renderer_allowed_remains_false": true,
+    "recovery_allowed_remains_false": true,
+    "web_requests_allowed_remains_false": true,
+    "ai_learning_generation_allowed_remains_false": true
+  },
+  "operational_assertions": {
+    "batch_execution_claimed": false,
+    "crawler_output_claimed": false,
+    "renderer_output_claimed": false,
+    "recovery_output_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "web_requests_declared": false,
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false,
+    "assets_captured": false
+  },
+  "rollback_boundary": {
+    "phase6_12_rollback_needed": false,
+    "reason": "No rollback is needed for Phase 6.12 because no execution occurs",
+    "future_execution_requirements": [
+      "Future execution must be reversible by removing run-scoped output artifacts only",
+      "Future execution must not require source layer rollback",
+      "Future execution must isolate item 1.3 outputs from global state",
+      "Rollback target: return batch to planned_not_executed status",
+      "Rollback scope: remove generated output artifacts for item 1.3",
+      "Source preservation: source layer artifacts must remain untouched"
+    ]
+  },
+  "audit_boundary": {
+    "prior_phase_chain": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11"],
+    "current_run_mode": "offline_existing_source_packet_only",
+    "current_operational_mode_approval_status": "operational_mode_approved",
+    "current_execution_authorization_status": "execution_approved",
+    "current_plan_status": "planned_not_executed",
+    "current_operational_gates": {
+      "phase6_1_entry_allowed": true,
+      "activation_allowed": true,
+      "batch_executable": true,
+      "execution_allowed": true,
+      "crawler_allowed": false,
+      "renderer_allowed": false,
+      "recovery_allowed": false,
+      "web_requests_allowed": false,
+      "ai_learning_generation_allowed": false
+    },
+    "no_go_confirmation": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:offline-batch-run-plan"
+    ],
+    "commit_scope": "Only Phase 6.12 offline batch run plan files and related schema/type/validator/package script changes"
+  },
+  "phase_progression_history": [
+    { "phase": "6.0", "outcome": "controlled_source_expansion_plan_created" },
+    { "phase": "6.1", "outcome": "batch_selection_manifest_created" },
+    { "phase": "6.2", "outcome": "gate_recheck_completed" },
+    { "phase": "6.3", "outcome": "activation_readiness_preflight_passed" },
+    { "phase": "6.4", "outcome": "batch_activation_human_approval_request_created" },
+    { "phase": "6.5", "outcome": "batch_activation_human_approval_decision_accepted" },
+    { "phase": "6.6", "outcome": "batch_execution_readiness_preflight_passed" },
+    { "phase": "6.7", "outcome": "batch_execution_human_approval_request_created" },
+    { "phase": "6.8", "outcome": "batch_execution_human_approval_decision_accepted" },
+    { "phase": "6.9", "outcome": "controlled_batch_execution_plan_created" },
+    { "phase": "6.10", "outcome": "operational_gate_approval_request_created" },
+    { "phase": "6.11", "outcome": "operational_gate_approval_decision_recorded" },
+    { "phase": "6.12", "outcome": "offline_batch_run_plan_created" }
+  ],
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "plan_status_must_be": "planned_not_executed",
+    "run_mode_must_be": "offline_existing_source_packet_only",
+    "batch_id_must_be": "phase6_1_batch_001",
+    "operational_mode_approval_status_must_be": "operational_mode_approved",
+    "execution_authorization_status_must_be": "execution_approved",
+    "operational_assertions_all_false": true,
+    "no_go_confirmations_all_true": true,
+    "item_constraints_satisfied": true,
+    "future_artifacts_planned_only": true,
+    "forbidden_artifacts_explicitly_listed": true,
+    "operational_gate_decisions_all_not_required_or_not_allowed": true
+  }
+}
