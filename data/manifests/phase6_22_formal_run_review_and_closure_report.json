@@ -1,0 +1,315 @@
+{
+  "manifest_version": "phase6.22",
+  "manifest_type": "formal_run_review_and_closure_report",
+  "status": "formal_run_review_and_closure_report_created",
+  "created_for_phase": "6.22",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20", "6.21"],
+  "created_at": "2026-06-04T00:00:00Z",
+  "scope": {
+    "allowed": [
+      "formal run review and closure report creation",
+      "formal run review and closure manifest creation",
+      "closure status and result documentation",
+      "phase progression summary documentation",
+      "final batch result documentation",
+      "item final status documentation",
+      "gate final state documentation",
+      "no-go confirmation documentation",
+      "next-phase recommendation documentation",
+      "rollback condition documentation",
+      "audit condition documentation"
+    ],
+    "forbidden": [
+      "new formal controlled batch run records",
+      "new item-level execution results",
+      "new post-run validation reports",
+      "batch execution",
+      "crawler execution",
+      "renderer execution",
+      "recovery execution",
+      "web requests",
+      "AI learning content generation",
+      "source layer mutation",
+      "raw snapshot creation",
+      "intermediate JSON creation",
+      "asset capture",
+      "execution results for 9.1",
+      "execution results for 13.3"
+    ]
+  },
+  "closure_status": "closed",
+  "closure_result": "pass",
+  "batch_id": "phase6_1_batch_001",
+  "reviewed_items": ["1.3"],
+  "executed_items": ["1.3"],
+  "approved_items": ["1.3"],
+  "formal_run_status": "completed",
+  "formal_run_result": "pass",
+  "formal_run_executed": true,
+  "batch_run_executed": true,
+  "formal_execution_status": "completed",
+  "run_mode": "offline_existing_source_packet_only",
+  "source_layer_mutation_detected": false,
+  "ai_learning_generation_detected": false,
+  "operational_gate_violation_detected": false,
+  "prior_phase_reference": {
+    "prior_phase": "6.21",
+    "prior_manifest": "phase6_21_formal_offline_batch_run_execution_record.json",
+    "prior_status": "formal_offline_batch_run_execution_record_created",
+    "prior_formal_run_status": "completed",
+    "prior_formal_run_result": "pass",
+    "prior_formal_run_executed": true,
+    "prior_formal_execution_status": "completed"
+  },
+  "artifact_references": {
+    "dry_run_artifacts": {
+      "dry_run_record": "data/dry-runs/phase6_18/dry_run_record_phase6_1_batch_001.json",
+      "dry_run_audit_log": "data/dry-runs/phase6_18/dry_run_audit_log_phase6_1_batch_001.json",
+      "dry_run_item_scope_report": "data/dry-runs/phase6_18/dry_run_item_scope_report_phase6_1_batch_001.json",
+      "dry_run_validation_report": "data/dry-runs/phase6_18/dry_run_validation_report_phase6_1_batch_001.json",
+      "dry_run_result": "pass",
+      "dry_run_executed": true
+    },
+    "formal_approval_decision": {
+      "approval_manifest": "data/manifests/phase6_20_formal_offline_batch_run_approval_decision.json",
+      "formal_run_approval_status": "approved",
+      "formal_run_approved": true,
+      "human_decision_recorded": true
+    },
+    "formal_run_artifacts": {
+      "formal_batch_run_record": "data/formal-runs/phase6_21/formal_batch_run_record_phase6_1_batch_001.json",
+      "formal_execution_audit_log": "data/formal-runs/phase6_21/formal_execution_audit_log_phase6_1_batch_001.json",
+      "formal_item_execution_result_1_3": "data/formal-runs/phase6_21/formal_item_execution_result_1_3.json",
+      "formal_post_run_validation_report": "data/formal-runs/phase6_21/formal_post_run_validation_report_phase6_1_batch_001.json",
+      "formal_run_artifacts_isolation_path": "data/formal-runs/phase6_21/"
+    }
+  },
+  "closure_review_confirmations": {
+    "prior_phase_chain_complete": true,
+    "dry_run_passed_before_formal_run": true,
+    "formal_run_approval_existed_before_formal_run": true,
+    "formal_run_completed_successfully": true,
+    "only_item_1_3_executed": true,
+    "item_9_1_remains_deferred": true,
+    "item_13_3_remains_quarantined_ineligible": true,
+    "no_crawler_was_run": true,
+    "no_renderer_was_run": true,
+    "no_recovery_was_run": true,
+    "no_web_request_was_made": true,
+    "no_ai_learning_content_generated": true,
+    "no_source_layer_mutation_occurred": true,
+    "no_raw_snapshot_created": true,
+    "no_intermediate_json_created": true,
+    "no_asset_capture_occurred": true,
+    "formal_run_artifacts_isolated": true
+  },
+  "final_batch_result": {
+    "batch_id": "phase6_1_batch_001",
+    "executed_items": ["1.3"],
+    "final_result": "pass",
+    "closure_status": "closed"
+  },
+  "item_final_statuses": {
+    "item_1_3": {
+      "item_id": "1.3",
+      "item_title": "指令系统CISC和RISC",
+      "final_status": "formal_run_completed_pass",
+      "formal_run_status": "completed",
+      "execution_result": "pass",
+      "run_mode": "offline_existing_source_packet_only"
+    },
+    "item_9_1": {
+      "item_id": "9.1",
+      "item_title": "信息安全基础知识",
+      "final_status": "deferred_candidate",
+      "notes": "Item 9.1 remains deferred and was not executed"
+    },
+    "item_13_3": {
+      "item_id": "13.3",
+      "item_title": "软件架构风格",
+      "final_status": "quarantined_ineligible",
+      "notes": "Item 13.3 remains quarantined and ineligible for execution"
+    }
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "operational_gate_decisions": {
+    "crawler_gate_decision": "not_required",
+    "renderer_gate_decision": "not_required",
+    "recovery_gate_decision": "not_required",
+    "web_requests_gate_decision": "not_required",
+    "ai_learning_generation_gate_decision": "not_allowed",
+    "constraint": "All operational gates remain closed for Phase 6.22"
+  },
+  "no_go_confirmation": {
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_ai_learning_generated": true,
+    "no_source_layer_modified": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "no_asset_capture_occurred": true,
+    "no_output_for_9_1": true,
+    "no_output_for_13_3": true,
+    "no_new_formal_run_record": true,
+    "no_new_item_level_execution_result": true,
+    "no_new_post_run_validation_report": true
+  },
+  "operational_assertions": {
+    "no_new_formal_run_record_created": true,
+    "no_new_item_level_execution_result_created": true,
+    "no_new_post_run_validation_report_created": true,
+    "crawler_execution_claimed": false,
+    "renderer_execution_claimed": false,
+    "recovery_execution_claimed": false,
+    "web_request_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "raw_snapshot_creation_declared": false,
+    "intermediate_json_creation_declared": false,
+    "asset_capture_declared": false
+  },
+  "next_phase_recommendation": {
+    "next_recommended_phase": "phase7.0_ai_learning_generation_request",
+    "ai_learning_generation_allowed": false,
+    "ai_learning_generation_requested": false,
+    "source_layer_modification_allowed": false,
+    "notes": "The closure report recommends Phase 7.0 as the next phase for AI learning generation request. However, AI learning generation remains disabled and has not been requested."
+  },
+  "allowed_phase6_22_artifacts": {
+    "description": "The following artifacts are allowed in Phase 6.22",
+    "artifacts": [
+      "formal run review and closure report document",
+      "formal run review and closure manifest",
+      "schema/type/validator for Phase 6.22",
+      "documentation for Phase 6.22"
+    ]
+  },
+  "forbidden_phase6_22_artifacts": {
+    "description": "The following artifacts must NOT be created in Phase 6.22",
+    "artifacts": [
+      "new_formal_controlled_batch_run_records",
+      "new_item_level_execution_results",
+      "new_post_run_validation_reports",
+      "raw_snapshots",
+      "intermediate_json",
+      "rendered_outputs",
+      "crawler_outputs",
+      "recovery_outputs",
+      "web_request_results",
+      "ai_learning_content",
+      "source_layer_mutations",
+      "captured_assets",
+      "execution_results_for_9_1",
+      "execution_results_for_13_3"
+    ]
+  },
+  "rollback_condition": {
+    "phase6_22_rollback_needed": false,
+    "reason": "Closure report is review-only and does not affect underlying formal run artifacts",
+    "future_rollback_requirements": [
+      "If the closure report is found to be incorrect, it can be invalidated without affecting the formal run",
+      "If the closure result changes, a new closure report must be created",
+      "If a new batch is selected, a new pipeline cycle must begin"
+    ]
+  },
+  "audit_condition": {
+    "prior_phase_chain": [
+      "6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9",
+      "6.10", "6.11", "6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20", "6.21"
+    ],
+    "current_closure_status": "closed",
+    "current_closure_result": "pass",
+    "current_formal_run_status": "completed",
+    "current_formal_run_result": "pass",
+    "current_formal_run_executed": true,
+    "current_formal_execution_status": "completed",
+    "current_operational_gates": {
+      "phase6_1_entry_allowed": true,
+      "activation_allowed": true,
+      "batch_executable": true,
+      "execution_allowed": true,
+      "crawler_allowed": false,
+      "renderer_allowed": false,
+      "recovery_allowed": false,
+      "web_requests_allowed": false,
+      "ai_learning_generation_allowed": false
+    },
+    "no_go_confirmation": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:formal-run-review-and-closure-report"
+    ],
+    "commit_scope": "Phase 6.22 closure report files and related schema/type/validator/package verification changes only"
+  },
+  "phase_progression_history": [
+    { "phase": "6.0", "outcome": "controlled_source_expansion_plan_created" },
+    { "phase": "6.1", "outcome": "batch_selection_manifest_created" },
+    { "phase": "6.2", "outcome": "gate_recheck_manifest_created" },
+    { "phase": "6.3", "outcome": "activation_readiness_preflight_manifest_created" },
+    { "phase": "6.4", "outcome": "batch_activation_human_approval_request_created" },
+    { "phase": "6.5", "outcome": "batch_activation_human_approval_decision_recorded" },
+    { "phase": "6.6", "outcome": "batch_execution_readiness_preflight_manifest_created" },
+    { "phase": "6.7", "outcome": "batch_execution_human_approval_request_created" },
+    { "phase": "6.8", "outcome": "batch_execution_human_approval_decision_recorded" },
+    { "phase": "6.9", "outcome": "controlled_batch_execution_plan_created" },
+    { "phase": "6.10", "outcome": "operational_gate_approval_request_created" },
+    { "phase": "6.11", "outcome": "operational_gate_approval_decision_recorded" },
+    { "phase": "6.12", "outcome": "offline_batch_run_plan_created" },
+    { "phase": "6.13", "outcome": "offline_batch_run_command_approval_request_created" },
+    { "phase": "6.14", "outcome": "offline_batch_run_command_approval_decision_recorded" },
+    { "phase": "6.15", "outcome": "offline_batch_dry_run_plan_created" },
+    { "phase": "6.16", "outcome": "offline_batch_dry_run_approval_request_created" },
+    { "phase": "6.17", "outcome": "offline_batch_dry_run_approval_decision_recorded" },
+    { "phase": "6.18", "outcome": "offline_batch_dry_run_execution_record_created" },
+    { "phase": "6.19", "outcome": "dry_run_review_and_formal_run_approval_request_created" },
+    { "phase": "6.20", "outcome": "formal_offline_batch_run_approval_decision_recorded" },
+    { "phase": "6.21", "outcome": "formal_offline_batch_run_execution_record_created" },
+    { "phase": "6.22", "outcome": "formal_run_review_and_closure_report_created" }
+  ],
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "closure_status_must_be": "closed",
+    "closure_result_must_be": "pass",
+    "batch_id_must_be": "phase6_1_batch_001",
+    "approved_items_exact_match": ["1.3"],
+    "executed_items_exact_match": ["1.3"],
+    "reviewed_items_exact_match": ["1.3"],
+    "formal_run_status_must_be": "completed",
+    "formal_run_result_must_be": "pass",
+    "formal_run_executed_must_be": true,
+    "batch_run_executed_must_be": true,
+    "formal_execution_status_must_be": "completed",
+    "run_mode_must_be": "offline_existing_source_packet_only",
+    "phase6_21_formal_run_artifacts_referenced": true,
+    "phase6_18_dry_run_artifacts_referenced": true,
+    "phase6_20_formal_approval_decision_referenced": true,
+    "phase6_1_entry_allowed_must_be": true,
+    "activation_allowed_must_be": true,
+    "batch_executable_must_be": true,
+    "execution_allowed_must_be": true,
+    "crawler_allowed_must_be": false,
+    "renderer_allowed_must_be": false,
+    "recovery_allowed_must_be": false,
+    "web_requests_allowed_must_be": false,
+    "ai_learning_generation_allowed_must_be": false,
+    "operational_assertions_all_valid": true,
+    "no_go_confirmations_all_true": true,
+    "item_final_statuses_correct": true,
+    "next_recommended_phase_does_not_enable_ai_learning": true,
+    "forbidden_artifacts_explicitly_listed": true
+  }
+}

@@ -89,6 +89,7 @@
     "validate:dry-run-review-and-formal-run-approval-request": "tsx scripts/validate-ruankaodaren-dry-run-review-and-formal-run-approval-request.ts",
     "validate:formal-offline-batch-run-approval-decision": "tsx scripts/validate-ruankaodaren-formal-offline-batch-run-approval-decision.ts",
     "validate:formal-offline-batch-run-execution-record": "tsx scripts/validate-ruankaodaren-formal-offline-batch-run-execution-record.ts",
+    "validate:formal-run-review-and-closure-report": "tsx scripts/validate-ruankaodaren-formal-run-review-and-closure-report.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",

@@ -1,0 +1,612 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-formal-run-review-and-closure-report",
+  "title": "Ruankaodaren Phase 6.22 Formal Run Review and Closure Report",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "created_at",
+    "scope",
+    "closure_status",
+    "closure_result",
+    "batch_id",
+    "reviewed_items",
+    "executed_items",
+    "approved_items",
+    "formal_run_status",
+    "formal_run_result",
+    "formal_run_executed",
+    "batch_run_executed",
+    "formal_execution_status",
+    "run_mode",
+    "source_layer_mutation_detected",
+    "ai_learning_generation_detected",
+    "operational_gate_violation_detected",
+    "prior_phase_reference",
+    "artifact_references",
+    "closure_review_confirmations",
+    "final_batch_result",
+    "item_final_statuses",
+    "phase_gates",
+    "operational_gate_decisions",
+    "no_go_confirmation",
+    "operational_assertions",
+    "next_phase_recommendation",
+    "allowed_phase6_22_artifacts",
+    "forbidden_phase6_22_artifacts",
+    "rollback_condition",
+    "audit_condition",
+    "phase_progression_history",
+    "validation_expectations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.22" },
+    "manifest_type": { "const": "formal_run_review_and_closure_report" },
+    "status": { "const": "formal_run_review_and_closure_report_created" },
+    "created_for_phase": { "const": "6.22" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 22,
+      "maxItems": 22
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "closure_status": { "const": "closed" },
+    "closure_result": { "const": "pass" },
+    "batch_id": { "const": "phase6_1_batch_001" },
+    "reviewed_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "executed_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "approved_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "formal_run_status": { "const": "completed" },
+    "formal_run_result": { "const": "pass" },
+    "formal_run_executed": { "const": true },
+    "batch_run_executed": { "const": true },
+    "formal_execution_status": { "const": "completed" },
+    "run_mode": { "const": "offline_existing_source_packet_only" },
+    "source_layer_mutation_detected": { "const": false },
+    "ai_learning_generation_detected": { "const": false },
+    "operational_gate_violation_detected": { "const": false },
+    "prior_phase_reference": {
+      "type": "object",
+      "required": [
+        "prior_phase",
+        "prior_manifest",
+        "prior_status",
+        "prior_formal_run_status",
+        "prior_formal_run_result",
+        "prior_formal_run_executed",
+        "prior_formal_execution_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prior_phase": { "const": "6.21" },
+        "prior_manifest": { "const": "phase6_21_formal_offline_batch_run_execution_record.json" },
+        "prior_status": { "const": "formal_offline_batch_run_execution_record_created" },
+        "prior_formal_run_status": { "const": "completed" },
+        "prior_formal_run_result": { "const": "pass" },
+        "prior_formal_run_executed": { "const": true },
+        "prior_formal_execution_status": { "const": "completed" }
+      }
+    },
+    "artifact_references": {
+      "type": "object",
+      "required": ["dry_run_artifacts", "formal_approval_decision", "formal_run_artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "dry_run_artifacts": {
+          "type": "object",
+          "required": [
+            "dry_run_record",
+            "dry_run_audit_log",
+            "dry_run_item_scope_report",
+            "dry_run_validation_report",
+            "dry_run_result",
+            "dry_run_executed"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "dry_run_record": { "type": "string" },
+            "dry_run_audit_log": { "type": "string" },
+            "dry_run_item_scope_report": { "type": "string" },
+            "dry_run_validation_report": { "type": "string" },
+            "dry_run_result": { "const": "pass" },
+            "dry_run_executed": { "const": true }
+          }
+        },
+        "formal_approval_decision": {
+          "type": "object",
+          "required": [
+            "approval_manifest",
+            "formal_run_approval_status",
+            "formal_run_approved",
+            "human_decision_recorded"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "approval_manifest": { "type": "string" },
+            "formal_run_approval_status": { "const": "approved" },
+            "formal_run_approved": { "const": true },
+            "human_decision_recorded": { "const": true }
+          }
+        },
+        "formal_run_artifacts": {
+          "type": "object",
+          "required": [
+            "formal_batch_run_record",
+            "formal_execution_audit_log",
+            "formal_item_execution_result_1_3",
+            "formal_post_run_validation_report",
+            "formal_run_artifacts_isolation_path"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "formal_batch_run_record": { "type": "string" },
+            "formal_execution_audit_log": { "type": "string" },
+            "formal_item_execution_result_1_3": { "type": "string" },
+            "formal_post_run_validation_report": { "type": "string" },
+            "formal_run_artifacts_isolation_path": { "type": "string" }
+          }
+        }
+      }
+    },
+    "closure_review_confirmations": {
+      "type": "object",
+      "required": [
+        "prior_phase_chain_complete",
+        "dry_run_passed_before_formal_run",
+        "formal_run_approval_existed_before_formal_run",
+        "formal_run_completed_successfully",
+        "only_item_1_3_executed",
+        "item_9_1_remains_deferred",
+        "item_13_3_remains_quarantined_ineligible",
+        "no_crawler_was_run",
+        "no_renderer_was_run",
+        "no_recovery_was_run",
+        "no_web_request_was_made",
+        "no_ai_learning_content_generated",
+        "no_source_layer_mutation_occurred",
+        "no_raw_snapshot_created",
+        "no_intermediate_json_created",
+        "no_asset_capture_occurred",
+        "formal_run_artifacts_isolated"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prior_phase_chain_complete": { "const": true },
+        "dry_run_passed_before_formal_run": { "const": true },
+        "formal_run_approval_existed_before_formal_run": { "const": true },
+        "formal_run_completed_successfully": { "const": true },
+        "only_item_1_3_executed": { "const": true },
+        "item_9_1_remains_deferred": { "const": true },
+        "item_13_3_remains_quarantined_ineligible": { "const": true },
+        "no_crawler_was_run": { "const": true },
+        "no_renderer_was_run": { "const": true },
+        "no_recovery_was_run": { "const": true },
+        "no_web_request_was_made": { "const": true },
+        "no_ai_learning_content_generated": { "const": true },
+        "no_source_layer_mutation_occurred": { "const": true },
+        "no_raw_snapshot_created": { "const": true },
+        "no_intermediate_json_created": { "const": true },
+        "no_asset_capture_occurred": { "const": true },
+        "formal_run_artifacts_isolated": { "const": true }
+      }
+    },
+    "final_batch_result": {
+      "type": "object",
+      "required": ["batch_id", "executed_items", "final_result", "closure_status"],
+      "additionalProperties": false,
+      "properties": {
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "executed_items": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "final_result": { "const": "pass" },
+        "closure_status": { "const": "closed" }
+      }
+    },
+    "item_final_statuses": {
+      "type": "object",
+      "required": ["item_1_3", "item_9_1", "item_13_3"],
+      "additionalProperties": false,
+      "properties": {
+        "item_1_3": {
+          "type": "object",
+          "required": [
+            "item_id",
+            "item_title",
+            "final_status",
+            "formal_run_status",
+            "execution_result",
+            "run_mode"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "item_id": { "const": "1.3" },
+            "item_title": { "const": "指令系统CISC和RISC" },
+            "final_status": { "const": "formal_run_completed_pass" },
+            "formal_run_status": { "const": "completed" },
+            "execution_result": { "const": "pass" },
+            "run_mode": { "const": "offline_existing_source_packet_only" }
+          }
+        },
+        "item_9_1": {
+          "type": "object",
+          "required": ["item_id", "item_title", "final_status", "notes"],
+          "additionalProperties": false,
+          "properties": {
+            "item_id": { "const": "9.1" },
+            "item_title": { "const": "信息安全基础知识" },
+            "final_status": { "const": "deferred_candidate" },
+            "notes": { "type": "string" }
+          }
+        },
+        "item_13_3": {
+          "type": "object",
+          "required": ["item_id", "item_title", "final_status", "notes"],
+          "additionalProperties": false,
+          "properties": {
+            "item_id": { "const": "13.3" },
+            "item_title": { "const": "软件架构风格" },
+            "final_status": { "const": "quarantined_ineligible" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "execution_allowed",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": true },
+        "activation_allowed": { "const": true },
+        "batch_executable": { "const": true },
+        "execution_allowed": { "const": true },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false }
+      }
+    },
+    "operational_gate_decisions": {
+      "type": "object",
+      "required": [
+        "crawler_gate_decision",
+        "renderer_gate_decision",
+        "recovery_gate_decision",
+        "web_requests_gate_decision",
+        "ai_learning_generation_gate_decision",
+        "constraint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "crawler_gate_decision": { "const": "not_required" },
+        "renderer_gate_decision": { "const": "not_required" },
+        "recovery_gate_decision": { "const": "not_required" },
+        "web_requests_gate_decision": { "const": "not_required" },
+        "ai_learning_generation_gate_decision": { "const": "not_allowed" },
+        "constraint": { "type": "string" }
+      }
+    },
+    "no_go_confirmation": {
+      "type": "object",
+      "required": [
+        "no_crawler_runs",
+        "no_renderer_runs",
+        "no_recovery_runs",
+        "no_web_requests_made",
+        "no_ai_learning_generated",
+        "no_source_layer_modified",
+        "no_raw_snapshots_created",
+        "no_intermediate_json_created",
+        "no_asset_capture_occurred",
+        "no_output_for_9_1",
+        "no_output_for_13_3",
+        "no_new_formal_run_record",
+        "no_new_item_level_execution_result",
+        "no_new_post_run_validation_report"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_crawler_runs": { "const": true },
+        "no_renderer_runs": { "const": true },
+        "no_recovery_runs": { "const": true },
+        "no_web_requests_made": { "const": true },
+        "no_ai_learning_generated": { "const": true },
+        "no_source_layer_modified": { "const": true },
+        "no_raw_snapshots_created": { "const": true },
+        "no_intermediate_json_created": { "const": true },
+        "no_asset_capture_occurred": { "const": true },
+        "no_output_for_9_1": { "const": true },
+        "no_output_for_13_3": { "const": true },
+        "no_new_formal_run_record": { "const": true },
+        "no_new_item_level_execution_result": { "const": true },
+        "no_new_post_run_validation_report": { "const": true }
+      }
+    },
+    "operational_assertions": {
+      "type": "object",
+      "required": [
+        "no_new_formal_run_record_created",
+        "no_new_item_level_execution_result_created",
+        "no_new_post_run_validation_report_created",
+        "crawler_execution_claimed",
+        "renderer_execution_claimed",
+        "recovery_execution_claimed",
+        "web_request_claimed",
+        "ai_learning_generation_claimed",
+        "source_layer_mutation_declared",
+        "raw_snapshot_creation_declared",
+        "intermediate_json_creation_declared",
+        "asset_capture_declared"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_new_formal_run_record_created": { "const": true },
+        "no_new_item_level_execution_result_created": { "const": true },
+        "no_new_post_run_validation_report_created": { "const": true },
+        "crawler_execution_claimed": { "const": false },
+        "renderer_execution_claimed": { "const": false },
+        "recovery_execution_claimed": { "const": false },
+        "web_request_claimed": { "const": false },
+        "ai_learning_generation_claimed": { "const": false },
+        "source_layer_mutation_declared": { "const": false },
+        "raw_snapshot_creation_declared": { "const": false },
+        "intermediate_json_creation_declared": { "const": false },
+        "asset_capture_declared": { "const": false }
+      }
+    },
+    "next_phase_recommendation": {
+      "type": "object",
+      "required": [
+        "next_recommended_phase",
+        "ai_learning_generation_allowed",
+        "ai_learning_generation_requested",
+        "source_layer_modification_allowed",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "next_recommended_phase": { "const": "phase7.0_ai_learning_generation_request" },
+        "ai_learning_generation_allowed": { "const": false },
+        "ai_learning_generation_requested": { "const": false },
+        "source_layer_modification_allowed": { "const": false },
+        "notes": { "type": "string" }
+      }
+    },
+    "allowed_phase6_22_artifacts": {
+      "type": "object",
+      "required": ["description", "artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "forbidden_phase6_22_artifacts": {
+      "type": "object",
+      "required": ["description", "artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "rollback_condition": {
+      "type": "object",
+      "required": ["phase6_22_rollback_needed", "reason", "future_rollback_requirements"],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_22_rollback_needed": { "const": false },
+        "reason": { "type": "string" },
+        "future_rollback_requirements": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "audit_condition": {
+      "type": "object",
+      "required": [
+        "prior_phase_chain",
+        "current_closure_status",
+        "current_closure_result",
+        "current_formal_run_status",
+        "current_formal_run_result",
+        "current_formal_run_executed",
+        "current_formal_execution_status",
+        "current_operational_gates",
+        "no_go_confirmation",
+        "validation_commands",
+        "commit_scope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prior_phase_chain": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 22,
+          "maxItems": 22
+        },
+        "current_closure_status": { "const": "closed" },
+        "current_closure_result": { "const": "pass" },
+        "current_formal_run_status": { "const": "completed" },
+        "current_formal_run_result": { "const": "pass" },
+        "current_formal_run_executed": { "const": true },
+        "current_formal_execution_status": { "const": "completed" },
+        "current_operational_gates": {
+          "type": "object",
+          "required": [
+            "phase6_1_entry_allowed",
+            "activation_allowed",
+            "batch_executable",
+            "execution_allowed",
+            "crawler_allowed",
+            "renderer_allowed",
+            "recovery_allowed",
+            "web_requests_allowed",
+            "ai_learning_generation_allowed"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "phase6_1_entry_allowed": { "const": true },
+            "activation_allowed": { "const": true },
+            "batch_executable": { "const": true },
+            "execution_allowed": { "const": true },
+            "crawler_allowed": { "const": false },
+            "renderer_allowed": { "const": false },
+            "recovery_allowed": { "const": false },
+            "web_requests_allowed": { "const": false },
+            "ai_learning_generation_allowed": { "const": false }
+          }
+        },
+        "no_go_confirmation": { "const": true },
+        "validation_commands": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "commit_scope": { "type": "string" }
+      }
+    },
+    "phase_progression_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "outcome"],
+        "additionalProperties": false,
+        "properties": {
+          "phase": { "type": "string" },
+          "outcome": { "type": "string" }
+        }
+      },
+      "minItems": 23,
+      "maxItems": 23
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": [
+        "schema_validation",
+        "invariant_checks",
+        "closure_status_must_be",
+        "closure_result_must_be",
+        "batch_id_must_be",
+        "approved_items_exact_match",
+        "executed_items_exact_match",
+        "reviewed_items_exact_match",
+        "formal_run_status_must_be",
+        "formal_run_result_must_be",
+        "formal_run_executed_must_be",
+        "batch_run_executed_must_be",
+        "formal_execution_status_must_be",
+        "run_mode_must_be",
+        "phase6_21_formal_run_artifacts_referenced",
+        "phase6_18_dry_run_artifacts_referenced",
+        "phase6_20_formal_approval_decision_referenced",
+        "phase6_1_entry_allowed_must_be",
+        "activation_allowed_must_be",
+        "batch_executable_must_be",
+        "execution_allowed_must_be",
+        "crawler_allowed_must_be",
+        "renderer_allowed_must_be",
+        "recovery_allowed_must_be",
+        "web_requests_allowed_must_be",
+        "ai_learning_generation_allowed_must_be",
+        "operational_assertions_all_valid",
+        "no_go_confirmations_all_true",
+        "item_final_statuses_correct",
+        "next_recommended_phase_does_not_enable_ai_learning",
+        "forbidden_artifacts_explicitly_listed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_validation": { "const": "must_pass" },
+        "invariant_checks": { "const": "must_pass" },
+        "closure_status_must_be": { "const": "closed" },
+        "closure_result_must_be": { "const": "pass" },
+        "batch_id_must_be": { "const": "phase6_1_batch_001" },
+        "approved_items_exact_match": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "executed_items_exact_match": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reviewed_items_exact_match": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "formal_run_status_must_be": { "const": "completed" },
+        "formal_run_result_must_be": { "const": "pass" },
+        "formal_run_executed_must_be": { "const": true },
+        "batch_run_executed_must_be": { "const": true },
+        "formal_execution_status_must_be": { "const": "completed" },
+        "run_mode_must_be": { "const": "offline_existing_source_packet_only" },
+        "phase6_21_formal_run_artifacts_referenced": { "const": true },
+        "phase6_18_dry_run_artifacts_referenced": { "const": true },
+        "phase6_20_formal_approval_decision_referenced": { "const": true },
+        "phase6_1_entry_allowed_must_be": { "const": true },
+        "activation_allowed_must_be": { "const": true },
+        "batch_executable_must_be": { "const": true },
+        "execution_allowed_must_be": { "const": true },
+        "crawler_allowed_must_be": { "const": false },
+        "renderer_allowed_must_be": { "const": false },
+        "recovery_allowed_must_be": { "const": false },
+        "web_requests_allowed_must_be": { "const": false },
+        "ai_learning_generation_allowed_must_be": { "const": false },
+        "operational_assertions_all_valid": { "const": true },
+        "no_go_confirmations_all_true": { "const": true },
+        "item_final_statuses_correct": { "const": true },
+        "next_recommended_phase_does_not_enable_ai_learning": { "const": true },
+        "forbidden_artifacts_explicitly_listed": { "const": true }
+      }
+    }
+  }
+}
