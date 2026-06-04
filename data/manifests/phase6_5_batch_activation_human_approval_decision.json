@@ -1,0 +1,226 @@
+{
+  "manifest_version": "phase6.5",
+  "manifest_type": "batch_activation_human_approval_decision",
+  "status": "activation_approved",
+  "created_for_phase": "6.5",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4"],
+  "created_at": "2026-06-04T00:00:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_phase6_3_manifest",
+      "read_existing_phase6_4_manifest",
+      "record_human_approval_decision",
+      "set_phase6_1_entry_allowed_true",
+      "set_activation_allowed_true",
+      "set_approval_granted_true"
+    ],
+    "forbidden": [
+      "set_batch_executable_true",
+      "set_execution_allowed_true",
+      "set_crawler_allowed_true",
+      "set_renderer_allowed_true",
+      "set_recovery_allowed_true",
+      "set_web_requests_allowed_true",
+      "set_ai_learning_generation_allowed_true",
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json",
+      "execute_batch",
+      "add_new_items",
+      "select_quarantined_items"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": false,
+    "execution_allowed": false,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false,
+    "approval_granted": true
+  },
+  "decision_metadata": {
+    "decision_id": "phase6_5_batch_activation_decision_001",
+    "decision_type": "human_activation_approval",
+    "approval_status": "activation_approved",
+    "approved_decision": "approve_activation",
+    "approved_batch_id": "phase6_1_batch_001",
+    "approved_items": ["1.3"],
+    "approval_scope": "activation_only",
+    "execution_approval_status": "not_requested",
+    "requires_execution_approval": true,
+    "decision_timestamp": "2026-06-04T00:00:00.000Z"
+  },
+  "batch_summary": {
+    "batch_id": "phase6_1_batch_001",
+    "selected_items": ["1.3"],
+    "approved_items": ["1.3"],
+    "item_count": 1,
+    "readiness_status": "activation_approved",
+    "items": [
+      {
+        "item_id": "1.3",
+        "title": "指令系统CISC和RISC",
+        "status": "activation_approved",
+        "readiness": "approved",
+        "risk_level": "low"
+      }
+    ],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"]
+  },
+  "phase_progression_history": [
+    {
+      "phase": "6.0",
+      "outcome": "Controlled source expansion plan created"
+    },
+    {
+      "phase": "6.1",
+      "outcome": "Dormant batch selection: 1.3 selected as proposed_primary"
+    },
+    {
+      "phase": "6.2",
+      "outcome": "Gate recheck: 13.3 quarantined, taxonomy suspect resolved"
+    },
+    {
+      "phase": "6.3",
+      "outcome": "Readiness preflight: batch marked as activation_candidate (6/9 gates satisfied)"
+    },
+    {
+      "phase": "6.4",
+      "outcome": "Human approval request prepared (pending_human_review)"
+    },
+    {
+      "phase": "6.5",
+      "outcome": "Human approval decision recorded: activation_approved (this phase)"
+    }
+  ],
+  "gate_state_after_decision": {
+    "gates_opened": [
+      {
+        "gate": "phase6_1_entry_allowed",
+        "previous": false,
+        "current": true,
+        "rationale": "Human approved batch entry"
+      },
+      {
+        "gate": "activation_allowed",
+        "previous": false,
+        "current": true,
+        "rationale": "Human approved activation"
+      },
+      {
+        "gate": "approval_granted",
+        "previous": false,
+        "current": true,
+        "rationale": "Approval decision recorded"
+      }
+    ],
+    "gates_remaining_closed": [
+      {
+        "gate": "batch_executable",
+        "value": false,
+        "rationale": "Execution approval not requested or granted"
+      },
+      {
+        "gate": "execution_allowed",
+        "value": false,
+        "rationale": "Execution is a separate approval gate"
+      },
+      {
+        "gate": "crawler_allowed",
+        "value": false,
+        "rationale": "Crawler execution not approved"
+      },
+      {
+        "gate": "renderer_allowed",
+        "value": false,
+        "rationale": "Renderer execution not approved"
+      },
+      {
+        "gate": "recovery_allowed",
+        "value": false,
+        "rationale": "Recovery execution not approved"
+      },
+      {
+        "gate": "web_requests_allowed",
+        "value": false,
+        "rationale": "Web requests not approved"
+      },
+      {
+        "gate": "ai_learning_generation_allowed",
+        "value": false,
+        "rationale": "AI learning generation not approved"
+      }
+    ],
+    "separation_note": "Activation approval (Phase 6.5) is separate from execution approval. Only activation gates are opened."
+  },
+  "item_constraints": {
+    "approved_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "constraints": [
+      "No new items may be added",
+      "No quarantined item may be selected",
+      "Only explicitly approved items are activated"
+    ]
+  },
+  "operational_assertions": {
+    "expansion_execution_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "web_requests_made": false,
+    "assets_captured": false,
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false
+  },
+  "validation_expectations": {
+    "must_pass": [
+      "validate:controlled-source-expansion-plan",
+      "validate:source-packets",
+      "validate:dual-layer-contract",
+      "validate:batch-selection-manifest",
+      "validate:gate-recheck-manifest",
+      "validate:activation-readiness-preflight",
+      "validate:batch-activation-human-approval-request",
+      "validate:batch-activation-human-approval-decision"
+    ],
+    "must_not_trigger": [
+      "crawler",
+      "renderer",
+      "recovery",
+      "web_requests",
+      "ai_learning_generation",
+      "asset_capture",
+      "raw_snapshot_creation",
+      "intermediate_json_creation",
+      "batch_execution"
+    ]
+  },
+  "final_decision": {
+    "decision_recorded": true,
+    "approval_status": "activation_approved",
+    "approved_decision": "approve_activation",
+    "batch_id": "phase6_1_batch_001",
+    "approved_items": ["1.3"],
+    "approval_scope": "activation_only",
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": false,
+    "execution_allowed": false,
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"]
+  }
+}

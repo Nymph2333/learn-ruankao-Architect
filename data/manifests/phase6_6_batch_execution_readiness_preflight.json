@@ -1,0 +1,293 @@
+{
+  "manifest_version": "phase6.6",
+  "manifest_type": "batch_execution_readiness_preflight",
+  "preflight_type": "batch_execution_readiness",
+  "status": "execution_readiness_assessed",
+  "created_for_phase": "6.6",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5"],
+  "created_at": "2026-06-04T00:00:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_phase6_3_manifest",
+      "read_existing_phase6_4_manifest",
+      "read_existing_phase6_5_manifest",
+      "validate_activation_approval",
+      "validate_batch_scope",
+      "validate_item_constraints",
+      "assess_execution_readiness",
+      "write_execution_readiness_preflight_manifest",
+      "write_documentation",
+      "run_validators_typecheck_verify"
+    ],
+    "forbidden": [
+      "set_batch_executable_true",
+      "set_execution_allowed_true",
+      "set_crawler_allowed_true",
+      "set_renderer_allowed_true",
+      "set_recovery_allowed_true",
+      "set_web_requests_allowed_true",
+      "set_ai_learning_generation_allowed_true",
+      "execute_batch",
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": false,
+    "execution_allowed": false,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false,
+    "approval_granted": true
+  },
+  "preflight_metadata": {
+    "preflight_id": "phase6_6_execution_readiness_preflight_001",
+    "preflight_type": "batch_execution_readiness",
+    "batch_id": "phase6_1_batch_001",
+    "readiness_status": "execution_candidate",
+    "execution_approval_status": "not_requested",
+    "requires_execution_approval": true,
+    "preflight_timestamp": "2026-06-04T00:00:00.000Z"
+  },
+  "batch_summary": {
+    "batch_id": "phase6_1_batch_001",
+    "approved_items": ["1.3"],
+    "item_count": 1,
+    "batch_size_within_limits": true,
+    "batch_size_min": 1,
+    "batch_size_max": 5,
+    "readiness_status": "execution_candidate",
+    "items": [
+      {
+        "item_id": "1.3",
+        "title": "指令系统CISC和RISC",
+        "status": "activation_approved",
+        "readiness": "execution_ready",
+        "risk_level": "low"
+      }
+    ],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"]
+  },
+  "phase_progression_history": [
+    {
+      "phase": "6.0",
+      "outcome": "Controlled source expansion plan created"
+    },
+    {
+      "phase": "6.1",
+      "outcome": "Dormant batch selection: 1.3 selected as proposed_primary"
+    },
+    {
+      "phase": "6.2",
+      "outcome": "Gate recheck: 13.3 quarantined, taxonomy suspect resolved"
+    },
+    {
+      "phase": "6.3",
+      "outcome": "Readiness preflight: batch marked as activation_candidate (6/9 gates satisfied)"
+    },
+    {
+      "phase": "6.4",
+      "outcome": "Human approval request prepared (pending_human_review)"
+    },
+    {
+      "phase": "6.5",
+      "outcome": "Human approval decision recorded: activation_approved"
+    },
+    {
+      "phase": "6.6",
+      "outcome": "Execution readiness preflight: batch marked as execution_candidate (this phase)"
+    }
+  ],
+  "preflight_checks": {
+    "activation_approval_validation": {
+      "phase6_5_approval_exists": true,
+      "approval_status": "activation_approved",
+      "phase6_1_entry_allowed": true,
+      "activation_allowed": true,
+      "approval_granted": true,
+      "result": "PASS"
+    },
+    "batch_scope_validation": {
+      "batch_id": "phase6_1_batch_001",
+      "approved_items": ["1.3"],
+      "batch_size": 1,
+      "batch_size_min": 1,
+      "batch_size_max": 5,
+      "batch_size_within_limits": true,
+      "no_additional_items_added": true,
+      "result": "PASS"
+    },
+    "item_constraint_validation": {
+      "quarantined_excluded": true,
+      "item_13_3_not_in_approved": true,
+      "item_13_3_in_quarantined": true,
+      "item_9_1_in_deferred": true,
+      "item_9_1_not_in_approved": true,
+      "result": "PASS"
+    },
+    "operational_boundary_validation": {
+      "expansion_execution_claimed": false,
+      "crawler_output_claimed": false,
+      "renderer_output_claimed": false,
+      "ai_learning_generation_claimed": false,
+      "source_layer_mutation_declared": false,
+      "web_requests_declared": false,
+      "raw_snapshots_created": false,
+      "intermediate_json_created": false,
+      "assets_captured": false,
+      "result": "PASS"
+    },
+    "execution_gate_validation": {
+      "batch_executable": false,
+      "execution_allowed": false,
+      "crawler_allowed": false,
+      "renderer_allowed": false,
+      "recovery_allowed": false,
+      "web_requests_allowed": false,
+      "ai_learning_generation_allowed": false,
+      "result": "PASS"
+    }
+  },
+  "rollback_boundary": {
+    "rollback_target": "activation_approved",
+    "rollback_scope": "Remove generated output artifacts for item 1.3",
+    "source_preservation": "Source layer artifacts must remain untouched",
+    "rollback_trigger": "Manual human decision or automated quality gate failure",
+    "rollback_constraint": "Cannot rollback below activation_approved; re-approval requires human review",
+    "rollback_preconditions": [
+      "Source layer integrity must be verifiable",
+      "Generated artifacts must be identifiable by batch ID and item ID",
+      "Rollback must not affect deferred (9.1) or quarantined (13.3) items"
+    ]
+  },
+  "audit_boundary": {
+    "audit_trail_requirements": [
+      "Batch ID (phase6_1_batch_001) must be stamped on all output artifacts",
+      "Item ID (1.3) must be traceable to source, intermediate, and output",
+      "Execution timestamp (ISO 8601) on all artifacts",
+      "Gate state snapshot at time of execution must be recorded",
+      "Source hash for integrity verification",
+      "Validation record must be preserved"
+    ],
+    "audit_scope": {
+      "input": "Phase 6.5 approval manifest + Phase 6.6 preflight manifest",
+      "output": "Future execution artifacts (not created in this phase)",
+      "cross_reference": "Source packet → intermediate → rendered output"
+    }
+  },
+  "output_artifacts": {
+    "allowed_in_future_execution": [
+      {
+        "artifact": "Rendered Markdown",
+        "type": ".md",
+        "item": "1.3",
+        "description": "Concept card for 指令系统CISC和RISC"
+      },
+      {
+        "artifact": "Execution log",
+        "type": ".json",
+        "item": "batch",
+        "description": "Execution trace and status"
+      },
+      {
+        "artifact": "Quality audit",
+        "type": ".json",
+        "item": "1.3",
+        "description": "Render quality assessment"
+      },
+      {
+        "artifact": "Validation record",
+        "type": ".json",
+        "item": "batch",
+        "description": "Validator pass/fail record"
+      }
+    ],
+    "forbidden_in_this_phase": [
+      {
+        "artifact": "Rendered Markdown",
+        "reason": "Execution not approved"
+      },
+      {
+        "artifact": "Crawler output",
+        "reason": "Crawler not allowed"
+      },
+      {
+        "artifact": "Renderer output",
+        "reason": "Renderer not allowed"
+      },
+      {
+        "artifact": "Recovery output",
+        "reason": "Recovery not allowed"
+      },
+      {
+        "artifact": "AI learning content",
+        "reason": "AI generation not allowed"
+      },
+      {
+        "artifact": "Raw snapshots",
+        "reason": "Snapshot creation not allowed"
+      },
+      {
+        "artifact": "Intermediate JSON",
+        "reason": "Intermediate creation not allowed"
+      },
+      {
+        "artifact": "Asset captures",
+        "reason": "Asset capture not allowed"
+      }
+    ]
+  },
+  "validation_expectations": {
+    "must_pass": [
+      "validate:controlled-source-expansion-plan",
+      "validate:source-packets",
+      "validate:dual-layer-contract",
+      "validate:batch-selection-manifest",
+      "validate:gate-recheck-manifest",
+      "validate:activation-readiness-preflight",
+      "validate:batch-activation-human-approval-request",
+      "validate:batch-activation-human-approval-decision",
+      "validate:batch-execution-readiness-preflight"
+    ],
+    "must_not_trigger": [
+      "crawler",
+      "renderer",
+      "recovery",
+      "web_requests",
+      "ai_learning_generation",
+      "asset_capture",
+      "raw_snapshot_creation",
+      "intermediate_json_creation",
+      "batch_execution"
+    ]
+  },
+  "final_decision": {
+    "preflight_completed": true,
+    "readiness_status": "execution_candidate",
+    "execution_approval_status": "not_requested",
+    "batch_id": "phase6_1_batch_001",
+    "approved_items": ["1.3"],
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": false,
+    "execution_allowed": false,
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "recommendation": "Batch is eligible to request execution approval in a subsequent phase (Phase 6.7+)"
+  }
+}

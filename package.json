@@ -72,6 +72,8 @@
     "validate:gate-recheck-manifest": "tsx scripts/validate-ruankaodaren-gate-recheck-manifest.ts",
     "validate:activation-readiness-preflight": "tsx scripts/validate-ruankaodaren-activation-readiness-preflight.ts",
     "validate:batch-activation-human-approval-request": "tsx scripts/validate-ruankaodaren-batch-activation-human-approval-request.ts",
+    "validate:batch-activation-human-approval-decision": "tsx scripts/validate-ruankaodaren-batch-activation-human-approval-decision.ts",
+    "validate:batch-execution-readiness-preflight": "tsx scripts/validate-ruankaodaren-batch-execution-readiness-preflight.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",

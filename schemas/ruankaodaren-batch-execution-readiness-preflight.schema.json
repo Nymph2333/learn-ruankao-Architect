@@ -1,0 +1,404 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-batch-execution-readiness-preflight",
+  "title": "Ruankaodaren Phase 6.6 Batch Execution Readiness Preflight",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "preflight_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "created_at",
+    "scope",
+    "phase_gates",
+    "preflight_metadata",
+    "batch_summary",
+    "phase_progression_history",
+    "preflight_checks",
+    "rollback_boundary",
+    "audit_boundary",
+    "output_artifacts",
+    "validation_expectations",
+    "final_decision"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.6" },
+    "manifest_type": { "const": "batch_execution_readiness_preflight" },
+    "preflight_type": { "const": "batch_execution_readiness" },
+    "status": { "const": "execution_readiness_assessed" },
+    "created_for_phase": { "const": "6.6" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5"] },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "execution_allowed",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed",
+        "approval_granted"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": true },
+        "activation_allowed": { "const": true },
+        "batch_executable": { "const": false },
+        "execution_allowed": { "const": false },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false },
+        "approval_granted": { "const": true }
+      }
+    },
+    "preflight_metadata": {
+      "type": "object",
+      "required": [
+        "preflight_id",
+        "preflight_type",
+        "batch_id",
+        "readiness_status",
+        "execution_approval_status",
+        "requires_execution_approval",
+        "preflight_timestamp"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "preflight_id": { "type": "string" },
+        "preflight_type": { "const": "batch_execution_readiness" },
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "readiness_status": { "const": "execution_candidate" },
+        "execution_approval_status": {
+          "type": "string",
+          "enum": ["not_requested", "explicitly_denied"]
+        },
+        "requires_execution_approval": { "const": true },
+        "preflight_timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "batch_summary": {
+      "type": "object",
+      "required": [
+        "batch_id",
+        "approved_items",
+        "item_count",
+        "batch_size_within_limits",
+        "batch_size_min",
+        "batch_size_max",
+        "readiness_status",
+        "items",
+        "deferred_items",
+        "quarantined_items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "approved_items": {
+          "type": "array",
+          "items": { "const": "1.3" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "item_count": { "const": 1 },
+        "batch_size_within_limits": { "const": true },
+        "batch_size_min": { "const": 1 },
+        "batch_size_max": { "const": 5 },
+        "readiness_status": { "const": "execution_candidate" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item_id", "title", "status", "readiness", "risk_level"],
+            "additionalProperties": false,
+            "properties": {
+              "item_id": { "type": "string" },
+              "title": { "type": "string" },
+              "status": { "type": "string" },
+              "readiness": { "type": "string" },
+              "risk_level": { "type": "string" }
+            }
+          }
+        },
+        "deferred_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "9.1" }
+        },
+        "quarantined_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "13.3" }
+        }
+      }
+    },
+    "phase_progression_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "outcome"],
+        "additionalProperties": false,
+        "properties": {
+          "phase": { "type": "string" },
+          "outcome": { "type": "string" }
+        }
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "preflight_checks": {
+      "type": "object",
+      "required": [
+        "activation_approval_validation",
+        "batch_scope_validation",
+        "item_constraint_validation",
+        "operational_boundary_validation",
+        "execution_gate_validation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "activation_approval_validation": {
+          "type": "object",
+          "required": ["phase6_5_approval_exists", "approval_status", "phase6_1_entry_allowed", "activation_allowed", "approval_granted", "result"],
+          "additionalProperties": false,
+          "properties": {
+            "phase6_5_approval_exists": { "const": true },
+            "approval_status": { "const": "activation_approved" },
+            "phase6_1_entry_allowed": { "const": true },
+            "activation_allowed": { "const": true },
+            "approval_granted": { "const": true },
+            "result": { "const": "PASS" }
+          }
+        },
+        "batch_scope_validation": {
+          "type": "object",
+          "required": ["batch_id", "approved_items", "batch_size", "batch_size_min", "batch_size_max", "batch_size_within_limits", "no_additional_items_added", "result"],
+          "additionalProperties": false,
+          "properties": {
+            "batch_id": { "const": "phase6_1_batch_001" },
+            "approved_items": {
+              "type": "array",
+              "items": { "const": "1.3" },
+              "minItems": 1,
+              "maxItems": 1
+            },
+            "batch_size": { "const": 1 },
+            "batch_size_min": { "const": 1 },
+            "batch_size_max": { "const": 5 },
+            "batch_size_within_limits": { "const": true },
+            "no_additional_items_added": { "const": true },
+            "result": { "const": "PASS" }
+          }
+        },
+        "item_constraint_validation": {
+          "type": "object",
+          "required": ["quarantined_excluded", "item_13_3_not_in_approved", "item_13_3_in_quarantined", "item_9_1_in_deferred", "item_9_1_not_in_approved", "result"],
+          "additionalProperties": false,
+          "properties": {
+            "quarantined_excluded": { "const": true },
+            "item_13_3_not_in_approved": { "const": true },
+            "item_13_3_in_quarantined": { "const": true },
+            "item_9_1_in_deferred": { "const": true },
+            "item_9_1_not_in_approved": { "const": true },
+            "result": { "const": "PASS" }
+          }
+        },
+        "operational_boundary_validation": {
+          "type": "object",
+          "required": [
+            "expansion_execution_claimed",
+            "crawler_output_claimed",
+            "renderer_output_claimed",
+            "ai_learning_generation_claimed",
+            "source_layer_mutation_declared",
+            "web_requests_declared",
+            "raw_snapshots_created",
+            "intermediate_json_created",
+            "assets_captured",
+            "result"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "expansion_execution_claimed": { "const": false },
+            "crawler_output_claimed": { "const": false },
+            "renderer_output_claimed": { "const": false },
+            "ai_learning_generation_claimed": { "const": false },
+            "source_layer_mutation_declared": { "const": false },
+            "web_requests_declared": { "const": false },
+            "raw_snapshots_created": { "const": false },
+            "intermediate_json_created": { "const": false },
+            "assets_captured": { "const": false },
+            "result": { "const": "PASS" }
+          }
+        },
+        "execution_gate_validation": {
+          "type": "object",
+          "required": [
+            "batch_executable",
+            "execution_allowed",
+            "crawler_allowed",
+            "renderer_allowed",
+            "recovery_allowed",
+            "web_requests_allowed",
+            "ai_learning_generation_allowed",
+            "result"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "batch_executable": { "const": false },
+            "execution_allowed": { "const": false },
+            "crawler_allowed": { "const": false },
+            "renderer_allowed": { "const": false },
+            "recovery_allowed": { "const": false },
+            "web_requests_allowed": { "const": false },
+            "ai_learning_generation_allowed": { "const": false },
+            "result": { "const": "PASS" }
+          }
+        }
+      }
+    },
+    "rollback_boundary": {
+      "type": "object",
+      "required": ["rollback_target", "rollback_scope", "source_preservation", "rollback_trigger", "rollback_constraint", "rollback_preconditions"],
+      "additionalProperties": false,
+      "properties": {
+        "rollback_target": { "type": "string" },
+        "rollback_scope": { "type": "string" },
+        "source_preservation": { "type": "string" },
+        "rollback_trigger": { "type": "string" },
+        "rollback_constraint": { "type": "string" },
+        "rollback_preconditions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "audit_boundary": {
+      "type": "object",
+      "required": ["audit_trail_requirements", "audit_scope"],
+      "additionalProperties": false,
+      "properties": {
+        "audit_trail_requirements": { "type": "array", "items": { "type": "string" } },
+        "audit_scope": {
+          "type": "object",
+          "required": ["input", "output", "cross_reference"],
+          "additionalProperties": false,
+          "properties": {
+            "input": { "type": "string" },
+            "output": { "type": "string" },
+            "cross_reference": { "type": "string" }
+          }
+        }
+      }
+    },
+    "output_artifacts": {
+      "type": "object",
+      "required": ["allowed_in_future_execution", "forbidden_in_this_phase"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_in_future_execution": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["artifact", "type", "item", "description"],
+            "additionalProperties": false,
+            "properties": {
+              "artifact": { "type": "string" },
+              "type": { "type": "string" },
+              "item": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "forbidden_in_this_phase": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["artifact", "reason"],
+            "additionalProperties": false,
+            "properties": {
+              "artifact": { "type": "string" },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": ["must_pass", "must_not_trigger"],
+      "additionalProperties": false,
+      "properties": {
+        "must_pass": { "type": "array", "items": { "type": "string" } },
+        "must_not_trigger": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "final_decision": {
+      "type": "object",
+      "required": [
+        "preflight_completed",
+        "readiness_status",
+        "execution_approval_status",
+        "batch_id",
+        "approved_items",
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "execution_allowed",
+        "deferred_items",
+        "quarantined_items",
+        "recommendation"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "preflight_completed": { "const": true },
+        "readiness_status": { "const": "execution_candidate" },
+        "execution_approval_status": {
+          "type": "string",
+          "enum": ["not_requested", "explicitly_denied"]
+        },
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "approved_items": {
+          "type": "array",
+          "items": { "const": "1.3" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "phase6_1_entry_allowed": { "const": true },
+        "activation_allowed": { "const": true },
+        "batch_executable": { "const": false },
+        "execution_allowed": { "const": false },
+        "deferred_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "9.1" }
+        },
+        "quarantined_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "13.3" }
+        },
+        "recommendation": { "type": "string" }
+      }
+    }
+  }
+}
