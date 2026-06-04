@@ -1,0 +1,49 @@
+{
+  "artifact_type": "formal_item_execution_result",
+  "artifact_version": "phase6.21",
+  "created_for_phase": "6.21",
+  "created_at": "2026-06-04T00:00:00Z",
+  "isolation_path": "data/formal-runs/phase6_21/",
+  "batch_id": "phase6_1_batch_001",
+  "item_id": "1.3",
+  "item_title": "指令系统CISC和RISC",
+  "item_status": "formal_run_completed",
+  "execution_result": "pass",
+  "run_mode": "offline_existing_source_packet_only",
+  "source_packet_mode": "existing_only",
+  "mixed_text_image_handling_status": "handled_or_not_required",
+  "source_layer_mutation_detected": false,
+  "ai_learning_generation_detected": false,
+  "crawler_dependency_detected": false,
+  "renderer_dependency_detected": false,
+  "web_request_dependency_detected": false,
+  "formal_run_approval_reference": {
+    "approval_manifest": "data/manifests/phase6_20_formal_offline_batch_run_approval_decision.json",
+    "formal_run_approval_status": "approved",
+    "formal_run_approved": true,
+    "human_decision_recorded": true
+  },
+  "dry_run_reference": {
+    "dry_run_record": "data/dry-runs/phase6_18/dry_run_record_phase6_1_batch_001.json",
+    "dry_run_result": "pass",
+    "dry_run_executed": true
+  },
+  "item_execution_details": {
+    "execution_type": "formal_offline_existing_source_packet",
+    "source_packet_available": true,
+    "parser_contract_valid": true,
+    "existing_source_packet_boundary_sufficient": true,
+    "no_crawler_invocation": true,
+    "no_renderer_invocation": true,
+    "no_recovery_invocation": true,
+    "no_web_request": true,
+    "no_ai_learning_generation": true,
+    "no_source_layer_mutation": true
+  },
+  "item_scope": {
+    "executed_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "no_additional_item_added": true
+  }
+}

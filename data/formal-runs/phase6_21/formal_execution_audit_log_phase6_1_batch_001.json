@@ -1,0 +1,97 @@
+{
+  "artifact_type": "formal_execution_audit_log",
+  "artifact_version": "phase6.21",
+  "created_for_phase": "6.21",
+  "created_at": "2026-06-04T00:00:00Z",
+  "isolation_path": "data/formal-runs/phase6_21/",
+  "batch_id": "phase6_1_batch_001",
+  "formal_run_status": "completed",
+  "formal_run_result": "pass",
+  "phase_chain_reference": {
+    "phases": [
+      "6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9",
+      "6.10", "6.11", "6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20"
+    ],
+    "phase_chain_complete": true
+  },
+  "dry_run_artifact_references": {
+    "dry_run_record": "data/dry-runs/phase6_18/dry_run_record_phase6_1_batch_001.json",
+    "dry_run_audit_log": "data/dry-runs/phase6_18/dry_run_audit_log_phase6_1_batch_001.json",
+    "dry_run_item_scope_report": "data/dry-runs/phase6_18/dry_run_item_scope_report_phase6_1_batch_001.json",
+    "dry_run_validation_report": "data/dry-runs/phase6_18/dry_run_validation_report_phase6_1_batch_001.json",
+    "dry_run_result": "pass",
+    "dry_run_executed": true
+  },
+  "formal_approval_reference": {
+    "approval_manifest": "data/manifests/phase6_20_formal_offline_batch_run_approval_decision.json",
+    "approval_status": "formal_offline_batch_run_approval_decision_recorded",
+    "formal_run_approval_status": "approved",
+    "formal_run_approved": true,
+    "human_decision_recorded": true,
+    "human_decision": "approve_formal_offline_batch_run",
+    "approved_in_phase": "6.20"
+  },
+  "gate_state": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "operational_gate_decisions": [
+    { "gate": "crawler_gate", "decision": "not_required", "reason": "Formal run does not execute crawler" },
+    { "gate": "renderer_gate", "decision": "not_required", "reason": "Formal run does not execute renderer" },
+    { "gate": "recovery_gate", "decision": "not_required", "reason": "Formal run does not execute recovery" },
+    { "gate": "web_requests_gate", "decision": "not_required", "reason": "Formal run does not make web requests" },
+    { "gate": "ai_learning_generation_gate", "decision": "not_allowed", "reason": "AI learning generation not allowed" }
+  ],
+  "no_go_confirmation": {
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_source_layer_modified": true,
+    "no_ai_learning_generated": true,
+    "no_assets_captured": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "no_package_script_added_for_formal_run": true,
+    "no_output_for_9_1_created": true,
+    "no_output_for_13_3_created": true
+  },
+  "created_formal_run_artifacts": [
+    "data/formal-runs/phase6_21/formal_batch_run_record_phase6_1_batch_001.json",
+    "data/formal-runs/phase6_21/formal_execution_audit_log_phase6_1_batch_001.json",
+    "data/formal-runs/phase6_21/formal_item_execution_result_1_3.json",
+    "data/formal-runs/phase6_21/formal_post_run_validation_report_phase6_1_batch_001.json"
+  ],
+  "forbidden_artifact_checks": {
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false,
+    "rendered_outputs_created": false,
+    "crawler_outputs_created": false,
+    "recovery_outputs_created": false,
+    "web_request_results_created": false,
+    "ai_learning_content_created": false,
+    "source_layer_mutations_created": false,
+    "captured_assets_created": false,
+    "execution_results_for_9_1_created": false,
+    "execution_results_for_13_3_created": false
+  },
+  "validator_commands": [
+    "pnpm typecheck",
+    "pnpm verify",
+    "pnpm validate:formal-offline-batch-run-execution-record"
+  ],
+  "final_formal_run_result": {
+    "formal_run_status": "completed",
+    "formal_run_result": "pass",
+    "formal_run_executed": true,
+    "batch_run_executed": true,
+    "formal_execution_status": "completed"
+  }
+}
