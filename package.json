@@ -90,6 +90,7 @@
     "validate:formal-offline-batch-run-approval-decision": "tsx scripts/validate-ruankaodaren-formal-offline-batch-run-approval-decision.ts",
     "validate:formal-offline-batch-run-execution-record": "tsx scripts/validate-ruankaodaren-formal-offline-batch-run-execution-record.ts",
     "validate:formal-run-review-and-closure-report": "tsx scripts/validate-ruankaodaren-formal-run-review-and-closure-report.ts",
+    "validate:ai-learning-generation-request": "tsx scripts/validate-ruankaodaren-ai-learning-generation-request.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
