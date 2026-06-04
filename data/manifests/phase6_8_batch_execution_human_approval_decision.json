@@ -1,0 +1,194 @@
+{
+  "manifest_version": "phase6.8",
+  "manifest_type": "batch_execution_human_approval_decision",
+  "status": "execution_approved",
+  "created_for_phase": "6.8",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"],
+  "created_at": "2026-06-04T02:00:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_phase6_3_manifest",
+      "read_existing_phase6_4_manifest",
+      "read_existing_phase6_5_manifest",
+      "read_existing_phase6_6_manifest",
+      "read_existing_phase6_7_manifest",
+      "validate_execution_approval_request",
+      "record_approval_decision",
+      "set_batch_executable_true",
+      "set_execution_allowed_true"
+    ],
+    "forbidden": [
+      "execute_batch",
+      "set_crawler_allowed_true",
+      "set_renderer_allowed_true",
+      "set_recovery_allowed_true",
+      "set_web_requests_allowed_true",
+      "set_ai_learning_generation_allowed_true",
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false,
+    "approval_granted": false
+  },
+  "decision_metadata": {
+    "decision_id": "phase6_8_execution_approval_decision_001",
+    "decision_type": "human_execution_approval",
+    "approved_decision": "approve_execution",
+    "approval_scope": "batch_execution_authorization_only",
+    "approval_status": "execution_approved",
+    "approved_batch_id": "phase6_1_batch_001",
+    "decision_timestamp": "2026-06-04T02:00:00.000Z",
+    "decision_phase": "6.8"
+  },
+  "batch_summary": {
+    "batch_id": "phase6_1_batch_001",
+    "approved_items": ["1.3"],
+    "item_count": 1,
+    "batch_size_within_limits": true,
+    "batch_size_min": 1,
+    "batch_size_max": 5,
+    "items": [
+      {
+        "item_id": "1.3",
+        "title": "指令系统CISC和RISC",
+        "status": "execution_approved",
+        "risk_level": "low",
+        "known_issue": "MIXED_TEXT_IMAGE"
+      }
+    ],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"]
+  },
+  "phase_progression_history": [
+    {
+      "phase": "6.0",
+      "outcome": "Controlled source expansion plan created"
+    },
+    {
+      "phase": "6.1",
+      "outcome": "Dormant batch selection: 1.3 selected as proposed_primary"
+    },
+    {
+      "phase": "6.2",
+      "outcome": "Gate recheck: 13.3 quarantined, taxonomy suspect resolved"
+    },
+    {
+      "phase": "6.3",
+      "outcome": "Readiness preflight: batch marked as activation_candidate (6/9 gates satisfied)"
+    },
+    {
+      "phase": "6.4",
+      "outcome": "Activation approval request prepared (pending_human_review)"
+    },
+    {
+      "phase": "6.5",
+      "outcome": "Activation approval decision recorded: activation_approved"
+    },
+    {
+      "phase": "6.6",
+      "outcome": "Execution readiness preflight: batch marked as execution_candidate"
+    },
+    {
+      "phase": "6.7",
+      "outcome": "Execution approval request prepared (pending_human_review)"
+    },
+    {
+      "phase": "6.8",
+      "outcome": "Execution approval decision recorded: execution_approved (this phase)"
+    }
+  ],
+  "gate_changes_applied": {
+    "changes": [
+      {
+        "gate": "batch_executable",
+        "before": false,
+        "after": true,
+        "rationale": "Human approved batch execution authorization"
+      },
+      {
+        "gate": "execution_allowed",
+        "before": false,
+        "after": true,
+        "rationale": "Human approved execution of approved items"
+      }
+    ],
+    "rationale": "Gate changes applied per human approval decision. Operational gates remain closed."
+  },
+  "no_go_confirmation": {
+    "no_batch_execution_occurs": true,
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_source_layer_modified": true,
+    "no_ai_learning_generated": true,
+    "no_assets_captured": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "crawler_allowed_remains_false": true,
+    "renderer_allowed_remains_false": true,
+    "recovery_allowed_remains_false": true,
+    "web_requests_allowed_remains_false": true,
+    "ai_learning_generation_allowed_remains_false": true
+  },
+  "operational_assertions": {
+    "expansion_execution_claimed": false,
+    "crawler_output_claimed": false,
+    "renderer_output_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "web_requests_declared": false,
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false,
+    "assets_captured": false
+  },
+  "rollback_boundary": {
+    "rollback_target": "execution_candidate",
+    "rollback_scope": "Revoke batch_executable and execution_allowed, return to pending_human_review",
+    "source_preservation": "Source layer artifacts must remain untouched",
+    "rollback_trigger": "Manual human decision or automated quality gate failure",
+    "rollback_constraint": "Cannot rollback below execution_candidate; re-approval requires human review"
+  },
+  "audit_boundary": {
+    "audit_trail_requirements": [
+      "Decision ID must be recorded",
+      "Decision timestamp must be ISO 8601",
+      "Approved batch ID must match Phase 6.7 request",
+      "Approved items must match Phase 6.7 request",
+      "Gate state changes must be recorded with before/after values"
+    ],
+    "decision_provenance": {
+      "request_phase": "6.7",
+      "decision_phase": "6.8",
+      "request_manifest": "phase6_7_batch_execution_human_approval_request.json",
+      "decision_manifest": "phase6_8_batch_execution_human_approval_decision.json"
+    }
+  },
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "operational_assertions_all_false": true,
+    "no_go_confirmations_all_true": true,
+    "item_constraints_satisfied": true
+  }
+}

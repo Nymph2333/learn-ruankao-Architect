@@ -1,0 +1,309 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-batch-execution-human-approval-decision",
+  "title": "Ruankaodaren Phase 6.8 Batch Execution Human Approval Decision",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "created_at",
+    "scope",
+    "phase_gates",
+    "decision_metadata",
+    "batch_summary",
+    "phase_progression_history",
+    "gate_changes_applied",
+    "no_go_confirmation",
+    "operational_assertions",
+    "rollback_boundary",
+    "audit_boundary",
+    "validation_expectations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.8" },
+    "manifest_type": { "const": "batch_execution_human_approval_decision" },
+    "status": { "const": "execution_approved" },
+    "created_for_phase": { "const": "6.8" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"] },
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "execution_allowed",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed",
+        "approval_granted"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": true },
+        "activation_allowed": { "const": true },
+        "batch_executable": { "const": true },
+        "execution_allowed": { "const": true },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false },
+        "approval_granted": { "const": false }
+      }
+    },
+    "decision_metadata": {
+      "type": "object",
+      "required": [
+        "decision_id",
+        "decision_type",
+        "approved_decision",
+        "approval_scope",
+        "approval_status",
+        "approved_batch_id",
+        "decision_timestamp",
+        "decision_phase"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "decision_id": { "type": "string" },
+        "decision_type": { "const": "human_execution_approval" },
+        "approved_decision": { "const": "approve_execution" },
+        "approval_scope": { "const": "batch_execution_authorization_only" },
+        "approval_status": { "const": "execution_approved" },
+        "approved_batch_id": { "const": "phase6_1_batch_001" },
+        "decision_timestamp": { "type": "string", "format": "date-time" },
+        "decision_phase": { "const": "6.8" }
+      }
+    },
+    "batch_summary": {
+      "type": "object",
+      "required": [
+        "batch_id",
+        "approved_items",
+        "item_count",
+        "batch_size_within_limits",
+        "batch_size_min",
+        "batch_size_max",
+        "items",
+        "deferred_items",
+        "quarantined_items"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "batch_id": { "const": "phase6_1_batch_001" },
+        "approved_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "item_count": { "const": 1 },
+        "batch_size_within_limits": { "const": true },
+        "batch_size_min": { "const": 1 },
+        "batch_size_max": { "const": 5 },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item_id", "title", "status", "risk_level"],
+            "additionalProperties": false,
+            "properties": {
+              "item_id": { "type": "string" },
+              "title": { "type": "string" },
+              "status": { "type": "string" },
+              "risk_level": { "type": "string" },
+              "known_issue": { "type": "string" }
+            }
+          }
+        },
+        "deferred_items": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "quarantined_items": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "phase_progression_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "outcome"],
+        "additionalProperties": false,
+        "properties": {
+          "phase": { "type": "string" },
+          "outcome": { "type": "string" }
+        }
+      },
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "gate_changes_applied": {
+      "type": "object",
+      "required": ["changes", "rationale"],
+      "additionalProperties": false,
+      "properties": {
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gate", "before", "after", "rationale"],
+            "additionalProperties": false,
+            "properties": {
+              "gate": { "type": "string" },
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" },
+              "rationale": { "type": "string" }
+            }
+          }
+        },
+        "rationale": { "type": "string" }
+      }
+    },
+    "no_go_confirmation": {
+      "type": "object",
+      "required": [
+        "no_batch_execution_occurs",
+        "no_crawler_runs",
+        "no_renderer_runs",
+        "no_recovery_runs",
+        "no_web_requests_made",
+        "no_source_layer_modified",
+        "no_ai_learning_generated",
+        "no_assets_captured",
+        "no_raw_snapshots_created",
+        "no_intermediate_json_created",
+        "crawler_allowed_remains_false",
+        "renderer_allowed_remains_false",
+        "recovery_allowed_remains_false",
+        "web_requests_allowed_remains_false",
+        "ai_learning_generation_allowed_remains_false"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_batch_execution_occurs": { "const": true },
+        "no_crawler_runs": { "const": true },
+        "no_renderer_runs": { "const": true },
+        "no_recovery_runs": { "const": true },
+        "no_web_requests_made": { "const": true },
+        "no_source_layer_modified": { "const": true },
+        "no_ai_learning_generated": { "const": true },
+        "no_assets_captured": { "const": true },
+        "no_raw_snapshots_created": { "const": true },
+        "no_intermediate_json_created": { "const": true },
+        "crawler_allowed_remains_false": { "const": true },
+        "renderer_allowed_remains_false": { "const": true },
+        "recovery_allowed_remains_false": { "const": true },
+        "web_requests_allowed_remains_false": { "const": true },
+        "ai_learning_generation_allowed_remains_false": { "const": true }
+      }
+    },
+    "operational_assertions": {
+      "type": "object",
+      "required": [
+        "expansion_execution_claimed",
+        "crawler_output_claimed",
+        "renderer_output_claimed",
+        "ai_learning_generation_claimed",
+        "source_layer_mutation_declared",
+        "web_requests_declared",
+        "raw_snapshots_created",
+        "intermediate_json_created",
+        "assets_captured"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "expansion_execution_claimed": { "const": false },
+        "crawler_output_claimed": { "const": false },
+        "renderer_output_claimed": { "const": false },
+        "ai_learning_generation_claimed": { "const": false },
+        "source_layer_mutation_declared": { "const": false },
+        "web_requests_declared": { "const": false },
+        "raw_snapshots_created": { "const": false },
+        "intermediate_json_created": { "const": false },
+        "assets_captured": { "const": false }
+      }
+    },
+    "rollback_boundary": {
+      "type": "object",
+      "required": [
+        "rollback_target",
+        "rollback_scope",
+        "source_preservation",
+        "rollback_trigger",
+        "rollback_constraint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rollback_target": { "type": "string" },
+        "rollback_scope": { "type": "string" },
+        "source_preservation": { "type": "string" },
+        "rollback_trigger": { "type": "string" },
+        "rollback_constraint": { "type": "string" }
+      }
+    },
+    "audit_boundary": {
+      "type": "object",
+      "required": ["audit_trail_requirements", "decision_provenance"],
+      "additionalProperties": false,
+      "properties": {
+        "audit_trail_requirements": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "decision_provenance": {
+          "type": "object",
+          "required": ["request_phase", "decision_phase", "request_manifest", "decision_manifest"],
+          "additionalProperties": false,
+          "properties": {
+            "request_phase": { "type": "string" },
+            "decision_phase": { "type": "string" },
+            "request_manifest": { "type": "string" },
+            "decision_manifest": { "type": "string" }
+          }
+        }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": [
+        "schema_validation",
+        "invariant_checks",
+        "operational_assertions_all_false",
+        "no_go_confirmations_all_true",
+        "item_constraints_satisfied"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_validation": { "const": "must_pass" },
+        "invariant_checks": { "const": "must_pass" },
+        "operational_assertions_all_false": { "const": true },
+        "no_go_confirmations_all_true": { "const": true },
+        "item_constraints_satisfied": { "const": true }
+      }
+    }
+  }
+}
