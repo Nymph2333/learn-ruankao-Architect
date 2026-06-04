@@ -1,0 +1,158 @@
+{
+  "manifest_version": "phase7.1",
+  "manifest_type": "ai_learning_generation_approval_gate",
+  "phase": "7.1",
+  "artifact_type": "ai_learning_generation_approval_gate",
+  "status": "ai_learning_generation_approval_gate_recorded",
+  "created_for_phase": "7.1",
+  "created_at": "2026-06-04T00:00:00Z",
+
+  "approval_status": "ai_learning_generation_approved",
+  "approved_decision": "approve_ai_learning_content_generation",
+  "ai_learning_generation_approval_status": "approved",
+  "ai_learning_generation_approved": true,
+  "ai_learning_content_generation_allowed": true,
+  "phase7_1_entry_allowed": true,
+  "phase7_2_entry_allowed": false,
+
+  "upstream_phase": "7.0",
+  "upstream_manifest": "phase7_0_ai_learning_generation_request.json",
+  "upstream_artifact_type": "ai_learning_generation_request",
+  "upstream_request_status": "requested",
+  "upstream_request_mode": "request_only",
+
+  "batch_id": "phase6_1_batch_001",
+
+  "crawler_allowed": false,
+  "renderer_allowed": false,
+  "recovery_allowed": false,
+  "web_requests_allowed": false,
+  "source_layer_modification_allowed": false,
+  "ai_learning_request_creation_allowed": true,
+
+  "approved_generation_scope": [
+    "learning_objectives",
+    "knowledge_units",
+    "exam_oriented_explanations",
+    "practice_questions",
+    "answer_rationales",
+    "misconception_warnings",
+    "review_checklist",
+    "source_traceability_map"
+  ],
+  "actual_generated_outputs": [],
+
+  "scope": {
+    "allowed": [
+      "AI learning generation approval decision recording",
+      "human decision documentation",
+      "approved generation scope documentation",
+      "approved generation output boundary documentation",
+      "Phase 7.0 request reference",
+      "next-phase constraint documentation"
+    ],
+    "forbidden": [
+      "AI learning content generation",
+      "study notes creation",
+      "question bank creation",
+      "explanations creation",
+      "flashcard creation",
+      "diagram creation",
+      "summary creation",
+      "rendered learning content creation",
+      "crawler execution",
+      "renderer execution",
+      "recovery execution",
+      "web requests",
+      "source layer mutation",
+      "raw snapshot creation",
+      "intermediate JSON creation",
+      "asset capture"
+    ],
+    "allowed_source_basis": "closed_pass_phase6_1_batch_001_only",
+    "unapproved_sources_allowed": false,
+    "external_sources_allowed": false,
+    "source_expansion_allowed": false,
+    "generation_mode": "offline_existing_source_packet_only"
+  },
+
+  "risk": {
+    "risk_level": "low",
+    "risk_reason": "Phase 7.1 records an approval decision as metadata only and does not generate learning content or mutate source-layer artifacts."
+  },
+
+  "closure": {
+    "phase7_1_status": "complete",
+    "phase7_1_result": "pass"
+  },
+
+  "next_phase_recommendation": {
+    "next_recommended_phase": "phase7.2_ai_learning_generation_execution",
+    "phase7_2_entry_allowed": false,
+    "phase7_2_entry_requires_approval": true,
+    "notes": "Phase 7.2 is authorized by this approval gate but requires its own execution plan artifact before entry."
+  },
+
+  "rollback_condition": {
+    "phase7_1_rollback_needed": false,
+    "reason": "Approval decision recorded as metadata only; no content generation occurred.",
+    "future_rollback_requirements": [
+      "If the approval decision is found to be incorrect, it must be revoked",
+      "If the generation scope changes, a new approval decision must be recorded",
+      "If the Phase 7.0 request changes, the approval decision must be re-evaluated"
+    ]
+  },
+
+  "audit_condition": {
+    "upstream_phase": "7.0",
+    "upstream_request_status": "requested",
+    "upstream_request_mode": "request_only",
+    "current_approval_status": "ai_learning_generation_approved",
+    "current_ai_learning_generation_approved": true,
+    "current_ai_learning_content_generation_allowed": true,
+    "current_phase7_1_entry_allowed": true,
+    "current_phase7_2_entry_allowed": false,
+    "human_decision_recorded": true,
+    "approved_generation_scope_count": 8,
+    "actual_generated_outputs_empty": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:ai-learning-generation-request",
+      "pnpm validate:ai-learning-generation-approval-gate"
+    ],
+    "commit_scope": "Phase 7.1 AI learning generation approval gate files and related schema/type/validator/package verification changes only"
+  },
+
+  "phase_progression_history": [
+    { "phase": "7.0", "outcome": "ai_learning_generation_request_created" },
+    { "phase": "7.1", "outcome": "ai_learning_generation_approval_gate_recorded" }
+  ],
+
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "phase_must_be": "7.1",
+    "artifact_type_must_be": "ai_learning_generation_approval_gate",
+    "approval_status_must_be": "ai_learning_generation_approved",
+    "approved_decision_must_be": "approve_ai_learning_content_generation",
+    "ai_learning_generation_approval_status_must_be": "approved",
+    "ai_learning_generation_approved_must_be": true,
+    "ai_learning_content_generation_allowed_must_be": true,
+    "phase7_1_entry_allowed_must_be": true,
+    "phase7_2_entry_allowed_must_be": false,
+    "upstream_phase_must_be": "7.0",
+    "upstream_request_status_must_be": "requested",
+    "batch_id_must_be": "phase6_1_batch_001",
+    "crawler_allowed_must_be": false,
+    "renderer_allowed_must_be": false,
+    "recovery_allowed_must_be": false,
+    "web_requests_allowed_must_be": false,
+    "source_layer_modification_allowed_must_be": false,
+    "actual_generated_outputs_must_be_empty": true,
+    "approved_generation_scope_count_must_be": 8,
+    "risk_level_must_be": "low",
+    "closure_status_must_be": "complete",
+    "closure_result_must_be": "pass"
+  }
+}
