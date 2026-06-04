@@ -1,0 +1,324 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-controlled-batch-execution-plan",
+  "title": "Ruankaodaren Phase 6.9 Controlled Batch Execution Plan",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "created_at",
+    "scope",
+    "plan_status",
+    "batch_id",
+    "execution_authorization_status",
+    "phase_gates",
+    "input_boundary",
+    "allowed_future_artifacts",
+    "forbidden_phase6_9_artifacts",
+    "execution_sequence_draft",
+    "operational_gate_requests",
+    "no_go_confirmation",
+    "operational_assertions",
+    "rollback_boundary",
+    "audit_boundary",
+    "validation_expectations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.9" },
+    "manifest_type": { "const": "controlled_batch_execution_plan" },
+    "status": { "const": "execution_plan_created" },
+    "created_for_phase": { "const": "6.9" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8"] },
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "plan_status": { "const": "planned_not_executed" },
+    "batch_id": { "const": "phase6_1_batch_001" },
+    "execution_authorization_status": { "const": "execution_approved" },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "execution_allowed",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed",
+        "approval_granted"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": true },
+        "activation_allowed": { "const": true },
+        "batch_executable": { "const": true },
+        "execution_allowed": { "const": true },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false },
+        "approval_granted": { "const": false }
+      }
+    },
+    "input_boundary": {
+      "type": "object",
+      "required": ["allowed_items", "approved_items", "deferred_items", "quarantined_items", "item_count", "source_layer_mutation_allowed", "constraints"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_items": { "type": "array", "items": { "type": "string" } },
+        "approved_items": { "type": "array", "items": { "type": "string" } },
+        "deferred_items": { "type": "array", "items": { "type": "string" } },
+        "quarantined_items": { "type": "array", "items": { "type": "string" } },
+        "item_count": { "const": 1 },
+        "source_layer_mutation_allowed": { "const": false },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "allowed_future_artifacts": {
+      "type": "object",
+      "required": ["description", "artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "purpose", "created_when", "status"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "purpose": { "type": "string" },
+              "created_when": { "type": "string" },
+              "status": { "const": "planned" }
+            }
+          }
+        }
+      }
+    },
+    "forbidden_phase6_9_artifacts": {
+      "type": "object",
+      "required": ["description", "artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 9,
+          "maxItems": 9
+        }
+      }
+    },
+    "execution_sequence_draft": {
+      "type": "object",
+      "required": ["description", "steps"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["step", "name", "description", "type"],
+            "additionalProperties": false,
+            "properties": {
+              "step": { "type": "number" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "type": { "const": "planned" }
+            }
+          }
+        }
+      }
+    },
+    "operational_gate_requests": {
+      "type": "object",
+      "required": ["description", "requests", "constraint"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gate", "currently", "potentially_required", "rationale"],
+            "additionalProperties": false,
+            "properties": {
+              "gate": { "type": "string" },
+              "currently": { "type": "boolean" },
+              "potentially_required": { "type": "boolean" },
+              "rationale": { "type": "string" }
+            }
+          }
+        },
+        "constraint": { "type": "string" }
+      }
+    },
+    "no_go_confirmation": {
+      "type": "object",
+      "required": [
+        "no_batch_execution_occurs",
+        "no_crawler_runs",
+        "no_renderer_runs",
+        "no_recovery_runs",
+        "no_web_requests_made",
+        "no_source_layer_modified",
+        "no_ai_learning_generated",
+        "no_assets_captured",
+        "no_raw_snapshots_created",
+        "no_intermediate_json_created",
+        "crawler_allowed_remains_false",
+        "renderer_allowed_remains_false",
+        "recovery_allowed_remains_false",
+        "web_requests_allowed_remains_false",
+        "ai_learning_generation_allowed_remains_false"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_batch_execution_occurs": { "const": true },
+        "no_crawler_runs": { "const": true },
+        "no_renderer_runs": { "const": true },
+        "no_recovery_runs": { "const": true },
+        "no_web_requests_made": { "const": true },
+        "no_source_layer_modified": { "const": true },
+        "no_ai_learning_generated": { "const": true },
+        "no_assets_captured": { "const": true },
+        "no_raw_snapshots_created": { "const": true },
+        "no_intermediate_json_created": { "const": true },
+        "crawler_allowed_remains_false": { "const": true },
+        "renderer_allowed_remains_false": { "const": true },
+        "recovery_allowed_remains_false": { "const": true },
+        "web_requests_allowed_remains_false": { "const": true },
+        "ai_learning_generation_allowed_remains_false": { "const": true }
+      }
+    },
+    "operational_assertions": {
+      "type": "object",
+      "required": [
+        "expansion_execution_claimed",
+        "crawler_output_claimed",
+        "renderer_output_claimed",
+        "ai_learning_generation_claimed",
+        "source_layer_mutation_declared",
+        "web_requests_declared",
+        "raw_snapshots_created",
+        "intermediate_json_created",
+        "assets_captured"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "expansion_execution_claimed": { "const": false },
+        "crawler_output_claimed": { "const": false },
+        "renderer_output_claimed": { "const": false },
+        "ai_learning_generation_claimed": { "const": false },
+        "source_layer_mutation_declared": { "const": false },
+        "web_requests_declared": { "const": false },
+        "raw_snapshots_created": { "const": false },
+        "intermediate_json_created": { "const": false },
+        "assets_captured": { "const": false }
+      }
+    },
+    "rollback_boundary": {
+      "type": "object",
+      "required": ["phase6_9_rollback_needed", "reason", "future_execution_requirements"],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_9_rollback_needed": { "const": false },
+        "reason": { "type": "string" },
+        "future_execution_requirements": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "audit_boundary": {
+      "type": "object",
+      "required": [
+        "prior_phase_chain",
+        "current_execution_authorization_status",
+        "current_operational_gates",
+        "no_go_confirmation",
+        "validation_commands",
+        "commit_scope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prior_phase_chain": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 9,
+          "maxItems": 9
+        },
+        "current_execution_authorization_status": { "const": "execution_approved" },
+        "current_operational_gates": {
+          "type": "object",
+          "required": [
+            "phase6_1_entry_allowed",
+            "activation_allowed",
+            "batch_executable",
+            "execution_allowed",
+            "crawler_allowed",
+            "renderer_allowed",
+            "recovery_allowed",
+            "web_requests_allowed",
+            "ai_learning_generation_allowed"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "phase6_1_entry_allowed": { "const": true },
+            "activation_allowed": { "const": true },
+            "batch_executable": { "const": true },
+            "execution_allowed": { "const": true },
+            "crawler_allowed": { "const": false },
+            "renderer_allowed": { "const": false },
+            "recovery_allowed": { "const": false },
+            "web_requests_allowed": { "const": false },
+            "ai_learning_generation_allowed": { "const": false }
+          }
+        },
+        "no_go_confirmation": { "const": true },
+        "validation_commands": { "type": "array", "items": { "type": "string" } },
+        "commit_scope": { "type": "string" }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": [
+        "schema_validation",
+        "invariant_checks",
+        "operational_assertions_all_false",
+        "no_go_confirmations_all_true",
+        "item_constraints_satisfied",
+        "future_artifacts_planned_only",
+        "forbidden_artifacts_explicitly_listed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_validation": { "const": "must_pass" },
+        "invariant_checks": { "const": "must_pass" },
+        "operational_assertions_all_false": { "const": true },
+        "no_go_confirmations_all_true": { "const": true },
+        "item_constraints_satisfied": { "const": true },
+        "future_artifacts_planned_only": { "const": true },
+        "forbidden_artifacts_explicitly_listed": { "const": true }
+      }
+    }
+  }
+}
