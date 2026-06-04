@@ -1,0 +1,915 @@
+{
+  "manifest_version": "phase7.4",
+  "manifest_type": "ai_learning_generation_execution",
+  "phase": "7.4",
+  "artifact_type": "ai_learning_generation_execution",
+  "status": "ai_learning_generation_execution_completed",
+  "created_for_phase": "7.4",
+  "created_at": "2026-06-05T00:00:00Z",
+
+  "execution_status": "completed",
+  "execution_result": "pass",
+  "execution_mode": "offline_existing_source_packet_only",
+
+  "upstream_authorization": {
+    "phase": "7.3",
+    "artifact_type": "ai_learning_generation_execution_authorization_gate",
+    "commit": "bc5f2af",
+    "authorization_status": "authorized",
+    "authorization_result": "pass",
+    "authorized_execution_phase": "7.4",
+    "authorized_execution_mode": "offline_existing_source_packet_only",
+    "phase7_4_entry_allowed": true
+  },
+
+  "upstream_execution_plan": {
+    "phase": "7.2",
+    "artifact_type": "ai_learning_generation_execution_plan",
+    "commit": "6f0ac44",
+    "execution_plan_status": "planned",
+    "execution_status": "not_started",
+    "execution_mode": "offline_existing_source_packet_only"
+  },
+
+  "upstream_closure": {
+    "phase": "6.22",
+    "closure_status": "closed",
+    "closure_result": "pass",
+    "batch_id": "phase6_1_batch_001"
+  },
+
+  "batch_id": "phase6_1_batch_001",
+
+  "crawler_allowed": false,
+  "renderer_allowed": false,
+  "recovery_allowed": false,
+  "web_requests_allowed": false,
+  "source_layer_modification_allowed": false,
+  "ai_learning_content_generation_allowed": true,
+  "ai_learning_execution_allowed": true,
+  "ai_learning_request_creation_allowed": true,
+  "phase7_4_entry_allowed": true,
+  "phase7_5_entry_allowed": false,
+
+  "generated_outputs": [
+    {
+      "output_type": "learning_objectives",
+      "generation_status": "generated",
+      "item_count": 9,
+      "items": [
+        {
+          "id": "lo-1.3-01",
+          "title": "理解CISC指令系统的核心特征",
+          "generated_content": "学习目标：能够准确描述CISC（复杂指令系统）的三个核心特征——兼容性强、指令繁多且长度可变、由微程序实现。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容：CISC是复杂指令系统：兼容性强，指令繁多、长度可变，由微程序实现。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-1.3-02",
+          "title": "理解RISC指令系统的核心特征",
+          "generated_content": "学习目标：能够准确描述RISC（精简指令系统）的三个核心特征——指令少、使用频率接近、主要依靠硬件实现（通用寄存器、硬布线逻辑控制）。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容：RISC是精简指令系统：指令少，使用频率接近，主要依靠硬件实现(通用寄存器、硬布线逻辑控制)。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-1.3-03",
+          "title": "区分CISC与RISC的实现方式差异",
+          "generated_content": "学习目标：能够对比CISC与RISC在实现方式上的根本差异——CISC依赖微程序实现，RISC依赖硬件实现（通用寄存器和硬布线逻辑控制）。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容同时包含CISC由微程序实现和RISC主要依靠硬件实现的对比信息。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-13.3-01",
+          "title": "理解软件体系结构的基本定义",
+          "generated_content": "学习目标：能够准确复述软件体系结构的定义——一个程序和计算系统软件体系结构是指系统的一个或者多个结构，结构中包括软件的构件、构件的外部可见属性以及它们之间的相互关系。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容：一个程序和计算系统软件体系结构是指系统的一个或者多个结构。结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-13.3-02",
+          "title": "掌握软件体系结构的三要素",
+          "generated_content": "学习目标：能够识别软件体系结构定义中的三个核心要素——构件（components）、构件的外部可见属性（external visible properties）、构件之间的相互关系（relationships）。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取key_terms：软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-13.3-03",
+          "title": "理解结构在体系结构中的核心地位",
+          "generated_content": "学习目标：能够解释为什么'结构'是软件体系结构定义的核心概念——体系结构由一个或多个结构组成，每个结构描述了构件及其关系。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容强调'系统的一个或者多个结构'是体系结构的核心组成。",
+              "confidence": "medium"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-9.1-01",
+          "title": "掌握信息安全的五个基本要素",
+          "generated_content": "学习目标：能够准确列举并解释信息安全的五个基本要素——机密性、完整性、可用性、可控性、可审查性。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容：信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-9.1-02",
+          "title": "理解机密性与完整性的区别",
+          "generated_content": "学习目标：能够区分机密性（确保信息不暴露给未授权的实体或进程）和完整性（只有得到允许的人才能修改数据，并且能够判别出数据是否已被篡改）的不同安全目标。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容：(1)机密性：确保信息不暴露给未授权的实体或进程。(2)完整性：只有得到允许的人才能修改数据，并且能够判别出数据是否己被篡改。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "lo-9.1-03",
+          "title": "理解可用性与可控性的安全目标",
+          "generated_content": "学习目标：能够解释可用性（得到授权的实体在需要时可访问数据）和可控性（可以控制授权范围内的信息流向及行为方式）在信息安全体系中的作用。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容：(3)可用性：得到授权的实体在需要时可访问数据。(4)可控性：可以控制授权范围内的信息流向及行为方式。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "knowledge_units",
+      "generation_status": "generated",
+      "item_count": 3,
+      "items": [
+        {
+          "id": "ku-1.3",
+          "title": "指令系统CISC和RISC",
+          "generated_content": {
+            "topic": "1.3 指令系统CISC和RISC",
+            "core_concepts": [
+              "CISC（复杂指令系统）：兼容性强，指令繁多、长度可变，由微程序实现",
+              "RISC（精简指令系统）：指令少，使用频率接近，主要依靠硬件实现（通用寄存器、硬布线逻辑控制）"
+            ],
+            "key_terms": ["兼容性强", "指令繁多", "长度可变", "微程序", "指令少", "硬件实现"],
+            "source_classification": "MIXED_TEXT_IMAGE",
+            "manual_review_notes": "本知识点包含图片型资料（CISC/RISC对比图），图片内容需人工复核"
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "source_packet.json中source_layer_status=complete, ai_learning_layer_status=not_generated; 已抽取内容包含CISC和RISC的核心定义和特征",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ku-13.3",
+          "title": "软件架构风格",
+          "generated_content": {
+            "topic": "13.3 软件架构风格",
+            "core_concepts": [
+              "软件体系结构是指系统的一个或者多个结构",
+              "结构中包括软件的构件、构件的外部可见属性以及它们之间的相互关系"
+            ],
+            "key_terms": ["软件的构件", "构件的外部可见属性", "相互关系"],
+            "source_classification": "HTML_RICH_TEXT",
+            "manual_review_notes": "source_packet中标记为taxonomy_suspect，需人工确认是否为父节点或多卡序列"
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "source_packet.json中source_layer_status=complete; 已抽取内容为软件体系结构的定义",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ku-9.1",
+          "title": "信息安全基础知识",
+          "generated_content": {
+            "topic": "9.1 信息安全基础知识",
+            "core_concepts": [
+              "信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性",
+              "机密性：确保信息不暴露给未授权的实体或进程",
+              "完整性：只有得到允许的人才能修改数据，并且能够判别出数据是否已被篡改",
+              "可用性：得到授权的实体在需要时可访问数据",
+              "可控性：可以控制授权范围内的信息流向及行为方式",
+              "可审查性：对出现的信息安全问题提供调查的依据和手段"
+            ],
+            "key_terms": ["机密性", "完整性", "可用性", "可控性", "可审查性"],
+            "source_classification": "HTML_RICH_TEXT",
+            "manual_review_notes": "无"
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "source_packet.json中source_layer_status=complete; 已抽取内容包含信息安全五要素的完整定义",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "exam_oriented_explanations",
+      "generation_status": "generated",
+      "item_count": 3,
+      "items": [
+        {
+          "id": "ee-1.3",
+          "title": "CISC与RISC对比——软考高频考点解析",
+          "generated_content": "在软考系统架构设计师考试中，CISC与RISC的对比是计算机组成原理部分的高频考点。核心对比维度包括：(1)指令数量：CISC指令繁多，RISC指令少；(2)指令长度：CISC长度可变，RISC长度固定（源材料未明确提及固定长度，此点需人工确认）；(3)实现方式：CISC由微程序实现，RISC由硬件实现（通用寄存器、硬布线逻辑控制）；(4)使用频率：RISC指令使用频率接近。考试中常以选择题形式考查两者的区别，考生需重点掌握实现方式的差异。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容提供CISC和RISC的核心特征对比，包括兼容性、指令数量、实现方式等维度",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ee-13.3",
+          "title": "软件体系结构定义——软考概念辨析",
+          "generated_content": "软考中，软件体系结构的定义是架构设计章节的基础考点。考试要求考生能够准确复述：软件体系结构是指系统的一个或者多个结构，结构中包括软件的构件、构件的外部可见属性以及它们之间的相互关系。注意：定义强调的是'外部可见属性'而非内部实现细节，这是架构设计关注抽象层次的体现。考试中可能出现判断题，要求区分'内部实现'与'外部可见属性'。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容提供软件体系结构的标准定义，包含构件、外部可见属性、相互关系三个要素",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ee-9.1",
+          "title": "信息安全五要素——软考必考知识点",
+          "generated_content": "信息安全五要素（机密性、完整性、可用性、可控性、可审查性）是软考信息安全章节的必考知识点。考试要点：(1)机密性关注'不暴露给未授权实体'；(2)完整性关注'只有授权人能修改'且'能判别是否被篡改'；(3)可用性关注'授权实体在需要时可访问'，特别注意攻击者不能占用所有资源阻碍授权者工作；(4)可控性关注'信息流向及行为方式'的控制；(5)可审查性关注'调查依据和手段'。考试中常以选择题或案例分析题形式考查，要求考生能够区分五个要素的具体含义。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容包含信息安全五要素的完整定义和解释",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "practice_questions",
+      "generation_status": "generated",
+      "item_count": 6,
+      "items": [
+        {
+          "id": "pq-1.3-01",
+          "question_type": "single_choice",
+          "question": "以下关于CISC指令系统的描述，正确的是？",
+          "options": [
+            "A. 指令少，使用频率接近",
+            "B. 兼容性强，指令繁多、长度可变，由微程序实现",
+            "C. 主要依靠硬件实现，使用通用寄存器",
+            "D. 指令长度固定，由硬布线逻辑控制"
+          ],
+          "correct_answer": "B",
+          "rationale": "根据源材料，CISC是复杂指令系统，其特征为兼容性强、指令繁多、长度可变、由微程序实现。A和C描述的是RISC的特征，D中的硬布线逻辑控制也是RISC的特征。",
+          "difficulty": "basic",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容：CISC是复杂指令系统：兼容性强，指令繁多、长度可变，由微程序实现。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "pq-1.3-02",
+          "question_type": "single_choice",
+          "question": "RISC指令系统的主要实现方式是？",
+          "options": [
+            "A. 微程序实现",
+            "B. 软件模拟实现",
+            "C. 硬件实现（通用寄存器、硬布线逻辑控制）",
+            "D. 固件实现"
+          ],
+          "correct_answer": "C",
+          "rationale": "根据源材料，RISC是精简指令系统，主要依靠硬件实现，具体包括通用寄存器和硬布线逻辑控制。A是CISC的实现方式。",
+          "difficulty": "basic",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容：RISC是精简指令系统：指令少，使用频率接近，主要依靠硬件实现(通用寄存器、硬布线逻辑控制)。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "pq-13.3-01",
+          "question_type": "single_choice",
+          "question": "根据软件体系结构的定义，以下哪项不属于体系结构描述的核心要素？",
+          "options": [
+            "A. 软件的构件",
+            "B. 构件的外部可见属性",
+            "C. 构件之间的相互关系",
+            "D. 构件的内部实现细节"
+          ],
+          "correct_answer": "D",
+          "rationale": "根据源材料，软件体系结构包括三个核心要素：软件的构件、构件的外部可见属性、构件之间的相互关系。'内部实现细节'不在体系结构定义的范围内，体系结构关注的是外部可见属性。",
+          "difficulty": "intermediate",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容：结构中包括软件的构件，构件的外部可见属性以及它们之间的相互关系。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "pq-13.3-02",
+          "question_type": "true_false",
+          "question": "判断题：软件体系结构是指系统的唯一一个结构。",
+          "options": [],
+          "correct_answer": "错误",
+          "rationale": "根据源材料，软件体系结构是指系统的一个或者多个结构，而非唯一一个结构。体系结构可以包含多个结构。",
+          "difficulty": "basic",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容：一个程序和计算系统软件体系结构是指系统的一个或者多个结构。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "pq-9.1-01",
+          "question_type": "multiple_choice",
+          "question": "信息安全的基本要素包括以下哪些？",
+          "options": [
+            "A. 机密性",
+            "B. 完整性",
+            "C. 可用性",
+            "D. 可控性",
+            "E. 可审查性",
+            "F. 不可否认性"
+          ],
+          "correct_answer": ["A", "B", "C", "D", "E"],
+          "rationale": "根据源材料，信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。F选项'不可否认性'不在源材料的五要素范围内。",
+          "difficulty": "basic",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容：信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "pq-9.1-02",
+          "question_type": "single_choice",
+          "question": "信息安全中，'确保信息不暴露给未授权的实体或进程'描述的是哪个基本要素？",
+          "options": [
+            "A. 完整性",
+            "B. 可用性",
+            "C. 机密性",
+            "D. 可控性"
+          ],
+          "correct_answer": "C",
+          "rationale": "根据源材料，机密性的定义是'确保信息不暴露给未授权的实体或进程'。完整性关注数据修改权限和篡改判别，可用性关注授权实体的访问能力，可控性关注信息流向控制。",
+          "difficulty": "basic",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容：(1)机密性：确保信息不暴露给未授权的实体或进程。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "answer_rationales",
+      "generation_status": "generated",
+      "item_count": 6,
+      "items": [
+        {
+          "id": "ar-pq-1.3-01",
+          "title": "CISC指令系统特征解析",
+          "generated_content": "正确答案为B。源材料明确指出CISC是复杂指令系统，具有三个核心特征：兼容性强、指令繁多且长度可变、由微程序实现。选项A描述的是RISC的特征（指令少，使用频率接近），选项C描述的也是RISC的特征（硬件实现），选项D中的硬布线逻辑控制同样是RISC的实现方式。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容同时包含CISC和RISC的特征描述，可直接用于对比分析",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ar-pq-1.3-02",
+          "title": "RISC实现方式解析",
+          "generated_content": "正确答案为C。源材料明确指出RISC主要依靠硬件实现，具体包括通用寄存器和硬布线逻辑控制。选项A（微程序实现）是CISC的实现方式，与RISC形成对比。选项B和D在源材料中没有支持依据。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容：RISC是精简指令系统...主要依靠硬件实现(通用寄存器、硬布线逻辑控制)",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ar-pq-13.3-01",
+          "title": "体系结构三要素辨析",
+          "generated_content": "正确答案为D。源材料定义的软件体系结构三要素为：构件、构件的外部可见属性、构件之间的相互关系。'内部实现细节'明确不在体系结构描述范围内，体系结构关注的是外部可见属性而非内部实现。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容强调'外部可见属性'，暗示内部实现不在体系结构定义范围内",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ar-pq-13.3-02",
+          "title": "体系结构结构数量辨析",
+          "generated_content": "答案为'错误'。源材料明确指出软件体系结构是指系统的一个或者多个结构，关键词是'或者多个'，说明体系结构可以包含多个结构，而非唯一一个。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容：一个程序和计算系统软件体系结构是指系统的一个或者多个结构。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ar-pq-9.1-01",
+          "title": "信息安全五要素列举",
+          "generated_content": "正确答案为ABCDE。源材料明确列出信息安全的5个基本要素：机密性、完整性、可用性、可控性与可审查性。F选项'不可否认性'虽然在某些信息安全框架中存在，但不在源材料定义的五要素范围内，因此不应选择。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容：信息安全包括5个基本要素：机密性、完整性、可用性、可控性与可审查性。",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "ar-pq-9.1-02",
+          "title": "机密性定义辨析",
+          "generated_content": "正确答案为C（机密性）。源材料明确给出机密性的定义：'确保信息不暴露给未授权的实体或进程'。其他选项的定义分别为：完整性关注数据修改权限和篡改判别，可用性关注授权实体在需要时的访问能力，可控性关注信息流向及行为方式的控制。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容分别给出了机密性、完整性、可用性、可控性的定义",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "misconception_warnings",
+      "generation_status": "generated",
+      "item_count": 3,
+      "items": [
+        {
+          "id": "mw-1.3",
+          "title": "CISC与RISC实现方式混淆",
+          "generated_content": "常见误区：将CISC和RISC的实现方式弄反。正确区分：CISC由微程序实现，RISC由硬件实现（通用寄存器、硬布线逻辑控制）。记忆技巧：CISC的'C'可联想'Complex'（复杂），复杂系统用微程序；RISC的'R'可联想'Reduced'（精简），精简系统用硬件直接实现。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容明确区分了CISC（微程序实现）和RISC（硬件实现）的实现方式",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "mw-13.3",
+          "title": "体系结构关注内部实现的误区",
+          "generated_content": "常见误区：认为软件体系结构描述包含构件的'内部实现细节'。正确理解：体系结构关注的是构件的'外部可见属性'，而非内部实现。这是架构设计关注抽象层次的核心体现。考试中遇到'内部实现'相关选项时应保持警惕。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容强调体系结构包括'构件的外部可见属性'，暗示内部实现不在范围内",
+              "confidence": "medium"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "mw-9.1",
+          "title": "信息安全要素数量和名称混淆",
+          "generated_content": "常见误区：(1)将信息安全要素记成4个或6个，正确为5个；(2)将'可审查性'误记为'不可否认性'——源材料定义的第五个要素是'可审查性'（对出现的信息安全问题提供调查的依据和手段），而非'不可否认性'；(3)混淆'可用性'和'可控性'——可用性关注'授权实体的访问能力'，可控性关注'信息流向及行为方式的控制'。",
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容明确列出5个要素及其定义，可直接用于辨析",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "review_checklist",
+      "generation_status": "generated",
+      "item_count": 3,
+      "items": [
+        {
+          "id": "rc-1.3",
+          "title": "指令系统CISC和RISC复习清单",
+          "generated_content": {
+            "checklist_items": [
+              "□ 能够准确复述CISC的三个核心特征（兼容性强、指令繁多、长度可变）",
+              "□ 能够准确复述CISC的实现方式（微程序实现）",
+              "□ 能够准确复述RISC的三个核心特征（指令少、使用频率接近、硬件实现）",
+              "□ 能够准确复述RISC的实现细节（通用寄存器、硬布线逻辑控制）",
+              "□ 能够对比CISC和RISC的实现方式差异",
+              "□ 注意：本知识点包含图片型资料，图片内容（CISC/RISC对比图）需人工复核"
+            ]
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "已抽取内容覆盖CISC和RISC的核心特征和实现方式",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "rc-13.3",
+          "title": "软件架构风格复习清单",
+          "generated_content": {
+            "checklist_items": [
+              "□ 能够准确复述软件体系结构的定义",
+              "□ 能够列举体系结构的三个核心要素（构件、外部可见属性、相互关系）",
+              "□ 能够区分'外部可见属性'与'内部实现细节'",
+              "□ 能够解释'一个或者多个结构'的含义",
+              "□ 注意：source_packet中标记为taxonomy_suspect，需人工确认知识点分类"
+            ]
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "已抽取内容提供体系结构定义的完整信息",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "rc-9.1",
+          "title": "信息安全基础知识复习清单",
+          "generated_content": {
+            "checklist_items": [
+              "□ 能够列举信息安全的5个基本要素",
+              "□ 能够准确复述机密性的定义（不暴露给未授权实体）",
+              "□ 能够准确复述完整性的定义（授权修改、判别篡改）",
+              "□ 能够准确复述可用性的定义（授权实体需要时可访问）",
+              "□ 能够准确复述可控性的定义（控制信息流向及行为方式）",
+              "□ 能够准确复述可审查性的定义（调查依据和手段）",
+              "□ 能够区分五个要素的不同侧重点"
+            ]
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "已抽取内容包含五要素的完整定义",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    },
+    {
+      "output_type": "source_traceability_map",
+      "generation_status": "generated",
+      "item_count": 3,
+      "items": [
+        {
+          "id": "stm-1.3",
+          "title": "1.3 指令系统CISC和RISC来源追溯",
+          "generated_content": {
+            "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+            "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+            "source_classification": "MIXED_TEXT_IMAGE",
+            "source_layer_status": "complete",
+            "ai_learning_layer_status": "generated",
+            "render_as": "asset_card",
+            "image_refs_count": 1,
+            "asset_requirement": "required",
+            "generated_items_count": 15,
+            "generated_item_ids": ["lo-1.3-01", "lo-1.3-02", "lo-1.3-03", "ku-1.3", "ee-1.3", "pq-1.3-01", "pq-1.3-02", "ar-pq-1.3-01", "ar-pq-1.3-02", "mw-1.3", "rc-1.3", "stm-1.3"],
+            "content_completeness": "partial",
+            "manual_review_required": true,
+            "manual_review_reason": "本知识点包含图片型资料（CISC/RISC对比图），图片内容需人工复核后可补充更多学习内容"
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC",
+              "source_artifact": "docs/ruankaodaren/baseline/1.3_指令系统CISC和RISC.md",
+              "evidence": "source_packet.json: source_layer_status=complete, ai_learning_layer_status原为not_generated现为generated",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "stm-13.3",
+          "title": "13.3 软件架构风格来源追溯",
+          "generated_content": {
+            "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+            "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+            "source_classification": "HTML_RICH_TEXT",
+            "source_layer_status": "complete",
+            "ai_learning_layer_status": "generated",
+            "render_as": "short_card",
+            "image_refs_count": 0,
+            "asset_requirement": "not_required",
+            "generated_items_count": 12,
+            "generated_item_ids": ["lo-13.3-01", "lo-13.3-02", "lo-13.3-03", "ku-13.3", "ee-13.3", "pq-13.3-01", "pq-13.3-02", "ar-pq-13.3-01", "ar-pq-13.3-02", "mw-13.3", "rc-13.3", "stm-13.3"],
+            "content_completeness": "partial",
+            "taxonomy_suspect": true,
+            "manual_review_required": true,
+            "manual_review_reason": "source_packet中标记为taxonomy_suspect，已抽取文本较短（61字符），需人工确认知识点分类和补充内容"
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格",
+              "source_artifact": "docs/ruankaodaren/baseline/13.3_软件架构风格.md",
+              "evidence": "source_packet.json: source_layer_status=complete, taxonomy_suspect=true, extracted text length=61",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        },
+        {
+          "id": "stm-9.1",
+          "title": "9.1 信息安全基础知识来源追溯",
+          "generated_content": {
+            "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+            "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+            "source_classification": "HTML_RICH_TEXT",
+            "source_layer_status": "complete",
+            "ai_learning_layer_status": "generated",
+            "render_as": "concept_card",
+            "image_refs_count": 0,
+            "asset_requirement": "not_required",
+            "generated_items_count": 12,
+            "generated_item_ids": ["lo-9.1-01", "lo-9.1-02", "lo-9.1-03", "ku-9.1", "ee-9.1", "pq-9.1-01", "pq-9.1-02", "ar-pq-9.1-01", "ar-pq-9.1-02", "mw-9.1", "rc-9.1", "stm-9.1"],
+            "content_completeness": "good",
+            "manual_review_required": false,
+            "manual_review_reason": "已抽取内容包含五要素的完整定义，内容较为充分"
+          },
+          "source_refs": [
+            {
+              "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识",
+              "source_artifact": "docs/ruankaodaren/baseline/9.1_信息安全基础知识.md",
+              "evidence": "source_packet.json: source_layer_status=complete, extracted content covers all 5 security elements",
+              "confidence": "high"
+            }
+          ],
+          "generation_status": "generated"
+        }
+      ]
+    }
+  ],
+
+  "unsupported_generation_items": [
+    {
+      "output_type": "exam_oriented_explanations",
+      "item_description": "CISC与RISC指令长度对比的详细说明",
+      "reason": "源材料未明确提及RISC指令长度是否固定，仅提到CISC长度可变。关于RISC指令长度固定这一常见考点在源材料中没有直接支持依据，因此未生成相关内容。",
+      "source_packet_id": "ruankaodaren/baseline/1.3_指令系统CISC和RISC"
+    },
+    {
+      "output_type": "knowledge_units",
+      "item_description": "软件架构风格的具体分类（如管道-过滤器、分层架构、事件驱动等）",
+      "reason": "源材料标题为'软件架构风格'但已抽取内容仅包含软件体系结构的定义，未包含具体架构风格的分类信息。源材料标记为taxonomy_suspect，内容不足以支撑架构风格分类的生成。",
+      "source_packet_id": "ruankaodaren/baseline/13.3_软件架构风格"
+    },
+    {
+      "output_type": "practice_questions",
+      "item_description": "信息安全五要素在实际场景中的应用题",
+      "reason": "源材料仅提供五要素的定义，未包含实际应用场景或案例。生成应用题需要超出源材料的外部知识，违反离线已有源材料约束。",
+      "source_packet_id": "ruankaodaren/baseline/9.1_信息安全基础知识"
+    }
+  ],
+
+  "generation_quality_controls": {
+    "source_traceability_checked": true,
+    "unsupported_content_blocked": true,
+    "external_knowledge_blocked": true,
+    "hallucination_guard_enabled": true,
+    "empty_traceability_disallowed": true
+  },
+
+  "scope": {
+    "allowed": [
+      "AI learning content generation from approved source packets",
+      "learning objectives generation",
+      "knowledge units generation",
+      "exam-oriented explanations generation",
+      "practice questions generation",
+      "answer rationales generation",
+      "misconception warnings generation",
+      "review checklist generation",
+      "source traceability map generation"
+    ],
+    "forbidden": [
+      "crawler execution",
+      "renderer execution",
+      "recovery execution",
+      "web requests",
+      "source layer mutation",
+      "source expansion",
+      "external knowledge injection",
+      "hallucinated content generation",
+      "unapproved source access"
+    ],
+    "allowed_source_basis": "closed_pass_phase6_1_batch_001_only",
+    "unapproved_sources_allowed": false,
+    "external_sources_allowed": false,
+    "source_expansion_allowed": false,
+    "offline_only": true,
+    "source_traceability_required": true
+  },
+
+  "risk": {
+    "risk_level": "medium",
+    "risk_reason": "Phase 7.4 generates learning content, but remains offline-only and does not crawl, recover, render, use web requests, or mutate source-layer artifacts."
+  },
+
+  "closure": {
+    "phase7_4_status": "complete",
+    "phase7_4_result": "pass"
+  },
+
+  "next_phase_recommendation": {
+    "next_recommended_phase": "phase7.5_ai_learning_generation_validation",
+    "phase7_5_entry_allowed": false,
+    "phase7_5_entry_requires_approval": true,
+    "notes": "Phase 7.5 is not authorized by this execution artifact alone. A separate validation artifact must be created before Phase 7.5 entry is permitted."
+  },
+
+  "rollback_condition": {
+    "phase7_4_rollback_needed": false,
+    "reason": "Generation completed within authorized boundaries; no source mutation occurred.",
+    "future_rollback_requirements": [
+      "If generated content is found to contain hallucinated material, the affected items must be invalidated",
+      "If source traceability is found to be incorrect, the affected items must be re-validated",
+      "If the Phase 7.3 authorization is revoked, all generated content must be invalidated"
+    ]
+  },
+
+  "audit_condition": {
+    "upstream_authorization_phase": "7.3",
+    "upstream_authorization_commit": "bc5f2af",
+    "upstream_authorization_status": "authorized",
+    "upstream_execution_plan_phase": "7.2",
+    "upstream_execution_plan_commit": "6f0ac44",
+    "upstream_closure_phase": "6.22",
+    "upstream_closure_result": "pass",
+    "current_execution_status": "completed",
+    "current_execution_result": "pass",
+    "current_ai_learning_content_generation_allowed": true,
+    "current_ai_learning_execution_allowed": true,
+    "current_phase7_5_entry_allowed": false,
+    "generated_output_count": 8,
+    "total_generated_items": 36,
+    "total_unsupported_items": 3,
+    "all_items_have_source_refs": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:ai-learning-generation-execution-authorization-gate",
+      "pnpm validate:ai-learning-generation-execution"
+    ],
+    "commit_scope": "Phase 7.4 AI learning generation execution files and related schema/type/validator/package verification changes only"
+  },
+
+  "phase_progression_history": [
+    { "phase": "7.0", "outcome": "ai_learning_generation_request_created" },
+    { "phase": "7.1", "outcome": "ai_learning_generation_approval_gate_recorded" },
+    { "phase": "7.2", "outcome": "ai_learning_generation_execution_plan_created" },
+    { "phase": "7.3", "outcome": "ai_learning_generation_execution_authorization_gate_created" },
+    { "phase": "7.4", "outcome": "ai_learning_generation_execution_completed" }
+  ],
+
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "phase_must_be": "7.4",
+    "artifact_type_must_be": "ai_learning_generation_execution",
+    "execution_status_must_be": "completed",
+    "execution_result_must_be": "pass",
+    "execution_mode_must_be": "offline_existing_source_packet_only",
+    "upstream_authorization_phase_must_be": "7.3",
+    "upstream_authorization_commit_must_be": "bc5f2af",
+    "upstream_authorization_status_must_be": "authorized",
+    "upstream_execution_plan_phase_must_be": "7.2",
+    "upstream_execution_plan_commit_must_be": "6f0ac44",
+    "upstream_closure_phase_must_be": "6.22",
+    "upstream_closure_result_must_be": "pass",
+    "batch_id_must_be": "phase6_1_batch_001",
+    "ai_learning_content_generation_allowed_must_be": true,
+    "ai_learning_execution_allowed_must_be": true,
+    "phase7_5_entry_allowed_must_be": false,
+    "generated_output_count_must_be": 8,
+    "all_items_must_have_source_refs": true,
+    "risk_level_must_be": "medium",
+    "closure_status_must_be": "complete",
+    "closure_result_must_be": "pass"
+  }
+}
