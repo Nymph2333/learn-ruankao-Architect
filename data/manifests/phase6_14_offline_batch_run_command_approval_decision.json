@@ -1,0 +1,430 @@
+{
+  "manifest_version": "phase6.14",
+  "manifest_type": "offline_batch_run_command_approval_decision",
+  "status": "offline_batch_run_command_approval_decision_recorded",
+  "created_for_phase": "6.14",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13"],
+  "created_at": "2026-06-04T06:30:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_phase6_3_manifest",
+      "read_existing_phase6_4_manifest",
+      "read_existing_phase6_5_manifest",
+      "read_existing_phase6_6_manifest",
+      "read_existing_phase6_7_manifest",
+      "read_existing_phase6_8_manifest",
+      "read_existing_phase6_9_manifest",
+      "read_existing_phase6_10_manifest",
+      "read_existing_phase6_11_manifest",
+      "read_existing_phase6_12_manifest",
+      "read_existing_phase6_13_manifest",
+      "read_existing_source_packets",
+      "record_offline_run_command_approval_decision",
+      "record_human_decision",
+      "update_command_status_to_approved",
+      "mark_command_executable_in_governance",
+      "define_allowed_inputs",
+      "define_forbidden_inputs",
+      "define_allowed_future_outputs",
+      "define_forbidden_current_phase_outputs",
+      "define_rollback_condition",
+      "define_audit_condition",
+      "define_next_phase_constraints"
+    ],
+    "forbidden": [
+      "execute_batch",
+      "execute_approved_command",
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json",
+      "create_actual_run_record",
+      "create_actual_execution_result",
+      "create_actual_validation_report",
+      "add_executable_batch_script",
+      "set_crawler_allowed_true",
+      "set_renderer_allowed_true",
+      "set_recovery_allowed_true",
+      "set_web_requests_allowed_true",
+      "set_ai_learning_generation_allowed_true"
+    ]
+  },
+  "approval_status": "run_command_approved",
+  "approved_decision": "approve_offline_run_command",
+  "run_command_approval_status": "approved",
+  "run_command_approved": true,
+  "batch_run_executed": false,
+  "run_mode": "offline_existing_source_packet_only",
+  "batch_id": "phase6_1_batch_001",
+  "approved_items": ["1.3"],
+  "execution_authorization_status": "execution_approved",
+  "operational_mode_approval_status": "operational_mode_approved",
+  "run_plan_status": "planned_not_executed",
+  "decision_metadata": {
+    "decision_id": "offline_run_command_approval_decision_phase6_14_001",
+    "decision_type": "offline_batch_run_command_approval",
+    "decision_phase": "6.14",
+    "decision_timestamp": "2026-06-04T06:30:00.000Z",
+    "prior_request_phase": "6.13",
+    "prior_request_manifest": "phase6_13_offline_batch_run_command_approval_request.json",
+    "prior_request_status": "offline_batch_run_command_approval_request_created",
+    "referencing_plan_phase": "6.12",
+    "referencing_decision_phase": "6.11",
+    "referencing_approval_phase": "6.10",
+    "decision_scope": "offline_run_command_approval_only"
+  },
+  "approved_command": {
+    "command_id": "phase6_13_offline_run_command_001",
+    "command_type": "offline_batch_run",
+    "command_status": "approved",
+    "command_is_executable_now": true,
+    "command_has_been_executed": false,
+    "command_text_placeholder": "pnpm run batch:offline -- --batch phase6_1_batch_001 --items 1.3 --mode offline_existing_source_packet_only",
+    "command_is_placeholder_only": true,
+    "command_not_in_package_json": true,
+    "command_arguments": [
+      {
+        "argument": "--batch",
+        "value": "phase6_1_batch_001",
+        "description": "Target batch identifier"
+      },
+      {
+        "argument": "--items",
+        "value": "1.3",
+        "description": "Comma-separated list of approved item IDs"
+      },
+      {
+        "argument": "--mode",
+        "value": "offline_existing_source_packet_only",
+        "description": "Execution mode constraint"
+      }
+    ],
+    "command_constraints": [
+      "Command is approved as metadata only",
+      "No batch:offline script exists in package.json",
+      "Command must not be executed in Phase 6.14",
+      "Command must not generate any output artifacts in Phase 6.14",
+      "Command is executable in governance terms for a future execution phase"
+    ]
+  },
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "operational_gate_decisions": {
+    "crawler_gate_decision": "not_required",
+    "renderer_gate_decision": "not_required",
+    "recovery_gate_decision": "not_required",
+    "web_requests_gate_decision": "not_required",
+    "ai_learning_generation_gate_decision": "not_allowed",
+    "constraint": "All operational gates remain false. No gate is opened by this decision."
+  },
+  "item_boundary": {
+    "allowed_items": ["1.3"],
+    "approved_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "item_count": 1,
+    "source_layer_mutation_allowed": false,
+    "constraints": [
+      "Only item 1.3 may be processed",
+      "9.1 remains deferred",
+      "13.3 remains quarantined and ineligible",
+      "No additional item may be added",
+      "No quarantined item may be selected",
+      "No source layer mutation may occur"
+    ]
+  },
+  "input_boundary": {
+    "allowed_inputs": [
+      {
+        "source_phase": "6.0",
+        "artifact": "controlled_source_expansion_plan",
+        "purpose": "Defines overall expansion scope",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.1",
+        "artifact": "batch_selection_manifest",
+        "purpose": "Defines batch 001 item selection",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.2",
+        "artifact": "quarantine_decision",
+        "purpose": "Confirms quarantine status for 13.3",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.3",
+        "artifact": "readiness_preflight",
+        "purpose": "Confirms activation readiness",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.4",
+        "artifact": "approval_request",
+        "purpose": "Records activation approval request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.5",
+        "artifact": "activation_decision",
+        "purpose": "Records activation approval",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.6",
+        "artifact": "execution_readiness_preflight",
+        "purpose": "Confirms execution readiness",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.7",
+        "artifact": "execution_approval_request",
+        "purpose": "Records execution approval request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.8",
+        "artifact": "execution_approval_decision",
+        "purpose": "Records execution approval",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.9",
+        "artifact": "controlled_batch_execution_plan",
+        "purpose": "Defines execution plan",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.10",
+        "artifact": "operational_gate_approval_request",
+        "purpose": "Records operational gate request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.11",
+        "artifact": "operational_gate_approval_decision",
+        "purpose": "Records operational gate approval",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.12",
+        "artifact": "offline_batch_run_plan",
+        "purpose": "Defines the run plan",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "6.13",
+        "artifact": "offline_batch_run_command_approval_request",
+        "purpose": "Records the approval request",
+        "access_mode": "read_only"
+      },
+      {
+        "source_phase": "source_packets",
+        "artifact": "existing_source_packets_for_item_1_3",
+        "purpose": "Input data for execution",
+        "access_mode": "read_only"
+      }
+    ],
+    "forbidden_inputs": [
+      "new_web_content",
+      "crawler_output",
+      "renderer_output",
+      "recovery_output",
+      "ai_generated_learning_content",
+      "newly_captured_assets",
+      "newly_created_raw_snapshots",
+      "newly_created_intermediate_json"
+    ]
+  },
+  "allowed_future_outputs": {
+    "description": "These artifacts are planned only, not created in Phase 6.14",
+    "artifacts": [
+      {
+        "name": "controlled_batch_run_record",
+        "purpose": "Records batch execution metadata",
+        "created_when": "During future execution after approval",
+        "status": "planned"
+      },
+      {
+        "name": "execution_audit_log",
+        "purpose": "Records step-by-step execution trace",
+        "created_when": "During future execution after approval",
+        "status": "planned"
+      },
+      {
+        "name": "item_level_execution_result",
+        "purpose": "Records per-item outcome for 1.3",
+        "created_when": "During future execution after approval",
+        "status": "planned"
+      },
+      {
+        "name": "post_run_validation_report",
+        "purpose": "Validates execution invariants",
+        "created_when": "After future execution",
+        "status": "planned"
+      }
+    ]
+  },
+  "forbidden_phase6_14_artifacts": {
+    "description": "Phase 6.14 must NOT create any of these artifacts",
+    "artifacts": [
+      "actual_controlled_batch_run_record",
+      "actual_item_level_execution_result",
+      "actual_post_run_validation_report",
+      "raw_snapshots",
+      "intermediate_json",
+      "rendered_outputs",
+      "crawler_outputs",
+      "recovery_outputs",
+      "web_request_results",
+      "ai_learning_content",
+      "source_layer_mutations",
+      "captured_assets"
+    ]
+  },
+  "no_go_confirmation": {
+    "no_batch_execution_occurs": true,
+    "no_approved_command_executed": true,
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_source_layer_modified": true,
+    "no_ai_learning_generated": true,
+    "no_assets_captured": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "no_package_script_added_for_batch_run": true,
+    "crawler_allowed_remains_false": true,
+    "renderer_allowed_remains_false": true,
+    "recovery_allowed_remains_false": true,
+    "web_requests_allowed_remains_false": true,
+    "ai_learning_generation_allowed_remains_false": true
+  },
+  "operational_assertions": {
+    "batch_execution_claimed": false,
+    "approved_command_executed": false,
+    "crawler_output_claimed": false,
+    "renderer_output_claimed": false,
+    "recovery_output_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "web_requests_declared": false,
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false,
+    "assets_captured": false
+  },
+  "human_decision_fields": {
+    "human_decision": "approved",
+    "human_decision_timestamp": "2026-06-04T06:30:00.000Z",
+    "human_decision_notes": "Command approved as metadata for future execution",
+    "human_reviewer_id": "human_reviewer_001",
+    "description": "Human decision recorded. Command is approved as metadata only."
+  },
+  "rollback_condition": {
+    "phase6_14_rollback_needed": false,
+    "reason": "No rollback is needed for Phase 6.14 because no execution occurs and no artifacts are created",
+    "approval_decision_reversible": true,
+    "future_execution_requirements": [
+      "Future execution rollback: remove run-scoped output artifacts only",
+      "Future execution rollback must not require source layer rollback",
+      "Future execution rollback must isolate item 1.3 outputs from global state"
+    ]
+  },
+  "next_phase_constraints": {
+    "description": "Constraints that apply to the next execution phase",
+    "constraints": [
+      "The approved command may be executed in a future phase",
+      "Execution must use offline_existing_source_packet_only mode",
+      "Execution must be limited to approved items: ['1.3']",
+      "Execution must not modify source layer artifacts",
+      "Execution must not open any operational gates",
+      "Execution must create only the allowed future outputs",
+      "Execution must record all actions in an audit log",
+      "Execution must validate invariants after completion"
+    ]
+  },
+  "audit_condition": {
+    "prior_phase_chain": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9", "6.10", "6.11", "6.12", "6.13"],
+    "current_approval_status": "run_command_approved",
+    "current_approved_decision": "approve_offline_run_command",
+    "current_run_command_approval_status": "approved",
+    "current_run_command_approved": true,
+    "current_batch_run_executed": false,
+    "current_run_mode": "offline_existing_source_packet_only",
+    "current_operational_mode_approval_status": "operational_mode_approved",
+    "current_execution_authorization_status": "execution_approved",
+    "current_run_plan_status": "planned_not_executed",
+    "current_operational_gates": {
+      "phase6_1_entry_allowed": true,
+      "activation_allowed": true,
+      "batch_executable": true,
+      "execution_allowed": true,
+      "crawler_allowed": false,
+      "renderer_allowed": false,
+      "recovery_allowed": false,
+      "web_requests_allowed": false,
+      "ai_learning_generation_allowed": false
+    },
+    "no_go_confirmation": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:offline-batch-run-command-approval-decision"
+    ],
+    "commit_scope": "Only Phase 6.14 offline batch run command approval decision files and related schema/type/validator/package script changes"
+  },
+  "phase_progression_history": [
+    { "phase": "6.0", "outcome": "controlled_source_expansion_plan_created" },
+    { "phase": "6.1", "outcome": "batch_selection_manifest_created" },
+    { "phase": "6.2", "outcome": "gate_recheck_completed" },
+    { "phase": "6.3", "outcome": "activation_readiness_preflight_passed" },
+    { "phase": "6.4", "outcome": "batch_activation_human_approval_request_created" },
+    { "phase": "6.5", "outcome": "batch_activation_human_approval_decision_accepted" },
+    { "phase": "6.6", "outcome": "batch_execution_readiness_preflight_passed" },
+    { "phase": "6.7", "outcome": "batch_execution_human_approval_request_created" },
+    { "phase": "6.8", "outcome": "batch_execution_human_approval_decision_accepted" },
+    { "phase": "6.9", "outcome": "controlled_batch_execution_plan_created" },
+    { "phase": "6.10", "outcome": "operational_gate_approval_request_created" },
+    { "phase": "6.11", "outcome": "operational_gate_approval_decision_recorded" },
+    { "phase": "6.12", "outcome": "offline_batch_run_plan_created" },
+    { "phase": "6.13", "outcome": "offline_batch_run_command_approval_request_created" },
+    { "phase": "6.14", "outcome": "offline_batch_run_command_approval_decision_recorded" }
+  ],
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "approval_status_must_be": "run_command_approved",
+    "approved_decision_must_be": "approve_offline_run_command",
+    "run_command_approval_status_must_be": "approved",
+    "run_command_approved_must_be": true,
+    "batch_run_executed_must_be": false,
+    "command_status_must_be": "approved",
+    "command_is_executable_now_must_be": true,
+    "command_has_been_executed_must_be": false,
+    "operational_assertions_all_false": true,
+    "no_go_confirmations_all_true": true,
+    "item_constraints_satisfied": true,
+    "future_outputs_planned_only": true,
+    "forbidden_artifacts_explicitly_listed": true,
+    "operational_gate_decisions_all_not_required_or_not_allowed": true
+  }
+}

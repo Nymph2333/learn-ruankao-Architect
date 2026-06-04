@@ -81,6 +81,7 @@
     "validate:operational-gate-approval-decision": "tsx scripts/validate-ruankaodaren-operational-gate-approval-decision.ts",
     "validate:offline-batch-run-plan": "tsx scripts/validate-ruankaodaren-offline-batch-run-plan.ts",
     "validate:offline-batch-run-command-approval-request": "tsx scripts/validate-ruankaodaren-offline-batch-run-command-approval-request.ts",
+    "validate:offline-batch-run-command-approval-decision": "tsx scripts/validate-ruankaodaren-offline-batch-run-command-approval-decision.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
