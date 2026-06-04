@@ -1,0 +1,390 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruankaodaren-operational-gate-approval-request",
+  "title": "Ruankaodaren Phase 6.10 Operational Gate Approval Request",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "status",
+    "created_for_phase",
+    "inherits_from_phase",
+    "created_at",
+    "scope",
+    "approval_status",
+    "requested_decision",
+    "requested_execution_mode",
+    "batch_id",
+    "execution_authorization_status",
+    "plan_status",
+    "phase_gates",
+    "requested_operational_gate_changes",
+    "explicitly_not_requested",
+    "input_boundary",
+    "execution_mode_rationale",
+    "allowed_future_artifacts",
+    "forbidden_phase6_10_artifacts",
+    "no_go_confirmation",
+    "operational_assertions",
+    "rollback_boundary",
+    "audit_boundary",
+    "phase_progression_history",
+    "validation_expectations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": { "const": "phase6.10" },
+    "manifest_type": { "const": "operational_gate_approval_request" },
+    "status": { "const": "operational_gate_approval_request_created" },
+    "created_for_phase": { "const": "6.10" },
+    "inherits_from_phase": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9"] },
+      "minItems": 10,
+      "maxItems": 10
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "object",
+      "required": ["allowed", "forbidden"],
+      "additionalProperties": false,
+      "properties": {
+        "allowed": { "type": "array", "items": { "type": "string" } },
+        "forbidden": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "approval_status": { "const": "pending_human_review" },
+    "requested_decision": { "const": "approve_operational_execution_mode" },
+    "requested_execution_mode": { "const": "offline_existing_source_packet_only" },
+    "batch_id": { "const": "phase6_1_batch_001" },
+    "execution_authorization_status": { "const": "execution_approved" },
+    "plan_status": { "const": "planned_not_executed" },
+    "phase_gates": {
+      "type": "object",
+      "required": [
+        "phase6_1_entry_allowed",
+        "activation_allowed",
+        "batch_executable",
+        "execution_allowed",
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_1_entry_allowed": { "const": true },
+        "activation_allowed": { "const": true },
+        "batch_executable": { "const": true },
+        "execution_allowed": { "const": true },
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false }
+      }
+    },
+    "requested_operational_gate_changes": {
+      "type": "object",
+      "required": [
+        "crawler_allowed",
+        "renderer_allowed",
+        "recovery_allowed",
+        "web_requests_allowed",
+        "ai_learning_generation_allowed",
+        "constraint"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "crawler_allowed": { "const": false },
+        "renderer_allowed": { "const": false },
+        "recovery_allowed": { "const": false },
+        "web_requests_allowed": { "const": false },
+        "ai_learning_generation_allowed": { "const": false },
+        "constraint": { "type": "string" }
+      }
+    },
+    "explicitly_not_requested": {
+      "type": "object",
+      "required": ["description", "gates"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["gate", "value", "reason"],
+            "additionalProperties": false,
+            "properties": {
+              "gate": { "type": "string" },
+              "value": { "const": true },
+              "reason": { "type": "string" }
+            }
+          },
+          "minItems": 5,
+          "maxItems": 5
+        }
+      }
+    },
+    "input_boundary": {
+      "type": "object",
+      "required": [
+        "allowed_items",
+        "approved_items",
+        "deferred_items",
+        "quarantined_items",
+        "item_count",
+        "source_layer_mutation_allowed",
+        "constraints"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "allowed_items": { "type": "array", "items": { "type": "string" } },
+        "approved_items": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "deferred_items": { "type": "array", "items": { "type": "string" } },
+        "quarantined_items": { "type": "array", "items": { "type": "string" } },
+        "item_count": { "type": "number" },
+        "source_layer_mutation_allowed": { "const": false },
+        "constraints": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "execution_mode_rationale": {
+      "type": "object",
+      "required": [
+        "recommended_mode",
+        "rationale",
+        "why_crawler_not_required",
+        "why_renderer_not_required",
+        "why_recovery_not_required",
+        "why_web_requests_not_required",
+        "why_ai_learning_generation_not_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "recommended_mode": { "const": "offline_existing_source_packet_only" },
+        "rationale": { "type": "string" },
+        "why_crawler_not_required": { "type": "string" },
+        "why_renderer_not_required": { "type": "string" },
+        "why_recovery_not_required": { "type": "string" },
+        "why_web_requests_not_required": { "type": "string" },
+        "why_ai_learning_generation_not_allowed": { "type": "string" }
+      }
+    },
+    "allowed_future_artifacts": {
+      "type": "object",
+      "required": ["description", "artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "purpose", "created_when", "status"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "purpose": { "type": "string" },
+              "created_when": { "type": "string" },
+              "status": { "const": "planned" }
+            }
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      }
+    },
+    "forbidden_phase6_10_artifacts": {
+      "type": "object",
+      "required": ["description", "artifacts"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string" },
+        "artifacts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 9,
+          "maxItems": 9
+        }
+      }
+    },
+    "no_go_confirmation": {
+      "type": "object",
+      "required": [
+        "no_batch_execution_occurs",
+        "no_crawler_runs",
+        "no_renderer_runs",
+        "no_recovery_runs",
+        "no_web_requests_made",
+        "no_source_layer_modified",
+        "no_ai_learning_generated",
+        "no_assets_captured",
+        "no_raw_snapshots_created",
+        "no_intermediate_json_created",
+        "crawler_allowed_remains_false",
+        "renderer_allowed_remains_false",
+        "recovery_allowed_remains_false",
+        "web_requests_allowed_remains_false",
+        "ai_learning_generation_allowed_remains_false"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "no_batch_execution_occurs": { "const": true },
+        "no_crawler_runs": { "const": true },
+        "no_renderer_runs": { "const": true },
+        "no_recovery_runs": { "const": true },
+        "no_web_requests_made": { "const": true },
+        "no_source_layer_modified": { "const": true },
+        "no_ai_learning_generated": { "const": true },
+        "no_assets_captured": { "const": true },
+        "no_raw_snapshots_created": { "const": true },
+        "no_intermediate_json_created": { "const": true },
+        "crawler_allowed_remains_false": { "const": true },
+        "renderer_allowed_remains_false": { "const": true },
+        "recovery_allowed_remains_false": { "const": true },
+        "web_requests_allowed_remains_false": { "const": true },
+        "ai_learning_generation_allowed_remains_false": { "const": true }
+      }
+    },
+    "operational_assertions": {
+      "type": "object",
+      "required": [
+        "expansion_execution_claimed",
+        "crawler_output_claimed",
+        "renderer_output_claimed",
+        "recovery_output_claimed",
+        "ai_learning_generation_claimed",
+        "source_layer_mutation_declared",
+        "web_requests_declared",
+        "raw_snapshots_created",
+        "intermediate_json_created",
+        "assets_captured"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "expansion_execution_claimed": { "const": false },
+        "crawler_output_claimed": { "const": false },
+        "renderer_output_claimed": { "const": false },
+        "recovery_output_claimed": { "const": false },
+        "ai_learning_generation_claimed": { "const": false },
+        "source_layer_mutation_declared": { "const": false },
+        "web_requests_declared": { "const": false },
+        "raw_snapshots_created": { "const": false },
+        "intermediate_json_created": { "const": false },
+        "assets_captured": { "const": false }
+      }
+    },
+    "rollback_boundary": {
+      "type": "object",
+      "required": ["phase6_10_rollback_needed", "reason", "future_execution_requirements"],
+      "additionalProperties": false,
+      "properties": {
+        "phase6_10_rollback_needed": { "const": false },
+        "reason": { "type": "string" },
+        "future_execution_requirements": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "audit_boundary": {
+      "type": "object",
+      "required": [
+        "prior_phase_chain",
+        "current_approval_status",
+        "current_execution_authorization_status",
+        "current_plan_status",
+        "current_operational_gates",
+        "no_go_confirmation",
+        "validation_commands",
+        "commit_scope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "prior_phase_chain": { "type": "array", "items": { "type": "string" } },
+        "current_approval_status": { "const": "pending_human_review" },
+        "current_execution_authorization_status": { "const": "execution_approved" },
+        "current_plan_status": { "const": "planned_not_executed" },
+        "current_operational_gates": {
+          "type": "object",
+          "required": [
+            "phase6_1_entry_allowed",
+            "activation_allowed",
+            "batch_executable",
+            "execution_allowed",
+            "crawler_allowed",
+            "renderer_allowed",
+            "recovery_allowed",
+            "web_requests_allowed",
+            "ai_learning_generation_allowed"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "phase6_1_entry_allowed": { "const": true },
+            "activation_allowed": { "const": true },
+            "batch_executable": { "const": true },
+            "execution_allowed": { "const": true },
+            "crawler_allowed": { "const": false },
+            "renderer_allowed": { "const": false },
+            "recovery_allowed": { "const": false },
+            "web_requests_allowed": { "const": false },
+            "ai_learning_generation_allowed": { "const": false }
+          }
+        },
+        "no_go_confirmation": { "const": true },
+        "validation_commands": { "type": "array", "items": { "type": "string" } },
+        "commit_scope": { "type": "string" }
+      }
+    },
+    "phase_progression_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["phase", "outcome"],
+        "additionalProperties": false,
+        "properties": {
+          "phase": { "type": "string" },
+          "outcome": { "type": "string" }
+        }
+      },
+      "minItems": 11,
+      "maxItems": 11
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": [
+        "schema_validation",
+        "invariant_checks",
+        "approval_status_must_be",
+        "requested_decision_must_be",
+        "requested_execution_mode_must_be",
+        "operational_assertions_all_false",
+        "no_go_confirmations_all_true",
+        "item_constraints_satisfied",
+        "future_artifacts_planned_only",
+        "forbidden_artifacts_explicitly_listed",
+        "requested_operational_gates_all_false",
+        "explicitly_not_requested_includes_all_operational_gates"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_validation": { "type": "string" },
+        "invariant_checks": { "type": "string" },
+        "approval_status_must_be": { "const": "pending_human_review" },
+        "requested_decision_must_be": { "const": "approve_operational_execution_mode" },
+        "requested_execution_mode_must_be": { "const": "offline_existing_source_packet_only" },
+        "operational_assertions_all_false": { "const": true },
+        "no_go_confirmations_all_true": { "const": true },
+        "item_constraints_satisfied": { "const": true },
+        "future_artifacts_planned_only": { "const": true },
+        "forbidden_artifacts_explicitly_listed": { "const": true },
+        "requested_operational_gates_all_false": { "const": true },
+        "explicitly_not_requested_includes_all_operational_gates": { "const": true }
+      }
+    }
+  }
+}

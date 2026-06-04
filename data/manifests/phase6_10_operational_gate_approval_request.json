@@ -1,0 +1,260 @@
+{
+  "manifest_version": "phase6.10",
+  "manifest_type": "operational_gate_approval_request",
+  "status": "operational_gate_approval_request_created",
+  "created_for_phase": "6.10",
+  "inherits_from_phase": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9"],
+  "created_at": "2026-06-04T04:00:00.000Z",
+  "scope": {
+    "allowed": [
+      "read_existing_phase6_0_plan",
+      "read_existing_phase6_1_manifest",
+      "read_existing_phase6_2_manifest",
+      "read_existing_phase6_3_manifest",
+      "read_existing_phase6_4_manifest",
+      "read_existing_phase6_5_manifest",
+      "read_existing_phase6_6_manifest",
+      "read_existing_phase6_7_manifest",
+      "read_existing_phase6_8_manifest",
+      "read_existing_phase6_9_manifest",
+      "validate_execution_plan",
+      "prepare_operational_gate_approval_request",
+      "document_execution_mode_rationale",
+      "document_operational_gate_request",
+      "document_input_boundary",
+      "document_output_boundary",
+      "document_rollback_boundary",
+      "document_audit_boundary"
+    ],
+    "forbidden": [
+      "execute_batch",
+      "set_crawler_allowed_true",
+      "set_renderer_allowed_true",
+      "set_recovery_allowed_true",
+      "set_web_requests_allowed_true",
+      "set_ai_learning_generation_allowed_true",
+      "run_crawler",
+      "run_renderer",
+      "run_recovery",
+      "make_web_requests",
+      "modify_source_layer",
+      "generate_ai_learning_content",
+      "capture_assets",
+      "create_raw_snapshots",
+      "create_intermediate_json"
+    ]
+  },
+  "approval_status": "pending_human_review",
+  "requested_decision": "approve_operational_execution_mode",
+  "requested_execution_mode": "offline_existing_source_packet_only",
+  "batch_id": "phase6_1_batch_001",
+  "execution_authorization_status": "execution_approved",
+  "plan_status": "planned_not_executed",
+  "phase_gates": {
+    "phase6_1_entry_allowed": true,
+    "activation_allowed": true,
+    "batch_executable": true,
+    "execution_allowed": true,
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false
+  },
+  "requested_operational_gate_changes": {
+    "crawler_allowed": false,
+    "renderer_allowed": false,
+    "recovery_allowed": false,
+    "web_requests_allowed": false,
+    "ai_learning_generation_allowed": false,
+    "constraint": "All operational gates remain false. No gate change is requested."
+  },
+  "explicitly_not_requested": {
+    "description": "The following gate changes are explicitly NOT part of this approval request",
+    "gates": [
+      {
+        "gate": "crawler_allowed",
+        "value": true,
+        "reason": "Not requested because existing source packets are sufficient"
+      },
+      {
+        "gate": "renderer_allowed",
+        "value": true,
+        "reason": "Not requested because no new rendering pass is needed"
+      },
+      {
+        "gate": "recovery_allowed",
+        "value": true,
+        "reason": "Not requested because no source-layer corruption detected"
+      },
+      {
+        "gate": "web_requests_allowed",
+        "value": true,
+        "reason": "Not requested because all data is local"
+      },
+      {
+        "gate": "ai_learning_generation_allowed",
+        "value": true,
+        "reason": "Not requested because AI learning generation is a separate pipeline stage"
+      }
+    ]
+  },
+  "input_boundary": {
+    "allowed_items": ["1.3"],
+    "approved_items": ["1.3"],
+    "deferred_items": ["9.1"],
+    "quarantined_items": ["13.3"],
+    "item_count": 1,
+    "source_layer_mutation_allowed": false,
+    "constraints": [
+      "Only item 1.3 may be processed",
+      "9.1 remains deferred",
+      "13.3 remains quarantined and ineligible",
+      "No additional item may be added",
+      "No source layer mutation may occur in this phase"
+    ]
+  },
+  "execution_mode_rationale": {
+    "recommended_mode": "offline_existing_source_packet_only",
+    "rationale": "Item 1.3 has an existing validated source packet from Phase 5.1. No external network access, crawler, renderer, recovery, web request, or AI learning generation is required.",
+    "why_crawler_not_required": "Item 1.3 already has a validated source packet captured during the Phase 5.x source acquisition cycle. Re-crawling would add risk without improving source quality.",
+    "why_renderer_not_required": "The current batch execution plan operates on existing source packets only. No new rendering pass is needed because the renderer output from Phase 4.x remains valid and no source-layer mutation has occurred.",
+    "why_recovery_not_required": "No source-layer corruption has been detected. The Phase 5.2 recovery pass already validated source artifact integrity.",
+    "why_web_requests_not_required": "All required data is present in local source packets and validated manifests. No external URL needs to be fetched.",
+    "why_ai_learning_generation_not_allowed": "AI learning content generation is a separate pipeline stage (Phase 5.x) and must not be conflated with batch execution."
+  },
+  "allowed_future_artifacts": {
+    "description": "These artifacts are planned only, not created in Phase 6.10",
+    "artifacts": [
+      {
+        "name": "controlled_batch_run_record",
+        "purpose": "Records batch execution metadata",
+        "created_when": "During future execution",
+        "status": "planned"
+      },
+      {
+        "name": "execution_audit_log",
+        "purpose": "Records step-by-step execution trace",
+        "created_when": "During future execution",
+        "status": "planned"
+      },
+      {
+        "name": "item_level_execution_result",
+        "purpose": "Records per-item outcome (1.3)",
+        "created_when": "During future execution",
+        "status": "planned"
+      },
+      {
+        "name": "post_run_validation_report",
+        "purpose": "Validates execution invariants",
+        "created_when": "After future execution",
+        "status": "planned"
+      }
+    ]
+  },
+  "forbidden_phase6_10_artifacts": {
+    "description": "Phase 6.10 must NOT create any of these artifacts",
+    "artifacts": [
+      "raw_snapshots",
+      "intermediate_json",
+      "rendered_outputs",
+      "crawler_outputs",
+      "recovery_outputs",
+      "ai_learning_content",
+      "source_layer_mutations",
+      "newly_captured_assets",
+      "web_request_results"
+    ]
+  },
+  "no_go_confirmation": {
+    "no_batch_execution_occurs": true,
+    "no_crawler_runs": true,
+    "no_renderer_runs": true,
+    "no_recovery_runs": true,
+    "no_web_requests_made": true,
+    "no_source_layer_modified": true,
+    "no_ai_learning_generated": true,
+    "no_assets_captured": true,
+    "no_raw_snapshots_created": true,
+    "no_intermediate_json_created": true,
+    "crawler_allowed_remains_false": true,
+    "renderer_allowed_remains_false": true,
+    "recovery_allowed_remains_false": true,
+    "web_requests_allowed_remains_false": true,
+    "ai_learning_generation_allowed_remains_false": true
+  },
+  "operational_assertions": {
+    "expansion_execution_claimed": false,
+    "crawler_output_claimed": false,
+    "renderer_output_claimed": false,
+    "recovery_output_claimed": false,
+    "ai_learning_generation_claimed": false,
+    "source_layer_mutation_declared": false,
+    "web_requests_declared": false,
+    "raw_snapshots_created": false,
+    "intermediate_json_created": false,
+    "assets_captured": false
+  },
+  "rollback_boundary": {
+    "phase6_10_rollback_needed": false,
+    "reason": "No rollback needed for Phase 6.10 because no artifacts are created and no execution occurs",
+    "future_execution_requirements": [
+      "Future execution must define rollback before running",
+      "Future execution must isolate item 1.3 outputs from global source layer",
+      "Rollback target: return batch to execution_approved status",
+      "Rollback scope: remove generated output artifacts for item 1.3",
+      "Source preservation: source layer artifacts must remain untouched"
+    ]
+  },
+  "audit_boundary": {
+    "prior_phase_chain": ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7", "6.8", "6.9"],
+    "current_approval_status": "pending_human_review",
+    "current_execution_authorization_status": "execution_approved",
+    "current_plan_status": "planned_not_executed",
+    "current_operational_gates": {
+      "phase6_1_entry_allowed": true,
+      "activation_allowed": true,
+      "batch_executable": true,
+      "execution_allowed": true,
+      "crawler_allowed": false,
+      "renderer_allowed": false,
+      "recovery_allowed": false,
+      "web_requests_allowed": false,
+      "ai_learning_generation_allowed": false
+    },
+    "no_go_confirmation": true,
+    "validation_commands": [
+      "pnpm typecheck",
+      "pnpm verify",
+      "pnpm validate:operational-gate-approval-request"
+    ],
+    "commit_scope": "Only Phase 6.10 operational gate approval request files and related schema/type/validator/package script changes"
+  },
+  "phase_progression_history": [
+    { "phase": "6.0", "outcome": "controlled_source_expansion_plan_created" },
+    { "phase": "6.1", "outcome": "batch_selection_manifest_created" },
+    { "phase": "6.2", "outcome": "gate_recheck_completed" },
+    { "phase": "6.3", "outcome": "activation_readiness_preflight_passed" },
+    { "phase": "6.4", "outcome": "batch_activation_human_approval_request_created" },
+    { "phase": "6.5", "outcome": "batch_activation_human_approval_decision_accepted" },
+    { "phase": "6.6", "outcome": "batch_execution_readiness_preflight_passed" },
+    { "phase": "6.7", "outcome": "batch_execution_human_approval_request_created" },
+    { "phase": "6.8", "outcome": "batch_execution_human_approval_decision_accepted" },
+    { "phase": "6.9", "outcome": "controlled_batch_execution_plan_created" },
+    { "phase": "6.10", "outcome": "operational_gate_approval_request_created" }
+  ],
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "approval_status_must_be": "pending_human_review",
+    "requested_decision_must_be": "approve_operational_execution_mode",
+    "requested_execution_mode_must_be": "offline_existing_source_packet_only",
+    "operational_assertions_all_false": true,
+    "no_go_confirmations_all_true": true,
+    "item_constraints_satisfied": true,
+    "future_artifacts_planned_only": true,
+    "forbidden_artifacts_explicitly_listed": true,
+    "requested_operational_gates_all_false": true,
+    "explicitly_not_requested_includes_all_operational_gates": true
+  }
+}
