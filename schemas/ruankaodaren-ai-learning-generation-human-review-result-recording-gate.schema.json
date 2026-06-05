@@ -1,0 +1,787 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ruankao AI Learning Generation Human Review Result Recording Gate",
+  "description": "Schema for phase 7.6 AI learning generation human review result recording gate — a result-recording-only artifact that records whether a human review result exists.",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "manifest_type",
+    "phase",
+    "artifact_type",
+    "status",
+    "created_for_phase",
+    "created_at",
+    "review_recording_status",
+    "review_recording_result",
+    "review_recording_mode",
+    "upstream_review_request",
+    "upstream_generation_execution",
+    "upstream_authorization",
+    "upstream_execution_plan",
+    "batch_id",
+    "human_review_input",
+    "crawler_allowed",
+    "renderer_allowed",
+    "recovery_allowed",
+    "web_requests_allowed",
+    "source_layer_modification_allowed",
+    "ai_learning_content_generation_allowed",
+    "ai_learning_content_revision_allowed",
+    "ai_learning_review_result_recording_allowed",
+    "ai_learning_acceptance_allowed",
+    "ai_learning_revision_allowed",
+    "phase7_7_entry_allowed",
+    "review_decision",
+    "expected_human_review_input_contract",
+    "scope",
+    "risk",
+    "closure",
+    "rollback_condition",
+    "next_phase_recommendation",
+    "audit_condition",
+    "phase_progression_history",
+    "validation_expectations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": {
+      "type": "string",
+      "const": "phase7.6"
+    },
+    "manifest_type": {
+      "type": "string",
+      "const": "ai_learning_generation_human_review_result_recording_gate"
+    },
+    "phase": {
+      "type": "string",
+      "const": "7.6"
+    },
+    "artifact_type": {
+      "type": "string",
+      "const": "ai_learning_generation_human_review_result_recording_gate"
+    },
+    "status": {
+      "type": "string",
+      "const": "ai_learning_generation_human_review_result_recording_gate_created"
+    },
+    "created_for_phase": {
+      "type": "string",
+      "const": "7.6"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "review_recording_status": {
+      "type": "string",
+      "const": "blocked"
+    },
+    "review_recording_result": {
+      "type": "string",
+      "const": "no_human_review_input"
+    },
+    "review_recording_mode": {
+      "type": "string",
+      "const": "result_recording_only"
+    },
+    "upstream_review_request": {
+      "type": "object",
+      "required": [
+        "phase",
+        "artifact_type",
+        "manifest",
+        "commit",
+        "review_request_status",
+        "review_request_result",
+        "review_request_mode",
+        "generated_output_category_count",
+        "generated_item_count",
+        "unsupported_generation_item_count",
+        "phase7_6_entry_allowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase": {
+          "type": "string",
+          "const": "7.5"
+        },
+        "artifact_type": {
+          "type": "string",
+          "const": "ai_learning_generation_human_review_request_package"
+        },
+        "manifest": {
+          "type": "string",
+          "const": "phase7_5_ai_learning_generation_human_review_request_package.json"
+        },
+        "commit": {
+          "type": "string",
+          "const": "5e14cc2"
+        },
+        "review_request_status": {
+          "type": "string",
+          "const": "requested"
+        },
+        "review_request_result": {
+          "type": "string",
+          "const": "pending_human_review"
+        },
+        "review_request_mode": {
+          "type": "string",
+          "const": "review_request_only"
+        },
+        "generated_output_category_count": {
+          "type": "number",
+          "const": 8
+        },
+        "generated_item_count": {
+          "type": "number",
+          "const": 36
+        },
+        "unsupported_generation_item_count": {
+          "type": "number",
+          "const": 3
+        },
+        "phase7_6_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "upstream_generation_execution": {
+      "type": "object",
+      "required": [
+        "phase",
+        "artifact_type",
+        "manifest",
+        "commit",
+        "execution_status",
+        "execution_result",
+        "generated_output_category_count",
+        "generated_item_count",
+        "unsupported_generation_item_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase": {
+          "type": "string",
+          "const": "7.4"
+        },
+        "artifact_type": {
+          "type": "string",
+          "const": "ai_learning_generation_execution"
+        },
+        "manifest": {
+          "type": "string",
+          "const": "phase7_4_ai_learning_generation_execution.json"
+        },
+        "commit": {
+          "type": "string",
+          "const": "71f8f3f"
+        },
+        "execution_status": {
+          "type": "string",
+          "const": "completed"
+        },
+        "execution_result": {
+          "type": "string",
+          "const": "pass"
+        },
+        "generated_output_category_count": {
+          "type": "number",
+          "const": 8
+        },
+        "generated_item_count": {
+          "type": "number",
+          "const": 36
+        },
+        "unsupported_generation_item_count": {
+          "type": "number",
+          "const": 3
+        }
+      }
+    },
+    "upstream_authorization": {
+      "type": "object",
+      "required": [
+        "phase",
+        "artifact_type",
+        "manifest",
+        "commit",
+        "authorization_status",
+        "authorization_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase": {
+          "type": "string",
+          "const": "7.3"
+        },
+        "artifact_type": {
+          "type": "string",
+          "const": "ai_learning_generation_execution_authorization_gate"
+        },
+        "manifest": {
+          "type": "string",
+          "const": "phase7_3_ai_learning_generation_execution_authorization_gate.json"
+        },
+        "commit": {
+          "type": "string",
+          "const": "bc5f2af"
+        },
+        "authorization_status": {
+          "type": "string",
+          "const": "authorized"
+        },
+        "authorization_result": {
+          "type": "string",
+          "const": "pass"
+        }
+      }
+    },
+    "upstream_execution_plan": {
+      "type": "object",
+      "required": [
+        "phase",
+        "artifact_type",
+        "manifest",
+        "commit",
+        "execution_plan_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase": {
+          "type": "string",
+          "const": "7.2"
+        },
+        "artifact_type": {
+          "type": "string",
+          "const": "ai_learning_generation_execution_plan"
+        },
+        "manifest": {
+          "type": "string",
+          "const": "phase7_2_ai_learning_generation_execution_plan.json"
+        },
+        "commit": {
+          "type": "string",
+          "const": "6f0ac44"
+        },
+        "execution_plan_status": {
+          "type": "string",
+          "const": "planned"
+        }
+      }
+    },
+    "batch_id": {
+      "type": "string",
+      "const": "phase6_1_batch_001"
+    },
+    "human_review_input": {
+      "type": "object",
+      "required": [
+        "human_review_input_present",
+        "human_review_input_artifact",
+        "human_review_input_valid",
+        "missing_required_input_reason"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "human_review_input_present": {
+          "type": "boolean",
+          "const": false
+        },
+        "human_review_input_artifact": {
+          "type": "null",
+          "const": null
+        },
+        "human_review_input_valid": {
+          "type": "boolean",
+          "const": false
+        },
+        "missing_required_input_reason": {
+          "type": "string"
+        }
+      }
+    },
+    "crawler_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "renderer_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "recovery_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "web_requests_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "source_layer_modification_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "ai_learning_content_generation_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "ai_learning_content_revision_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "ai_learning_review_result_recording_allowed": {
+      "type": "boolean",
+      "const": true
+    },
+    "ai_learning_acceptance_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "ai_learning_revision_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "phase7_7_entry_allowed": {
+      "type": "boolean",
+      "const": false
+    },
+    "review_decision": {
+      "type": "object",
+      "required": [
+        "decision_status",
+        "decision_result",
+        "reviewer",
+        "reviewed_at",
+        "issues"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "decision_status": {
+          "type": "string",
+          "const": "not_available"
+        },
+        "decision_result": {
+          "type": "null",
+          "const": null
+        },
+        "reviewer": {
+          "type": "null",
+          "const": null
+        },
+        "reviewed_at": {
+          "type": "null",
+          "const": null
+        },
+        "issues": {
+          "type": "array",
+          "maxItems": 0
+        }
+      }
+    },
+    "expected_human_review_input_contract": {
+      "type": "object",
+      "required": [
+        "required_fields",
+        "allowed_decision_results",
+        "allowed_issue_severity_levels"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "required_fields": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "enum": [
+              "reviewer",
+              "reviewed_at",
+              "decision_result",
+              "reviewed_output_category_count",
+              "reviewed_generated_item_count",
+              "reviewed_unsupported_generation_item_count",
+              "traceability_review_confirmed",
+              "issues"
+            ]
+          }
+        },
+        "allowed_decision_results": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "string",
+            "enum": [
+              "approve_for_quality_review",
+              "require_minor_revision_plan",
+              "require_major_revision_plan",
+              "reject_generation_batch",
+              "request_source_recheck"
+            ]
+          }
+        },
+        "allowed_issue_severity_levels": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "string",
+            "enum": [
+              "blocker",
+              "major",
+              "minor",
+              "advisory"
+            ]
+          }
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": [
+        "recording_scope",
+        "allowed_source_basis",
+        "content_mutation_allowed",
+        "new_generation_allowed",
+        "external_sources_allowed",
+        "source_expansion_allowed",
+        "offline_only"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "recording_scope": {
+          "type": "string",
+          "const": "human_review_result_for_phase7_4_generated_outputs_only"
+        },
+        "allowed_source_basis": {
+          "type": "string",
+          "const": "closed_pass_phase6_1_batch_001_only"
+        },
+        "content_mutation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "new_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "external_sources_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "source_expansion_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "offline_only": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "required": [
+        "risk_level",
+        "risk_reason"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "risk_level": {
+          "type": "string",
+          "const": "low"
+        },
+        "risk_reason": {
+          "type": "string"
+        }
+      }
+    },
+    "closure": {
+      "type": "object",
+      "required": [
+        "phase7_6_status",
+        "phase7_6_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase7_6_status": {
+          "type": "string",
+          "const": "complete"
+        },
+        "phase7_6_result": {
+          "type": "string",
+          "const": "blocked_no_human_review_input"
+        }
+      }
+    },
+    "rollback_condition": {
+      "type": "object",
+      "required": [
+        "phase7_6_rollback_needed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "phase7_6_rollback_needed": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "next_phase_recommendation": {
+      "type": "object",
+      "required": [
+        "next_recommended_phase",
+        "phase7_7_entry_allowed",
+        "phase7_7_entry_requires_human_review_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "next_recommended_phase": {
+          "type": "string",
+          "const": "phase7.7_ai_learning_generation_quality_review"
+        },
+        "phase7_7_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "phase7_7_entry_requires_human_review_result": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "audit_condition": {
+      "type": "object",
+      "required": [
+        "upstream_review_request_phase",
+        "upstream_review_request_commit",
+        "upstream_review_request_status",
+        "upstream_review_request_result",
+        "upstream_generation_execution_phase",
+        "upstream_generation_execution_commit",
+        "upstream_generation_execution_status",
+        "upstream_generation_execution_result",
+        "upstream_authorization_phase",
+        "upstream_authorization_commit",
+        "upstream_authorization_status",
+        "upstream_execution_plan_phase",
+        "upstream_execution_plan_commit",
+        "batch_id",
+        "human_review_input_present",
+        "human_review_input_valid",
+        "review_recording_status",
+        "review_recording_result",
+        "current_ai_learning_content_generation_allowed",
+        "current_ai_learning_content_revision_allowed",
+        "current_ai_learning_acceptance_allowed",
+        "current_ai_learning_revision_allowed",
+        "current_phase7_7_entry_allowed",
+        "review_inventory_category_count",
+        "review_inventory_item_count",
+        "review_inventory_unsupported_item_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "upstream_review_request_phase": {
+          "type": "string",
+          "const": "7.5"
+        },
+        "upstream_review_request_commit": {
+          "type": "string",
+          "const": "5e14cc2"
+        },
+        "upstream_review_request_status": {
+          "type": "string",
+          "const": "requested"
+        },
+        "upstream_review_request_result": {
+          "type": "string",
+          "const": "pending_human_review"
+        },
+        "upstream_generation_execution_phase": {
+          "type": "string",
+          "const": "7.4"
+        },
+        "upstream_generation_execution_commit": {
+          "type": "string",
+          "const": "71f8f3f"
+        },
+        "upstream_generation_execution_status": {
+          "type": "string",
+          "const": "completed"
+        },
+        "upstream_generation_execution_result": {
+          "type": "string",
+          "const": "pass"
+        },
+        "upstream_authorization_phase": {
+          "type": "string",
+          "const": "7.3"
+        },
+        "upstream_authorization_commit": {
+          "type": "string",
+          "const": "bc5f2af"
+        },
+        "upstream_authorization_status": {
+          "type": "string",
+          "const": "authorized"
+        },
+        "upstream_execution_plan_phase": {
+          "type": "string",
+          "const": "7.2"
+        },
+        "upstream_execution_plan_commit": {
+          "type": "string",
+          "const": "6f0ac44"
+        },
+        "batch_id": {
+          "type": "string",
+          "const": "phase6_1_batch_001"
+        },
+        "human_review_input_present": {
+          "type": "boolean",
+          "const": false
+        },
+        "human_review_input_valid": {
+          "type": "boolean",
+          "const": false
+        },
+        "review_recording_status": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "review_recording_result": {
+          "type": "string",
+          "const": "no_human_review_input"
+        },
+        "current_ai_learning_content_generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_ai_learning_content_revision_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_ai_learning_acceptance_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_ai_learning_revision_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "current_phase7_7_entry_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "review_inventory_category_count": {
+          "type": "number",
+          "const": 8
+        },
+        "review_inventory_item_count": {
+          "type": "number",
+          "const": 36
+        },
+        "review_inventory_unsupported_item_count": {
+          "type": "number",
+          "const": 3
+        }
+      }
+    },
+    "phase_progression_history": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "phase",
+          "outcome"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "phase": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": [
+        "schema_validation",
+        "invariant_checks",
+        "review_recording_status_must_be",
+        "review_recording_result_must_be",
+        "review_recording_mode_must_be",
+        "human_review_input_present_must_be",
+        "human_review_input_valid_must_be",
+        "review_decision_status_must_be",
+        "review_decision_result_must_be",
+        "review_decision_issues_must_be_empty",
+        "phase7_7_entry_allowed_must_be",
+        "ai_learning_acceptance_allowed_must_be",
+        "ai_learning_revision_allowed_must_be"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_validation": {
+          "type": "string",
+          "const": "must_pass"
+        },
+        "invariant_checks": {
+          "type": "string",
+          "const": "must_pass"
+        },
+        "review_recording_status_must_be": {
+          "type": "string",
+          "const": "blocked"
+        },
+        "review_recording_result_must_be": {
+          "type": "string",
+          "const": "no_human_review_input"
+        },
+        "review_recording_mode_must_be": {
+          "type": "string",
+          "const": "result_recording_only"
+        },
+        "human_review_input_present_must_be": {
+          "type": "boolean",
+          "const": false
+        },
+        "human_review_input_valid_must_be": {
+          "type": "boolean",
+          "const": false
+        },
+        "review_decision_status_must_be": {
+          "type": "string",
+          "const": "not_available"
+        },
+        "review_decision_result_must_be": {
+          "type": "null",
+          "const": null
+        },
+        "review_decision_issues_must_be_empty": {
+          "type": "boolean",
+          "const": true
+        },
+        "phase7_7_entry_allowed_must_be": {
+          "type": "boolean",
+          "const": false
+        },
+        "ai_learning_acceptance_allowed_must_be": {
+          "type": "boolean",
+          "const": false
+        },
+        "ai_learning_revision_allowed_must_be": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    }
+  }
+}

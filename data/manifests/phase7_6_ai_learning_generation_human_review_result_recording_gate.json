@@ -1,0 +1,218 @@
+{
+  "manifest_version": "phase7.6",
+  "manifest_type": "ai_learning_generation_human_review_result_recording_gate",
+  "phase": "7.6",
+  "artifact_type": "ai_learning_generation_human_review_result_recording_gate",
+  "status": "ai_learning_generation_human_review_result_recording_gate_created",
+  "created_for_phase": "7.6",
+  "created_at": "2026-06-05T00:00:00Z",
+
+  "review_recording_status": "blocked",
+  "review_recording_result": "no_human_review_input",
+  "review_recording_mode": "result_recording_only",
+
+  "upstream_review_request": {
+    "phase": "7.5",
+    "artifact_type": "ai_learning_generation_human_review_request_package",
+    "manifest": "phase7_5_ai_learning_generation_human_review_request_package.json",
+    "commit": "5e14cc2",
+    "review_request_status": "requested",
+    "review_request_result": "pending_human_review",
+    "review_request_mode": "review_request_only",
+    "generated_output_category_count": 8,
+    "generated_item_count": 36,
+    "unsupported_generation_item_count": 3,
+    "phase7_6_entry_allowed": false
+  },
+
+  "upstream_generation_execution": {
+    "phase": "7.4",
+    "artifact_type": "ai_learning_generation_execution",
+    "manifest": "phase7_4_ai_learning_generation_execution.json",
+    "commit": "71f8f3f",
+    "execution_status": "completed",
+    "execution_result": "pass",
+    "generated_output_category_count": 8,
+    "generated_item_count": 36,
+    "unsupported_generation_item_count": 3
+  },
+
+  "upstream_authorization": {
+    "phase": "7.3",
+    "artifact_type": "ai_learning_generation_execution_authorization_gate",
+    "manifest": "phase7_3_ai_learning_generation_execution_authorization_gate.json",
+    "commit": "bc5f2af",
+    "authorization_status": "authorized",
+    "authorization_result": "pass"
+  },
+
+  "upstream_execution_plan": {
+    "phase": "7.2",
+    "artifact_type": "ai_learning_generation_execution_plan",
+    "manifest": "phase7_2_ai_learning_generation_execution_plan.json",
+    "commit": "6f0ac44",
+    "execution_plan_status": "planned"
+  },
+
+  "batch_id": "phase6_1_batch_001",
+
+  "human_review_input": {
+    "human_review_input_present": false,
+    "human_review_input_artifact": null,
+    "human_review_input_valid": false,
+    "missing_required_input_reason": "No explicit human-authored review result input artifact was found."
+  },
+
+  "crawler_allowed": false,
+  "renderer_allowed": false,
+  "recovery_allowed": false,
+  "web_requests_allowed": false,
+  "source_layer_modification_allowed": false,
+  "ai_learning_content_generation_allowed": false,
+  "ai_learning_content_revision_allowed": false,
+  "ai_learning_review_result_recording_allowed": true,
+  "ai_learning_acceptance_allowed": false,
+  "ai_learning_revision_allowed": false,
+
+  "phase7_7_entry_allowed": false,
+
+  "review_decision": {
+    "decision_status": "not_available",
+    "decision_result": null,
+    "reviewer": null,
+    "reviewed_at": null,
+    "issues": []
+  },
+
+  "expected_human_review_input_contract": {
+    "required_fields": [
+      "reviewer",
+      "reviewed_at",
+      "decision_result",
+      "reviewed_output_category_count",
+      "reviewed_generated_item_count",
+      "reviewed_unsupported_generation_item_count",
+      "traceability_review_confirmed",
+      "issues"
+    ],
+    "allowed_decision_results": [
+      "approve_for_quality_review",
+      "require_minor_revision_plan",
+      "require_major_revision_plan",
+      "reject_generation_batch",
+      "request_source_recheck"
+    ],
+    "allowed_issue_severity_levels": [
+      "blocker",
+      "major",
+      "minor",
+      "advisory"
+    ]
+  },
+
+  "scope": {
+    "recording_scope": "human_review_result_for_phase7_4_generated_outputs_only",
+    "allowed_source_basis": "closed_pass_phase6_1_batch_001_only",
+    "content_mutation_allowed": false,
+    "new_generation_allowed": false,
+    "external_sources_allowed": false,
+    "source_expansion_allowed": false,
+    "offline_only": true
+  },
+
+  "risk": {
+    "risk_level": "low",
+    "risk_reason": "Phase 7.6 records whether a human review result exists. No review execution, content generation, content revision, acceptance, rendering, crawling, recovery, web requests, or source-layer mutation is performed."
+  },
+
+  "closure": {
+    "phase7_6_status": "complete",
+    "phase7_6_result": "blocked_no_human_review_input"
+  },
+
+  "rollback_condition": {
+    "phase7_6_rollback_needed": false
+  },
+
+  "next_phase_recommendation": {
+    "next_recommended_phase": "phase7.7_ai_learning_generation_quality_review",
+    "phase7_7_entry_allowed": false,
+    "phase7_7_entry_requires_human_review_result": true
+  },
+
+  "audit_condition": {
+    "upstream_review_request_phase": "7.5",
+    "upstream_review_request_commit": "5e14cc2",
+    "upstream_review_request_status": "requested",
+    "upstream_review_request_result": "pending_human_review",
+    "upstream_generation_execution_phase": "7.4",
+    "upstream_generation_execution_commit": "71f8f3f",
+    "upstream_generation_execution_status": "completed",
+    "upstream_generation_execution_result": "pass",
+    "upstream_authorization_phase": "7.3",
+    "upstream_authorization_commit": "bc5f2af",
+    "upstream_authorization_status": "authorized",
+    "upstream_execution_plan_phase": "7.2",
+    "upstream_execution_plan_commit": "6f0ac44",
+    "batch_id": "phase6_1_batch_001",
+    "human_review_input_present": false,
+    "human_review_input_valid": false,
+    "review_recording_status": "blocked",
+    "review_recording_result": "no_human_review_input",
+    "current_ai_learning_content_generation_allowed": false,
+    "current_ai_learning_content_revision_allowed": false,
+    "current_ai_learning_acceptance_allowed": false,
+    "current_ai_learning_revision_allowed": false,
+    "current_phase7_7_entry_allowed": false,
+    "review_inventory_category_count": 8,
+    "review_inventory_item_count": 36,
+    "review_inventory_unsupported_item_count": 3
+  },
+
+  "phase_progression_history": [
+    {
+      "phase": "7.0",
+      "outcome": "ai_learning_generation_request_created"
+    },
+    {
+      "phase": "7.1",
+      "outcome": "ai_learning_generation_approval_gate_recorded"
+    },
+    {
+      "phase": "7.2",
+      "outcome": "ai_learning_generation_execution_plan_created"
+    },
+    {
+      "phase": "7.3",
+      "outcome": "ai_learning_generation_execution_authorization_gate_created"
+    },
+    {
+      "phase": "7.4",
+      "outcome": "ai_learning_generation_execution_completed"
+    },
+    {
+      "phase": "7.5",
+      "outcome": "ai_learning_generation_human_review_request_package_created"
+    },
+    {
+      "phase": "7.6",
+      "outcome": "ai_learning_generation_human_review_result_recording_gate_created_blocked_no_human_review_input"
+    }
+  ],
+
+  "validation_expectations": {
+    "schema_validation": "must_pass",
+    "invariant_checks": "must_pass",
+    "review_recording_status_must_be": "blocked",
+    "review_recording_result_must_be": "no_human_review_input",
+    "review_recording_mode_must_be": "result_recording_only",
+    "human_review_input_present_must_be": false,
+    "human_review_input_valid_must_be": false,
+    "review_decision_status_must_be": "not_available",
+    "review_decision_result_must_be": null,
+    "review_decision_issues_must_be_empty": true,
+    "phase7_7_entry_allowed_must_be": false,
+    "ai_learning_acceptance_allowed_must_be": false,
+    "ai_learning_revision_allowed_must_be": false
+  }
+}

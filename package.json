@@ -96,6 +96,7 @@
     "validate:ai-learning-generation-execution-authorization-gate": "tsx scripts/validate-ruankaodaren-ai-learning-generation-execution-authorization-gate.ts",
     "validate:ai-learning-generation-execution": "tsx scripts/validate-ruankaodaren-ai-learning-generation-execution.ts",
     "validate:ai-learning-generation-human-review-request-package": "tsx scripts/validate-ruankaodaren-ai-learning-generation-human-review-request-package.ts",
+    "validate:ai-learning-generation-human-review-result-recording-gate": "tsx scripts/validate-ruankaodaren-ai-learning-generation-human-review-result-recording-gate.ts",
     "recover:baseline-source-artifacts": "tsx scripts/recover-ruankaodaren-baseline-source-artifacts.ts",
     "recheck:taxonomy": "tsx scripts/recheck-ruankaodaren-taxonomy.ts",
     "run:third-baseline-promotion": "tsx scripts/run-ruankaodaren-third-baseline-promotion.ts",
