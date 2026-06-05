@@ -1,0 +1,55 @@
+{
+  "artifact_type": "human_review_input",
+  "target_phase": "7.4",
+  "target_artifact_type": "ai_learning_generation_execution",
+  "target_commit": "71f8f3f",
+  "batch_id": "phase6_1_batch_001",
+
+  "reviewer": null,
+  "reviewed_at": null,
+
+  "review_scope": {
+    "generated_output_category_count": 8,
+    "generated_item_count": 36,
+    "unsupported_generation_item_count": 3,
+    "reviewed_output_category_count": null,
+    "reviewed_generated_item_count": null,
+    "reviewed_unsupported_generation_item_count": null
+  },
+
+  "review_confirmations": {
+    "source_fidelity_checked": null,
+    "exam_relevance_checked": null,
+    "conceptual_correctness_checked": null,
+    "explanation_clarity_checked": null,
+    "question_validity_checked": null,
+    "answer_rationale_consistency_checked": null,
+    "unsupported_item_correctness_checked": null,
+    "traceability_sufficiency_checked": null,
+    "hallucination_or_overreach_checked": null,
+    "duplicate_or_low_value_content_checked": null
+  },
+
+  "decision_result": null,
+
+  "allowed_decision_results": [
+    "approve_for_quality_review",
+    "require_minor_revision_plan",
+    "require_major_revision_plan",
+    "reject_generation_batch",
+    "request_source_recheck"
+  ],
+
+  "issues": [],
+
+  "issue_schema": {
+    "id": "string",
+    "severity": "blocker|major|minor|advisory",
+    "affected_output_type": "learning_objectives|knowledge_units|exam_oriented_explanations|practice_questions|answer_rationales|misconception_warnings|review_checklist|source_traceability_map|unsupported_generation_items",
+    "affected_item_id": "string|null",
+    "description": "string",
+    "required_action": "string"
+  },
+
+  "reviewer_notes": null
+}

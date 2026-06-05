@@ -402,7 +402,9 @@ const requiredFiles = [
   "schemas/ruankaodaren-ai-learning-generation-human-review-result-recording-gate.schema.json",
   "packages/domain-types/ruankaodaren-ai-learning-generation-human-review-result-recording-gate.ts",
   "scripts/validate-ruankaodaren-ai-learning-generation-human-review-result-recording-gate.ts",
-  "data/manifests/phase7_6_ai_learning_generation_human_review_result_recording_gate.json"
+  "data/manifests/phase7_6_ai_learning_generation_human_review_result_recording_gate.json",
+  "templates/phase7_4_ai_learning_generation_human_review_input.template.json",
+  "templates/phase7_4_ai_learning_generation_human_review_input.template.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
