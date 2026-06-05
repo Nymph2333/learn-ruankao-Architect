@@ -404,7 +404,8 @@ const requiredFiles = [
   "scripts/validate-ruankaodaren-ai-learning-generation-human-review-result-recording-gate.ts",
   "data/manifests/phase7_6_ai_learning_generation_human_review_result_recording_gate.json",
   "templates/phase7_4_ai_learning_generation_human_review_input.template.json",
-  "templates/phase7_4_ai_learning_generation_human_review_input.template.md"
+  "templates/phase7_4_ai_learning_generation_human_review_input.template.md",
+  "templates/phase7_4_human_review_worklist.md"
 ];
 
 const requiredContent: Record<string, string[]> = {
